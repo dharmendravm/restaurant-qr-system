@@ -1,0 +1,35 @@
+{
+  "editor.tokenColorCustomizations": {
+  "textMateRules": [
+    {
+      "scope": "comment",
+      "settings": {
+
+        "foreground": "#5d7f91",   // Soft blue-grey
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": "comment.line.double-slash",
+      "settings": {
+        "foreground": "#d4e4aef3",   // Light professional blue
+        "fontStyle": "italic underline"
+      }
+    },
+    {
+      "scope": "comment.block",
+      "settings": {
+        "foreground": "#9e8fff",   // Soft purple (clean neon)
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": "punctuation.definition.comment",
+      "settings": {
+        "foreground": "#b9db5c"    // Aqua accent
+      }
+    }
+  ]
+}
+
+}

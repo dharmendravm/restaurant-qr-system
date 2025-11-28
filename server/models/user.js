@@ -4,28 +4,33 @@ const UserSchema = mongoose.Schema({
   name: {
     type: String,
   },
-  phone:{
-    type: Number
-  },
   email: {
     type: String,
   },
-  role:{
+  phone: {
+    type: Number,
+  },
+  password: {
     type: String,
-    enum: ['custmer','admin'],
-    default: 'custmer'
+  },
+  accountType: {
+    type: String,
+    enum: ["REGISTERED", "GUEST"],
+    default: "REGISTERED",
+  },
+  role: {
+    type: String,
+    enum: ["customer", "admin"],
+    default: "customer",
   },
   totolSpends: {
-    type : Number
+    type: Number,
   },
   totalOrders: {
-    type : Number
+    type: Number,
   },
   loyalPoints: {
-    type : Number
-  },
-  passwordHash: {
-    type: String,
+    type: Number,
   },
   isActive: {
     type: Boolean,
@@ -34,12 +39,12 @@ const UserSchema = mongoose.Schema({
     type: String,
   },
   referenceTokenExpiresTime: {
-    type : Date
+    type: Date,
   },
-  lastLogin:{
-    type : Date,
+  lastLogin: {
+    type: Date,
     default: Date.now,
-  }
+  },
 });
 
 const User = mongoose.model("User", UserSchema);
