@@ -3,8 +3,7 @@ import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
 import User from "../models/user.js";
 import bcrypt, { hash } from 'bcryptjs';
 
-
-// Todo:  User Registation Function ....
+// Todo: User Registation Function ....
 
 export const register = async (req,res)=>{
     const {name, email, phone, password} = req.body;
@@ -12,7 +11,7 @@ export const register = async (req,res)=>{
 
         if(!name || !email || !phone || !password){
     return res.status(400).json({
-        success: false ,message : 'Missing Details!'})
+        success: false , message : 'Missing Details!'})
     };
 
     const user = await User.findOne({email});
