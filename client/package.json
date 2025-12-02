@@ -15,8 +15,6 @@
     "@tailwindcss/vite": "^4.1.17",
     "axios": "^1.13.2",
     "clsx": "^2.1.1",
-    "flowbite": "^4.0.1",
-    "flowbite-react": "^0.12.10",
     "lucide-react": "^0.555.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
