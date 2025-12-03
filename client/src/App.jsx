@@ -11,10 +11,16 @@ import Welcome from "./pages/Welcome";
 
 const App = () => {
   return (
-    <div>
+    <div className="min-h-screen bg-[#010103]">
       {/* <Navbar /> */}
       <Router>
         <Routes>
+
+          {/* Open Routes */}
+          <Route path="/register" element={<Register />} />
+          <Route path="/welcome" element={<Welcome/>}/>
+          <Route path="/login" element={<Login />} />
+
           {/*Protected Routes */}
           <Route
             path="/"
@@ -24,10 +30,9 @@ const App = () => {
               </ProtectedRoutes>
             }
           />
-          <Route path="/welcome" element={<Welcome/>}/>
-          <Route path="/login" element={<Login />} />
+  
           <Route path="/menu" element={<Menu />} />
-          <Route path="/register" element={<Register />} />
+
         </Routes>
       </Router>
     </div>

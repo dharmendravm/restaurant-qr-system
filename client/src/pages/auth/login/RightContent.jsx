@@ -4,8 +4,8 @@ import {
   Award,
   Percent,
 } from "lucide-react";
-import { Tier } from "@/components/TierCard";
-import { Card } from "@/components/MemberShipCard";
+import { Tier } from "@/components/shared/TierCard";
+import { Card } from "@/components/shared/MemberShipCard";
 
 const RightContent = () => {
   return (
@@ -14,7 +14,10 @@ const RightContent = () => {
             <div className="bg-[rgba(255,255,255,0.03)] border border-white/6 backdrop-blur-md rounded-2xl px-6 p-2">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 flex items-center justify-center">
-                  <Sparkles className="text-orange-300" size={30} />
+                  <Sparkles
+                    className="text-orange-300 animate-pulse drop-shadow-[0_0_10px_orange]"
+                    size={30}
+                  />
                 </div>
                 <div>
                   <h4 className="text-white text-lg font-semibold">
@@ -37,9 +40,9 @@ const RightContent = () => {
               </div>
 
               <div className="grid gap-3">
-                <Card title="Earn Points" value="1 Point = ₹1" />
-                <Card title="Redeem Points" value="100 Points = ₹10" />
-                <Card title="Bonus Points" value="+50 Points" />
+                <Card title="Earn Points" value="1 Point = ₹1" border="Diamond"/>
+                <Card title="Redeem Points" value="100 Points = ₹10" border="Ruby"/>
+                <Card title="Bonus Points" value="+50 Points" border="Emerald"/>
               </div>
             </div>
 
@@ -48,9 +51,9 @@ const RightContent = () => {
               <h4 className="text-white text-lg font-semibold mb-4 flex items-center gap-2">
                 <Percent className="text-orange-300" /> Membership Tiers
               </h4>
-              <Tier title="Bronze" range="0-500 pts" offer="5% Discount" />
-              <Tier title="Silver" range="501-2000 pts" offer="10% + Support" />
-              <Tier title="Gold" range="2000+ pts" offer="15% + Exclusive" />
+              <Tier title="Bronze" range="0-500 pts" offer="5% Discount" border="Bronze"/>
+              <Tier title="Silver" range="501-2000 pts" offer="10% + Support" border="Silver" />
+              <Tier title="Gold" range="2000+ pts" offer="15% + Exclusive" border="Gold" />
             </div>
           </aside>
   )

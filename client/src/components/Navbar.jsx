@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Button from "./Button";
-import { BrandLogo } from "./BrandLogo";
+import { BrandLogo } from "./shared/BrandLogo";
 
 const Navbar = () => {
   return (

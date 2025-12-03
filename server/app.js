@@ -10,13 +10,14 @@ const app = express();
 app.use(express.json())
 
 app.use(cors({
-   origin: 'http://localhost:5173'
+   origin: ['http://localhost:5173','http://localhost:5174']
 }))
 
 
 app.get('/', (req,res)=>{
     res.send('Server is Live')
 })
+
 //^ Middelware Setup
 app.use('/api/v1/auth', authRoutes)
 

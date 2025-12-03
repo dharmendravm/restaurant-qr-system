@@ -1,5 +1,5 @@
 import React from "react";
-import { Flame } from "lucide-react";
+import { ChefHat } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const BrandLogo = () => {
@@ -16,7 +16,7 @@ export const BrandLogo = () => {
               group-hover:scale-105 transition
             "
         >
-          <Flame className="w-6 h-6 text-orange-300 drop-shadow-[0_0_8px_rgba(255,165,0,0.5)]" />
+          <ChefHat className="w-6 h-6 text-orange-300 animate-pulse drop-shadow-[0_0_8px_rgba(255,165,0,0.5)]" />
         </div>
 
         <div className="leading-tight">
@@ -26,7 +26,7 @@ export const BrandLogo = () => {
                 text-orange-300 drop-shadow-[0_0_10px_rgba(255,165,0,0.45)]
               "
           >
-            ScanBite
+            TableOrbit
           </h2>
 
           <p className="text-[9px] text-gray-400 uppercase tracking-widest">
