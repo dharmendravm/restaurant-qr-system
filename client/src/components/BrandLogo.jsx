@@ -30,7 +30,7 @@ export const BrandLogo = () => {
           </h2>
 
           <p className="text-[9px] text-gray-400 uppercase tracking-widest">
-            Restaurant Suite
+            Restaurant Management
           </p>
         </div>
       </Link>
