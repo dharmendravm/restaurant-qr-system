@@ -5,7 +5,7 @@ import { PORT } from "./config.js";
 import { logServer } from './customLogs/logs.js'
 
 import authRoutes from "./router/auth.route.js";
-import tableRoute from "./router/table.route.js";
+//! import tableRoute from "./router/table.route.js";
 import menuRoute from "./router/menu.route.js";
 
 const app = express();
@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 
 // Api Routes
 app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1", tableRoute);
+//! app.use("/api/v1", tableRoute);
 app.use("/api/v1", menuRoute);
 
 
