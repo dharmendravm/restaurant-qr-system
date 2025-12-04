@@ -1,5 +1,5 @@
 import Table from '../models/table.js'
-import { logAuth } from '../logs/logs.js'
+import { logAuth } from '../customLogs/logs.js'
 
 
 export const registerTable = async (req, res) => {

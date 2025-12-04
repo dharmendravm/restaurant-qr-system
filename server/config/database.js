@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { MONGO_URI } from "../config.js";
-import { logDB } from '../logs/logs.js'
+import { logDB } from '../customLogs/logs.js'
 
 // Connect to the mongodb database
 const ConnectDB = async () => {

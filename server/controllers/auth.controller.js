@@ -2,7 +2,7 @@ import { json } from "express";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
 import User from "../models/user.js";
 import bcrypt, { hash } from "bcryptjs";
-import { logAuth } from '../logs/logs.js'
+import { logAuth } from '../customLogs/logs.js'
 
 // User Registation Function ....
 

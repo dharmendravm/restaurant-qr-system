@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
-import {logAuth} from '../logs/logs.js'
+import {logAuth} from '../customLogs/logs.js'
 
 // Verify Access Token
 export const verifyToken = async (req, res, next) => {

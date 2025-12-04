@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import ConnectDB from "./config/database.js";
 import { PORT } from "./config.js";
-import { logServer } from './logs/logs.js'
+import { logServer } from './customLogs/logs.js'
 
 import authRoutes from "./router/auth.route.js";
 import tableRoute from "./router/table.route.js";
