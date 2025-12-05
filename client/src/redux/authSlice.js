@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 // Login
 export const login = createAsyncThunk("/auth/login", async (data, thunkApi) => {
   try {
     const res = await axios.post(
-      "http://localhost:3000/api/v1/auth/login",
+      `${API_URL}/api/v1/auth/login`,
       data
     );
     return res.data;
@@ -20,7 +22,7 @@ export const register = createAsyncThunk(
   async (data, thunkApi) => {
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/v1/auth/register",
+        `${API_URL}/api/v1/auth/register`,
         data
       );
       return res.data;
@@ -54,9 +56,8 @@ const authSlice = createSlice({
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
 
-        // ! Change is require for this
-        localStorage.setItem("accessToken", action.payload.accessToken); //!
-        localStorage.setItem("refreshToken", action.payload.refreshToken); //!
+        localStorage.setItem("accessToken", action.payload.accessToken);   // Change is require for this
+        localStorage.setItem("refreshToken", action.payload.refreshToken); // Change is require for this
 
         state.loading = false;
       })
@@ -72,9 +73,9 @@ const authSlice = createSlice({
       })
       .addCase(register.fulfilled, (state, action) => {
         console.log(action.payload);
-        // ! Change is require for this
-        localStorage.setItem("accessToken", action.payload.accessToken); //!
-        localStorage.setItem("refreshToken", action.payload.refreshToken); //!
+        
+        localStorage.setItem("accessToken", action.payload.accessToken); //  Change is require for this
+        localStorage.setItem("refreshToken", action.payload.refreshToken);// Change is require for this
 
         state.loading = false;
       })

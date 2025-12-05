@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const InputFild = ({label , icon , type , name , value , onChange , placeholder }) => {
+export const InputFild = ({label , icon , type , name , value , onChange , placeholder}) => {
   return (
       <div>
         <label className="text-xs text-gray-300 mb-2 block">{label}</label>
