@@ -1,4 +1,3 @@
-import {logAuth} from '../customLogs/logs.js'
 
 // Verify Role
 export const checkRole = (role) => {

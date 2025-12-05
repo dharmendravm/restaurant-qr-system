@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 
 const HomePage = () => {
   useEffect(() => {
-    axios.get("http://localhost:3000/menu", {
+    axios.get("http://localhost:3000/api/v1/menu", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },

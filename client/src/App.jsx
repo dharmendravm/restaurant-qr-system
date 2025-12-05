@@ -4,15 +4,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 
-import Menu from "./pages/Menu";
-import ProtectedRoutes from "./components/ProtectedRoutes";
-import HomePage from "./pages/HomePage";
-import Welcome from "./pages/Welcome";
-import AppLayout from "./components/AppLayout";
+import Menu from "@/pages/Menu";
+import ProtectedRoutes from "@/components/ProtectedRoutes";
+import HomePage from "@/pages/HomePage";
+import Welcome from "@/pages/Welcome";
+import AppLayout from "@/components/AppLayout";
 
 function App() {
   return (
-    <div className="bg-[#010103]">
+    <div className="bg-[#000000]">
       <Router>
         <Routes>
           {/* Public Routes */}

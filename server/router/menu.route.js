@@ -5,7 +5,7 @@ import { checkRole } from '../middlewares/checkRole.js';
 const router = express.Router();
 
 router.get(
-    "/",
+    "/menu", 
     verifyToken,
     checkRole(["customer", "admin"]),
     (req, res) => {

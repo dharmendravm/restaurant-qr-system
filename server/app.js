@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
+import './globallogs.js'
 import ConnectDB from "./config/database.js";
 import { PORT } from "./config.js";
-import { logServer } from './customLogs/logs.js'
 
 import authRoutes from "./router/auth.route.js";
-//! import tableRoute from "./router/table.route.js";
+import tableRoute from "./router/table.route.js";
 import menuRoute from "./router/menu.route.js";
 
 const app = express();
@@ -31,10 +31,11 @@ app.get("/", (req, res) => {
   res.send("Server is Live");
 });
 
+
 // Api Routes
 app.use("/api/v1/auth", authRoutes);
-//! app.use("/api/v1", tableRoute);
-app.use("/api/v1", menuRoute);
+app.use("/api/v1", tableRoute);
+app.use("/api/v1",menuRoute);
 
 
 // Server

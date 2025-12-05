@@ -2,7 +2,6 @@ import { json } from "express";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
 import User from "../models/user.js";
 import bcrypt, { hash } from "bcryptjs";
-import { logAuth } from '../customLogs/logs.js'
 
 // User Registation Function ....
 
@@ -34,7 +33,7 @@ export const register = async (req, res) => {
       message: "Account created sucsessfully",
     });
   } catch (error) {
-    logAuth(error)
+    logAuth(`registration error ${error}`)
     res.status(500).json({
       message: error.message,
     });
@@ -97,6 +96,7 @@ export const Login = async (req, res) => {
       refreshToken,
     });
   } catch (error) {
+        logAuth(`Login error ${error}`);
     return res.status(500).json({
       success: false,
       message: error.message,

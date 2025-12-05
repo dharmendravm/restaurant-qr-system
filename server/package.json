@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "test": "set DEBUG=server:testing && node test.js",
     "server": "set DEBUG=server:* && nodemon app.js",
     "start": "node app.js"
   },
@@ -21,7 +22,8 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^7.0.0",
-    "mongoose": "^9.0.0"
+    "mongoose": "^9.0.0",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
