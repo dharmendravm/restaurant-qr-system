@@ -1,28 +1,23 @@
-import { json } from "express";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
 import User from "../models/user.js";
-import bcrypt, { hash } from "bcryptjs";
+import bcrypt from "bcryptjs";
 
-// User Registation Function ....
-
-export const register = async (req, res) => {
+// Register new user
+export const register = async (req, res, next) => {
   const { name, email, phone, password } = req.body;
   try {
     if (!name || !email || !phone || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing Details!",
-      });
+      throw { statusCode: 400, message: "Missing filds" };
     }
 
-    const user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({
-        message: "Account already axists",
-      });
+    // Check if User is Existing
+    const existing = await User.findOne({ email });
+    if (existing) {
+      throw { statusCode: 400, message: "Account already axists" };
     }
 
-    const passwordHash = await bcrypt.hash(password, 12);
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(password, salt);
 
     const data = { name, email, phone, password: passwordHash };
 
@@ -33,16 +28,12 @@ export const register = async (req, res) => {
       message: "Account created sucsessfully",
     });
   } catch (error) {
-    logAuth(`registration error ${error}`)
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-// User Login Function
-
-export const Login = async (req, res) => {
+// User Login
+export const Login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -50,35 +41,30 @@ export const Login = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: `There is no Account with ${email}`,
-      });
+      throw { statusCode : 400 ,message: "Invalid email or password" };
+
     }
 
     // Compare password
     const isPasswordMatch = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordMatch) {
-      return res.status(400).json({
-        success: false,
-        message: "Incorrect password, Try Again",
-      });
+    if (!isPasswordMatch) {     
+      throw {statusCode : 400, message: "Invalid email or password" };
     }
 
     // Tokens
     const accessToken = generateAccessToken({
+      id: user._id,
       name: user.name,
       email: user.email,
-      role: user.role,
-      id: user._id,
+      role: user.role
     });
 
     const refreshToken = generateRefreshToken({
+      id: user._id,
       name: user.name,
       email: user.email,
-      role: user.role,
-      id: user._id,
+      role: user.role
     });
 
     user.refreshToken = refreshToken;
@@ -96,10 +82,6 @@ export const Login = async (req, res) => {
       refreshToken,
     });
   } catch (error) {
-        logAuth(`Login error ${error}`);
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    next(error)
   }
 };

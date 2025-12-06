@@ -1,15 +1,27 @@
-
 // Verify Role
-export const checkRole = (role) => {
+export const checkRole = (allowedRoles = []) => {
   return (req, res, next) => {
-    logAuth("This is the console of chek role", req.user);
-    if (role.includes(req.user.role)) {
+    try {
+      if (!req.user || !req.user.role) {
+        return next({
+          statusCode: 401,
+          message: "No user data found in request",
+        });
+      }
+
+      const userRole = req.user.role;
+
+      // Check if role allowed
+      if (!allowedRoles.includes(userRole)) {
+        return next({
+          statusCode: 403,
+          message: `Access denied. '${userRole}' is not allowed to access this route.`,
+        });
+      }
       next();
-    } else {
-      res.status(403).json({
-        error: "ACCESS_DENIDE",
-        message: `Oops! '${req.user.role}' can't access this route`,
-      });
+      
+    } catch (error) {
+      next(error);
     }
   };
 };

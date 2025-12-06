@@ -1,90 +1,110 @@
 import User from "../models/user.js";
 
+
 //get all users Admin
-export const getTotalUsers = async (req, res) => {
+export const getTotalUsers = async (req, res, next) => {
   try {
     const users = await User.find().select("-password");
-
+    console.log(users);
     return res.status(200).json({
       success: true,
       totalUsers: users.length,
       users,
     });
   } catch (error) {
-    console.log(`Error found ${error}`);
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    next(error);
+    
   }
 };
 
 // Get profile by token
-export const getUserByToken = async (req, res) => {
+export const getUserByToken = async(req,res,next)=>{
   try {
-    const user = await User.findById(req.user.id).select("-password");
-    res.json({
+    const user = User.findById(req.user.id).select("-password");
+    if(!user){
+      return res.status(400).json({
+        success: false,
+        message: "User not found"
+      })
+    }
+    res.status(200).json({
       success: true,
-      user,
-    });
+      message: "User now updated"
+    })
+    
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    next(error)
   }
-};
+}
 
-
-// Update user 
-export const updateUser = async (req, res) => {
+// Update user
+export const updateUser = async (req, res, next) => {
   try {
     const { name, email, role } = req.body;
 
-    const updated = await User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
       req.params.id,
       { name, email, role },
       { new: true }
     ).select("-password");
 
+    if(!user){
+      return res.status(400).json({
+        success: false , message: "User not found"
+      })
+    }
+
     res.json({
       success: true,
       message: "User updated successfully",
-      updated,
+      user,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    next(error);
   }
 };
 
-// Deactivate user (soft delete)
-export const deactivateUser = async (req, res) => {
+// Deactivate user
+export const deactivateUser = async (req, res, next) => {
   try {
     const user = await User.findByIdAndUpdate(
       req.params.id,
       { isActive: false },
       { new: true }
     );
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
     res.json({
       success: true,
-      message: "User deactivated",
+      message: "Account deactivated",
       user,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    next(error);
   }
 };
 
 // Delete user
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res, next) => {
   try {
-    await User.findByIdAndDelete(req.params.id);
+    const deleted = await User.findByIdAndDelete(req.params.id);
+
+    if(!deleted){
+      return res.status(400).json({
+        success: false,
+        message: "User not found"
+      })
+    }
     res.json({
       success: true,
       message: "User deleted permanently",
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    next(error);
   }
 };

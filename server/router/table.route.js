@@ -6,5 +6,5 @@ const router = express.Router();
 
 router.post('/tabels', registerTable);
 
-logController("tableRoute loaded")
+logController("tableRoute console printed")
 export default router;
