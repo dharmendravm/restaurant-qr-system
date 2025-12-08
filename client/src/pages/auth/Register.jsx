@@ -8,16 +8,15 @@ import {
   UserPlus,
   LockKeyhole,
   TabletSmartphone,
+  Gift,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { BrandLogo } from "@/layout/BrandLogo";
-import { InputFild } from "@/components/ui/InputFild";
+import { BrandLogo } from "@/components/shared/BrandLogo";
 import { useDispatch } from "react-redux";
 import { register } from "@/redux/authSlice";
 
-import { Tier } from "@/components/ui/TierCard";
-import { Card } from "@/components/ui/MemberShipCard";
+// import { Card } from "@/components/ui/MemberShipCard";
 import { Award, Percent, Sparkles } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
 
@@ -55,11 +54,17 @@ const Register = () => {
     dispatch(register(formData))
       .unwrap()
       .then(() => {
-        success("Account created", "Welcome to TableOrbit! Your account is ready.");
+        success(
+          "Account created",
+          "Welcome to TableOrbit! Your account is ready."
+        );
         navigate("/");
       })
       .catch((errMsg) => {
-        toastError("Registration failed", errMsg || "Something went wrong. Please try again.");
+        toastError(
+          "Registration failed",
+          errMsg || "Something went wrong. Please try again."
+        );
       });
   };
   return (
@@ -165,9 +170,8 @@ const Register = () => {
                   </div>
 
                   <button
-                  onClick={handleChange}
-                    className="w-full bg-orange-500/90  hover:bg-orange-500 text-white font-medium py-2.5 rounded-xl border border-orange-400/20 backdrop-blur-md flex items-center justify-center gap-2 transition-all duration-200 active:scale-95
-  "
+                    type="submit"
+                    className="w-full bg-orange-500/90  hover:bg-orange-500 text-white font-medium py-2.5 rounded-xl border border-orange-400/20 backdrop-blur-md flex items-center justify-center gap-2 transition-all duration-200 active:scale-95"
                   >
                     <UserPlus className="w-5 h-5 text-white/90" />
                     <span className="text-sm">Register Now</span>
@@ -192,8 +196,10 @@ const Register = () => {
           {/* RightContent */}
           <aside className="flex flex-col justify-start gap-3">
             {/* welcome card */}
-            <div className="bg-[#ffffff08] border border-white/6 backdrop-blur-md rounded-2xl px-6 p-2 
-            ">
+            <div
+              className="bg-[#ffffff08] border border-white/6 backdrop-blur-md rounded-2xl px-6 p-2 
+            "
+            >
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 flex items-center justify-center">
                   <Sparkles
@@ -272,3 +278,79 @@ const Register = () => {
 };
 
 export default Register;
+
+const InputFild = ({
+  label,
+  icon,
+  type,
+  name,
+  value,
+  onChange,
+  placeholder,
+}) => {
+  return (
+    <div>
+      <label className="text-xs text-gray-300 mb-2 block">{label}</label>
+      <div className="relative">
+        {icon}
+        <input
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className="w-full pl-11 pr-3 py-2.5 bg-gray-900/50 border border-gray-800 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-orange-300/40 focus:ring-1 focus:ring-orange-400/20 transition-all duration-200 text-sm"
+        />
+      </div>
+    </div>
+  );
+};
+
+const borderVariants = {
+  Bronze: "hover:border-amber-900",
+  Silver: "hover:border-zinc-400",
+  Gold: "hover:border-yellow-400",
+  Diamond: "hover:border-cyan-300",
+  Ruby: "hover:border-rose-300",
+  Emerald: "hover:border-green-300",
+};
+
+const Tier = ({ title, range, offer, border }) => (
+  <div
+    className={`bg-[#00000040] border  border-gray-900 rounded-lg p-1 px-4 mb-2  transition-all duration-300 ease-out cursor-pointer
+      hover:bg-[#1a1a1a]/20 hover:-translate-y-0.5 ${borderVariants[border]}`}
+  >
+    <div className="flex items-center justify-between">
+      <span className="text-gray-100 text-sm font-semibold">
+        {title} Member
+      </span>
+      <span className="text-gray-400 text-xs">{range}</span>
+    </div>
+    <p className="text-gray-500 text-xs mt-1">{offer}</p>
+  </div>
+);
+
+const iconMap = {
+  "Earn Points": <Gift className="w-5 h-5 text-emerald-300" />,
+  "Redeem Points": <Award className="w-5 h-5 text-cyan-300" />,
+  "Bonus Points": <Sparkles className="w-5 h-5 text-amber-300" />,
+};
+
+const Card = ({ title, value, border }) => (
+  <div
+    className={`
+      bg-[#0f0f0f]/40 border border-white/10 rounded-xl px-4 p-2
+      backdrop-blur-xl flex items-center justify-between 
+      transition-all duration-300 ease-out cursor-pointer
+      hover:bg-[#1a1a1a]/50 hover:-translate-y-0.5
+      ${borderVariants[border]}
+    `}
+  >
+    <div className="flex items-center gap-3">
+      <div className="opacity-80">{iconMap[title]}</div>
+      <h4 className="text-gray-100 text-sm font-medium">{title}</h4>
+    </div>
+
+    <p className="text-gray-400 text-xs font-normal">{value}</p>
+  </div>
+);

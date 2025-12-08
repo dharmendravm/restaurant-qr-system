@@ -1,4 +1,4 @@
-import { BrandLogo } from "@/layout/BrandLogo";
+import { BrandLogo } from "@/components/shared/BrandLogo";
 import { Gift, LogIn, Sparkles, User, UserPlus } from "lucide-react";
 import React from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
