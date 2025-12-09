@@ -7,29 +7,34 @@ import { useDispatch } from "react-redux";
 import { session as createSession } from "@/redux/guestSlice";
 import { useToast } from "@/components/ui/toast";
 
+// "bb691f994512",
+//         "qrCodeURL": "http://localhost:5173/welcome?qr=bb691f994512",
 const Welcome = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { success, error: toastError } = useToast();
 
+  const getDeviceId = () => {
+    let id = localStorage.getItem("deviceId");
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem("deviceId", id);
+    }
+    return id;
+  };
+
   const handleContinueAsGuest = async () => {
     try {
       const qrSlug = searchParams.get("qr");
-      const storedDeviceId = localStorage.getItem("deviceId");
-      const deviceId = storedDeviceId || (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`);
+      const deviceId = getDeviceId();
 
-      if (!storedDeviceId) {
-        localStorage.setItem("deviceId", deviceId);
-      }
+      await dispatch(createSession({ deviceId, qrSlug })).unwrap();
 
-      const payload = { deviceId, qrSlug };
-      await dispatch(createSession(payload)).unwrap();
-
-      success("Guest session started", "You are now browsing in guest mode.");
+      success("Guest session started");
       navigate("/menu");
-    } catch (errMsg) {
-      toastError("Guest login failed", errMsg || "Something went wrong. Please try again.");
+    } catch (err) {
+      toastError("Guest login failed");
     }
   };
 
@@ -119,110 +124,9 @@ const Welcome = () => {
             <div className="bg-[#ffffff05] border border-white/6 rounded-2xl p-6 ">
               <div className="grid gap-3">
                 <div className="grid gap-3">
-                  {/* Table Linked */}
-                  <div
-                    className="bg-white/3 border border-white/10 rounded-xl p-2.5 backdrop-blur-xl
-                  transition-all duration-300 hover:bg-white/6 hover:-translate-y-0.5
-                  flex items-start gap-3"
-                  >
-                    <UtensilsCrossed className="w-5 h-5 text-amber-300" />
-                    <div>
-                      <h4 className="text-gray-100 text-sm font-semibold">
-                        Table-Linked Experience
-                      </h4>
-                      <p className="text-gray-400 text-xs mt-1">
-                        Scan → App auto-connects with your table for a smooth
-                        dining flow.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Chef Highlights */}
-                  <div
-                    className="bg-white/3 border border-white/10 rounded-xl p-2.5 backdrop-blur-xl
-                  transition-all duration-300 hover:bg-white/6 hover:-translate-y-0.5
-                  flex items-start gap-3"
-                  >
-                    <ChefHat className="w-5 h-5 text-rose-300" />
-                    <div>
-                      <h4 className="text-gray-100 text-sm font-semibold">
-                        Chef Highlights
-                      </h4>
-                      <p className="text-gray-400 text-xs mt-1">
-                        See who crafted your dish and their speciality.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Ingredient Transparency */}
-                  <div
-                    className="bg-white/3 border border-white/10 rounded-xl p-2.5 backdrop-blur-xl
-                  transition-all duration-300 hover:bg-white/6 hover:-translate-y-0.5
-                  flex items-start gap-3"
-                  >
-                    <Leaf className="w-5 h-5 text-emerald-300" />
-                    <div>
-                      <h4 className="text-gray-100 text-sm font-semibold">
-                        Ingredient Transparency
-                      </h4>
-                      <p className="text-gray-400 text-xs mt-1">
-                        Know exactly where your ingredients come from — fresh &
-                        clean.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Silent Service */}
-                  <div
-                    className="bg-white/3 border border-white/10 rounded-xl p-2.5 backdrop-blur-xl
-                  transition-all duration-300 hover:bg-white/6 hover:-translate-y-0.5
-                  flex items-start gap-3"
-                  >
-                    <Bell className="w-5 h-5 text-blue-300" />
-                    <div>
-                      <h4 className="text-gray-100 text-sm font-semibold">
-                        Silent Service Mode
-                      </h4>
-                      <p className="text-gray-400 text-xs mt-1">
-                        Need service? Request quietly without calling loudly.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Dynamic Rewards */}
-                  <div
-                    className="bg-white/3 border border-white/10 rounded-xl p-2.5 backdrop-blur-xl
-                  transition-all duration-300 hover:bg-white/6 hover:-translate-y-0.5
-                  flex items-start gap-3"
-                  >
-                    <Sparkles className="w-5 h-5 text-purple-300" />
-                    <div>
-                      <h4 className="text-gray-100 text-sm font-semibold">
-                        Dynamic Rewards
-                      </h4>
-                      <p className="text-gray-400 text-xs mt-1">
-                        Weather, time & behavior based bonuses for a unique
-                        experience.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Kitchen Heat Map */}
-                  <div
-                    className="bg-white/3 border border-white/10 rounded-xl p-2.5 backdrop-blur-xl
-                  transition-all duration-300 hover:bg-white/6 hover:-translate-y-0.5
-                  flex items-start gap-3"
-                  >
-                    <Clock className="w-5 h-5 text-orange-300" />
-                    <div>
-                      <h4 className="text-gray-100 text-sm font-semibold">
-                        Live Kitchen Heat Map
-                      </h4>
-                      <p className="text-gray-400 text-xs mt-1">
-                        Track dish wait-times in real time. No surprises.
-                      </p>
-                    </div>
-                  </div>
+                  {features.map((item, i) => (
+                    <FeatureCard key={i} {...item} />
+                  ))}
                 </div>
               </div>
             </div>
@@ -234,3 +138,58 @@ const Welcome = () => {
 };
 
 export default Welcome;
+
+const features = [
+  {
+    icon: UtensilsCrossed,
+    color: "text-amber-300",
+    title: "Table-Linked Experience",
+    desc: "Scan → App auto-connects with your table for a smooth dining flow.",
+  },
+  {
+    icon: ChefHat,
+    color: "text-rose-300",
+    title: "Chef Highlights",
+    desc: "See who crafted your dish and their speciality.",
+  },
+  {
+    icon: Leaf,
+    color: "text-emerald-300",
+    title: "Ingredient Transparency",
+    desc: "Know where your ingredients come from — fresh & clean.",
+  },
+  {
+    icon: Bell,
+    color: "text-blue-300",
+    title: "Silent Service Mode",
+    desc: "Need service? Request quietly without calling loudly.",
+  },
+  {
+    icon: Sparkles,
+    color: "text-purple-300",
+    title: "Dynamic Rewards",
+    desc: "Weather, time & behavior based bonuses for a unique experience.",
+  },
+  {
+    icon: Clock,
+    color: "text-orange-300",
+    title: "Live Kitchen Heat Map",
+    desc: "Track dish wait-times in real time. No surprises.",
+  },
+];
+
+const FeatureCard = ({ icon: Icon, color, title, desc }) => {
+  return (
+    <div
+      className="bg-white/3 border border-white/10 rounded-xl p-2.5 backdrop-blur-xl
+      transition-all duration-300 hover:bg-white/6 hover:-translate-y-0.5
+      flex items-start gap-3"
+    >
+      <Icon className={`w-5 h-5 ${color}`} />
+      <div>
+        <h4 className="text-gray-100 text-sm font-semibold">{title}</h4>
+        <p className="text-gray-400 text-xs mt-1">{desc}</p>
+      </div>
+    </div>
+  );
+};

@@ -1,11 +1,11 @@
 import User from "../models/user.js";
 
-
 //get all users Admin
 export const getTotalUsers = async (req, res, next) => {
   try {
     const users = await User.find().select("-password");
-    console.log(users);
+    console.log(users); //!!!!!!!!!!!
+
     return res.status(200).json({
       success: true,
       totalUsers: users.length,
@@ -13,51 +13,57 @@ export const getTotalUsers = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
-    
   }
 };
 
 // Get profile by token
-export const getUserByToken = async(req,res,next)=>{
+export const getUserByToken = async (req, res, next) => {
   try {
-    const user = User.findById(req.user.id).select("-password");
-    if(!user){
-      return res.status(400).json({
-        success: false,
-        message: "User not found"
-      })
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      const error = new Error("User not found");
+      error.status = 404;
+      throw error;
     }
     res.status(200).json({
       success: true,
-      message: "User now updated"
-    })
-    
+      message: "User now updated",
+    });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 // Update user
 export const updateUser = async (req, res, next) => {
   try {
     const { name, email, role } = req.body;
 
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { name, email, role },
-      { new: true }
-    ).select("-password");
+    const updatedData = {
+      name,
+      role,
+    };
 
-    if(!user){
-      return res.status(400).json({
-        success: false , message: "User not found"
-      })
+    if (email) {
+      updatedData.email = email.toLowerCase();
     }
 
-    res.json({
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      updatedData,
+      { new: true  /*runValidators: true*/ }
+    ).select("-password -refreshToken");
+
+    if (!user) {
+      const error = new Error("User not found");
+      error.status = 404;
+      throw error;
+    }
+
+    res.status(200).json({
       success: true,
       message: "User updated successfully",
-      user,
+      data: user,
     });
   } catch (error) {
     next(error);
@@ -71,18 +77,18 @@ export const deactivateUser = async (req, res, next) => {
       req.params.id,
       { isActive: false },
       { new: true }
-    );
+    ).select("-password -refreshToken");
+
     if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: "User not found",
-      });
+      const error = new Error("User not found");
+      error.status = 404;
+      throw error;
     }
 
-    res.json({
+    res.status(200).json({
       success: true,
-      message: "Account deactivated",
-      user,
+      message: "Account deactivated successfully",
+      data: user,
     });
   } catch (error) {
     next(error);
@@ -94,13 +100,12 @@ export const deleteUser = async (req, res, next) => {
   try {
     const deleted = await User.findByIdAndDelete(req.params.id);
 
-    if(!deleted){
-      return res.status(400).json({
-        success: false,
-        message: "User not found"
-      })
+    if (!deleted) {
+      const error = new Error("User not found");
+      error.status = 404;
+      throw error;
     }
-    res.json({
+    res.status(200).json({
       success: true,
       message: "User deleted permanently",
     });

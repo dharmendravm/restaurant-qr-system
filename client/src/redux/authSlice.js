@@ -43,6 +43,17 @@ const authSlice = createSlice({
     accessToken: null,
     refreshToken: null,
   },
+
+  reducers : {
+    logout : (state)=>{
+    state.name = null;
+    state.email = null;
+    state.role = null;
+    localStorage.removeItem('accessToken');
+    state.refreshToken = null;
+    state.accessToken = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {

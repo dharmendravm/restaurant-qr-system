@@ -7,25 +7,43 @@ export const register = async (req, res, next) => {
   const { name, email, phone, password } = req.body;
   try {
     if (!name || !email || !phone || !password) {
-      throw { statusCode: 400, message: "Missing filds" };
+      const error = new Error("All fields are required");
+      error.status = 400;
+      throw error;
     }
+
+    // Normalize email
+    const normalizedEmail = email.toLowerCase();
 
     // Check if User is Existing
-    const existing = await User.findOne({ email });
+    const existing = await User.findOne({ email: normalizedEmail });
     if (existing) {
-      throw { statusCode: 400, message: "Account already axists" };
+      const error = new Error("Account already exists");
+      error.status = 400;
+      throw error;
     }
 
+    // Hash password
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const data = { name, email, phone, password: passwordHash };
+    const data = {
+      name,
+      email: normalizedEmail,
+      phone,
+      password: passwordHash,
+    };
 
     const newUser = await User.create(data);
+
+    // Remove password from response
+    const userResponse = newUser.toObject();
+    delete userResponse.password;
+
     res.status(201).json({
       success: true,
-      data: newUser,
       message: "Account created sucsessfully",
+      data: userResponse,
     });
   } catch (error) {
     next(error);
@@ -33,46 +51,55 @@ export const register = async (req, res, next) => {
 };
 
 // User Login
-export const Login = async (req, res, next) => {
+export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      const error = new Error("Email and password are required");
+      error.status = 400;
+      throw error;
+    }
     // Check user exists
     const user = await User.findOne({ email });
 
     if (!user) {
-      throw { statusCode : 400 ,message: "Invalid email or password" };
-
+      const error = new Error("Invalid email or password");
+      error.status = 401;
+      throw error;
     }
 
     // Compare password
     const isPasswordMatch = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordMatch) {     
-      throw {statusCode : 400, message: "Invalid email or password" };
+    if (!isPasswordMatch) {
+      const error = new Error("Invalid email or password");
+      error.status = 401;
+      throw error;
     }
 
-    // Tokens
-    const accessToken = generateAccessToken({
+    // Generate tokens
+    const payload = {
       id: user._id,
       name: user.name,
       email: user.email,
-      role: user.role
-    });
+      role: user.role,
+    };
 
-    const refreshToken = generateRefreshToken({
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role
-    });
+    const accessToken = generateAccessToken(payload);
+    const refreshToken = generateRefreshToken(payload);
 
     user.refreshToken = refreshToken;
     user.refreshTokenExpiresTime = new Date(
       Date.now() + 7 * 24 * 60 * 60 * 1000
     );
     user.lastLogin = new Date();
+
     await user.save();
+
+    // Remove password before sending
+    const userResponse = user.toObject();
+    delete userResponse.password;
 
     return res.status(200).json({
       success: true,
@@ -82,6 +109,6 @@ export const Login = async (req, res, next) => {
       refreshToken,
     });
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
