@@ -13,7 +13,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 import { BrandLogo } from "@/components/shared/BrandLogo";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { register } from "@/redux/authSlice";
 
 // import { Card } from "@/components/ui/MemberShipCard";
@@ -23,6 +23,7 @@ import { useToast } from "@/components/ui/toast";
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => state.auth);
   const { success, error: toastError } = useToast(); // toast helpers
 
   const [formData, setFormData] = useState({
@@ -90,6 +91,12 @@ const Register = () => {
                     className="inline ml-1 -translate-y-0.5 text-orange-300"
                   />
                 </p>
+
+                {error && (
+                  <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
+                    {error}
+                  </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="mt-8 space-y-5">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -173,8 +180,15 @@ const Register = () => {
                     type="submit"
                     className="w-full bg-orange-500/90  hover:bg-orange-500 text-white font-medium py-2.5 rounded-xl border border-orange-400/20 backdrop-blur-md flex items-center justify-center gap-2 transition-all duration-200 active:scale-95"
                   >
+                    {loading ? (
+                     " Creating Account..."
+                    ) : (
+                      <>
                     <UserPlus className="w-5 h-5 text-white/90" />
                     <span className="text-sm">Register Now</span>
+                    </>
+                    )}
+
                   </button>
                 </form>
               </div>

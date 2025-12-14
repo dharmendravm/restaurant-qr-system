@@ -1,20 +1,38 @@
-import mongoose from "mongoose";
-import User from "./models/user.js";
-import { MONGO_URI } from "./config.js";
-
-const test = async() => {
-    try {
-        await mongoose.connect(MONGO_URI);
-        console.log("DB connected ");
-
-        const users = await User.find().select("-password ");
-        console.log("Users", users);
-        
-        process.exit();
-        
-    } catch (error) {
-        console.error(error);
-        process.exit(1);
+let a = 'javascript';
+let vowels = ['a','e','i','o','u'];
+let count = 0;
+for (let i = 0; i < a.length; i++) {
+    if(vowels.includes(a[i])){
+       console.log(a[i],++count);
     }
 }
-test();
+
+
+
+let word = 'asyncff';
+let freq = {};
+
+for (let i = 0; i < word.length; i++) {
+    if(freq[word[i]]) freq[word[i]]++
+    else freq[word[i]] = 1
+}
+console.log('Done With for loop',freq);
+
+
+// for of loop
+// for (const ch of word) {
+//     freq[ch] = (freq[ch] || 0) + 1
+// }
+// console.log(freq);
+
+
+// for loop
+// for(let i = 0; i < word.length; i++){
+//     if(freq[word[i]]) {
+//         freq[word[i]]++
+//     }else{
+//         freq[word[i]] = 1;
+//     }
+// }
+// console.log(freq);
+

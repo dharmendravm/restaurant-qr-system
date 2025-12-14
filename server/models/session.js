@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const sessionSchema = mongoose.Schema({
+const sessionSchema = new mongoose.Schema({
     sessionToken: {
         type: String,
         default: null

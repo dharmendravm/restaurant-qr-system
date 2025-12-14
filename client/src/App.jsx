@@ -4,13 +4,13 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 
-import Menu from "@/pages/Menu";
 import ProtectedRoutes from "@/routes/ProtectedRoutes";
 import HomePage from "@/pages/HomePage";
 import Welcome from "@/pages/Welcome";
 import AuthenticatedLayout from "@/layout/AuthenticatedLayout";
 import AdminRoute from "@/routes/AdminRoute";
 import AdminMenu from "@/pages/admin/AdminMenu";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
@@ -34,18 +34,6 @@ function App() {
             }
           />
 
-          {/* Menu */}
-          <Route
-            path="/menu"
-            element={
-              <ProtectedRoutes>
-                <AuthenticatedLayout>
-                  <Menu />
-                </AuthenticatedLayout>
-              </ProtectedRoutes>
-            }
-          />
-
           {/* Admin dashboard */}
           <Route
             path="/admin/menu"
@@ -53,6 +41,17 @@ function App() {
               <AdminRoute>
                 <AuthenticatedLayout>
                   <AdminMenu />
+                </AuthenticatedLayout>
+              </AdminRoute>
+            }
+          />
+          {/* User Profile */}
+          <Route
+            path="/user/profile"
+            element={
+              <AdminRoute>
+                <AuthenticatedLayout>
+                  <UserProfile />
                 </AuthenticatedLayout>
               </AdminRoute>
             }

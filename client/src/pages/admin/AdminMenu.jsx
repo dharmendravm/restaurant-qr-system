@@ -3,41 +3,8 @@ import { Plus, Trash2, UtensilsCrossed } from "lucide-react";
 import { MenuCard } from "@/components/ui/MenuCard";
 import { useToast } from "@/components/ui/toast";
 
-const initialItems = [
-  {
-    id: 1,
-    title: "Paneer Tikka",
-    subtitle: "Char-grilled cottage cheese with smoky spices.",
-    category: "Starters",
-    price: 260,
-    badge: "Chef's Special",
-    image:
-      "https://images.pexels.com/photos/5908225/pexels-photo-5908225.jpeg?auto=compress&cs=tinysrgb&w=800",
-  },
-  {
-    id: 2,
-    title: "Tandoori Chicken",
-    subtitle: "Classic north-Indian style tandoori chicken.",
-    category: "Starters",
-    price: 340,
-    badge: "Most Ordered",
-    image:
-      "https://images.pexels.com/photos/4106483/pexels-photo-4106483.jpeg?auto=compress&cs=tinysrgb&w=800",
-  },
-  {
-    id: 3,
-    title: "Butter Naan",
-    subtitle: "Soft, buttery flatbread straight from the tandoor.",
-    category: "Breads",
-    price: 60,
-    badge: "Must Try",
-    image:
-      "https://images.pexels.com/photos/6287524/pexels-photo-6287524.jpeg?auto=compress&cs=tinysrgb&w=800",
-  },
-];
 
 const AdminMenu = () => {
-  const [items, setItems] = useState(initialItems);
   const { success, info } = useToast();
   const [formData, setFormData] = useState({
     title: "",
@@ -68,7 +35,7 @@ const AdminMenu = () => {
         "https://images.pexels.com/photos/5908225/pexels-photo-5908225.jpeg?auto=compress&cs=tinysrgb&w=800",
     };
 
-    setItems((prev) => [newItem, ...prev]);
+
     setFormData({ title: "", subtitle: "", price: "", category: "Main Course", image: "" });
     success("Dish added", `${newItem.title} added to menu.`);
   };
@@ -98,17 +65,7 @@ const AdminMenu = () => {
       <section className="grid grid-cols-1 lg:grid-cols-[1.8fr_1.1fr] gap-8 items-start">
         {/* All items */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {items.map((item) => (
-            <div key={item.id} className="relative">
-              <MenuCard {...item} />
-              <button
-                onClick={() => handleRemoveItem(item.id)}
-                className="absolute right-3 top-3 rounded-full bg-white/90 px-2 py-1 text-[10px] font-semibold text-red-500 shadow-sm hover:bg-red-50"
-              >
-                Remove
-              </button>
-            </div>
-          ))}
+
         </div>
 
         {/* Add item form */}

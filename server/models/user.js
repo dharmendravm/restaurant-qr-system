@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const UserSchema = mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   name: {
     type: String,
   },
@@ -30,7 +30,7 @@ const UserSchema = mongoose.Schema({
     type: Number,
   },
   loyalPoints: {
-    type: Number,
+    type: Number,  // Loyalty Points
   },
   isActive: {
     type: Boolean,

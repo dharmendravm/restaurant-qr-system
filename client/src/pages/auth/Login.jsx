@@ -34,6 +34,7 @@ const Login = () => {
       .then(() => {
         success("Welcome back", "You have logged in successfully.");
         navigate("/");
+        localStorage.removeItem('sessionToken')
       })
       .catch((errMsg) => {
         toastError("Login failed", errMsg || "Something went wrong. Please try again.");
