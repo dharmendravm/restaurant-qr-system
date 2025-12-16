@@ -9,12 +9,12 @@ import {
 } from "lucide-react";
 
 const HeroSection = () => {
-
-    const scrollToMenu = () => {
+  const scrollToMenu = () => {
     document.getElementById("menu-section").scrollIntoView({
       behavior: "smooth",
     });
   };
+
   return (
     <section className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.1fr] gap-10 items-center">
       <div>
@@ -44,10 +44,11 @@ const HeroSection = () => {
           </div>
         </div>
 
-        <div 
-        onClick={scrollToMenu}
-         className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 mb-4">
-          <button className="group w-full sm:w-auto items-center rounded-full flex justify-center bg-[#1b130c] px-6 py-2.5 text-sm font-semibold text-[#fff6eb] shadow-[0_12px_30px_rgba(0,0,0,0.25)] hover:bg-[#2b1c0f] active:scale-95 transition">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 mb-4">
+          <button
+            onClick={scrollToMenu}
+            className="group w-full sm:w-auto items-center rounded-full flex justify-center bg-[#1b130c] px-6 py-2.5 text-sm font-semibold text-[#fff6eb] shadow-[0_12px_30px_rgba(0,0,0,0.25)] hover:bg-[#2b1c0f] active:scale-95 transition"
+          >
             Explore Menu
             <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
           </button>

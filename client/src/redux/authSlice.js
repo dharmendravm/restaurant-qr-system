@@ -30,6 +30,7 @@ export const register = createAsyncThunk(
 const setAuthToLocalStorage = (payload) => {
   const { data, accessToken, refreshToken } = payload;
 
+  localStorage.setItem("userId", data._id);
   localStorage.setItem("name", data.name);
   localStorage.setItem("email", data.email);
   localStorage.setItem("role", data.role);
@@ -42,6 +43,7 @@ const authSlice = createSlice({
   initialState: {
     loading: false,
     error: null,
+    userId: localStorage.getItem("userId") || null,
     name: localStorage.getItem("name") || null,
     email: localStorage.getItem("email") || null,
     role: localStorage.getItem("role") || null,
@@ -51,6 +53,7 @@ const authSlice = createSlice({
 
   reducers: {
     logout: (state) => {
+      state.userId = null;
       state.name = null;
       state.email = null;
       state.role = null;
@@ -65,10 +68,10 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(login.fulfilled, (state, action) => {
-        
         console.log(action.payload);
 
         setAuthToLocalStorage(action.payload);
+        state.userId = action.payload.data._id;
         state.name = action.payload.data.name;
         state.email = action.payload.data.email;
         state.role = action.payload.data.role;

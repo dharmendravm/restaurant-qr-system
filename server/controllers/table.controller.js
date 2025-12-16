@@ -1,9 +1,10 @@
 import crypto from "crypto";
 import QRCode from "qrcode";
 import Table from "../models/table.js";
+import os from "os";
 
-  //  REGISTER TABLE
-  
+//  REGISTER TABLE
+
 export const registerTable = async (req, res, next) => {
   try {
     const { tableNumber, capacity } = req.body;
@@ -16,11 +17,21 @@ export const registerTable = async (req, res, next) => {
 
     // Generate unique QR slug
     const qrSlug = crypto.randomBytes(6).toString("hex");
-
+    // http://192.168.1.5/
     // Generate QR scan URL
-    const qrCodeURL = `http://localhost:5173/welcome?qr=${qrSlug}`;
+    // const qrCodeURL = `http://localhost:5173/welcome?qr=${qrSlug}`;
 
-    // Generate QR image (base64)
+    console.log(os.networkInterfaces()["Wi-Fi"]);
+
+    const data = os.networkInterfaces()["Wi-Fi"];
+    let ipAddress = null;
+    for (const el of data) {
+      if (el.family === "IPv4") ipAddress = el.address;
+    }
+    console.log(ipAddress);
+    // 192.168.1.5
+
+    const qrCodeURL = `http://${ipAddress}:5173/welcome?qr=${qrSlug}`;
     const qrImage = await QRCode.toDataURL(qrCodeURL);
 
     // Save in DB
@@ -37,12 +48,10 @@ export const registerTable = async (req, res, next) => {
       message: "Table registered successfully",
       data: table,
     });
-
   } catch (error) {
     next(error);
   }
 };
-
 
 // GET TABLE BY SLUG
 
@@ -65,14 +74,12 @@ export const getTableBySlug = async (req, res, next) => {
       success: true,
       data: table,
     });
-
   } catch (error) {
     next(error);
   }
 };
 
-
-  //  GET ALL TABLES
+//  GET ALL TABLES
 
 export const getAllTables = async (req, res, next) => {
   try {
@@ -89,7 +96,6 @@ export const getAllTables = async (req, res, next) => {
       count: tables.length,
       data: tables,
     });
-
   } catch (error) {
     next(error);
   }

@@ -32,7 +32,7 @@ const Welcome = () => {
       await dispatch(createSession({ deviceId, qrSlug })).unwrap();
 
       success("Guest session started");
-      navigate("/menu");
+      navigate("/");
     } catch (err) {
       toastError("Guest login failed");
     }

@@ -18,21 +18,13 @@ for (let i = 0; i < word.length; i++) {
 }
 console.log('Done With for loop',freq);
 
+import os from 'os'
 
-// for of loop
-// for (const ch of word) {
-//     freq[ch] = (freq[ch] || 0) + 1
-// }
-// console.log(freq);
+    console.log(os.networkInterfaces()["Wi-Fi"]);
 
-
-// for loop
-// for(let i = 0; i < word.length; i++){
-//     if(freq[word[i]]) {
-//         freq[word[i]]++
-//     }else{
-//         freq[word[i]] = 1;
-//     }
-// }
-// console.log(freq);
-
+    const data = os.networkInterfaces()["Wi-Fi"];
+    let ipAddress = null;
+    for (const el of data) {
+      if (el.family === "IPv4") ipAddress = el.address;
+    }
+    console.log(ipAddress);

@@ -114,9 +114,9 @@ const AuthenticatedLayout = ({ children }) => {
             {/*Cart + Profile + mobile toggle */}
             <div className="flex items-center gap-3">
               {/* Cart  */}
-              <div className="flex gap-6">
+              <Link to="/user/cart" className="flex gap-6">
                 <ShoppingCart />
-              </div>
+              </Link>
 
               {/* Mobile menu button */}
               <button
@@ -217,8 +217,10 @@ const AuthenticatedLayout = ({ children }) => {
               </Link>
 
               <Link
-                to="/menu"
-                onClick={() => setIsMobileOpen(false)}
+                onClick={() => {
+                  scrollToMenu();
+                  setIsMobileOpen(false);
+                }}
                 className="flex items-center text-gray-900 gap-2 rounded-full px-3 py-1 hover:bg-orange-100 transition-colors"
               >
                 <UtensilsCrossed className="w-5 h-5 " />

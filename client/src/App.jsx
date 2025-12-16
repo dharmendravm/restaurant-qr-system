@@ -11,6 +11,7 @@ import AuthenticatedLayout from "@/layout/AuthenticatedLayout";
 import AdminRoute from "@/routes/AdminRoute";
 import AdminMenu from "@/pages/admin/AdminMenu";
 import UserProfile from "./pages/UserProfile";
+import CartPage from "./pages/CartPage";
 
 function App() {
   return (
@@ -34,6 +35,29 @@ function App() {
             }
           />
 
+          {/* User Profile */}
+          <Route
+            path="/user/profile"
+            element={
+              <ProtectedRoutes>
+                <AuthenticatedLayout>
+                  <UserProfile />
+                </AuthenticatedLayout>
+              </ProtectedRoutes>
+            }
+          />
+
+          {/* User Cart */}
+          <Route
+            path="/user/cart"
+            element={
+              <ProtectedRoutes>
+                <AuthenticatedLayout>
+                  <CartPage />
+                </AuthenticatedLayout>
+              </ProtectedRoutes>
+            }
+          />
           {/* Admin dashboard */}
           <Route
             path="/admin/menu"
@@ -41,17 +65,6 @@ function App() {
               <AdminRoute>
                 <AuthenticatedLayout>
                   <AdminMenu />
-                </AuthenticatedLayout>
-              </AdminRoute>
-            }
-          />
-          {/* User Profile */}
-          <Route
-            path="/user/profile"
-            element={
-              <AdminRoute>
-                <AuthenticatedLayout>
-                  <UserProfile />
                 </AuthenticatedLayout>
               </AdminRoute>
             }
