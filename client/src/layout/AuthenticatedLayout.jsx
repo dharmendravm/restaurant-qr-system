@@ -14,6 +14,7 @@ import {
   UtensilsCrossed,
   Shield,
   ChefHat,
+  ShoppingCart,
 } from "lucide-react";
 import AppFooter from "../components/Footer";
 
@@ -49,7 +50,7 @@ const AuthenticatedLayout = ({ children }) => {
   };
   // FAF7F3
   return (
-    <div className="min-h-screen bg-[#FAF7F3] text-[#1f2933]">
+    <div className="min-h-screen bg-[#f5e3cb] text-[#1f2933]">
       {/* background accents */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute -top-40 -left-24 h-72 w-72 rounded-full bg-amber-200/40 blur-3xl" />
@@ -110,8 +111,13 @@ const AuthenticatedLayout = ({ children }) => {
               )}
             </ul>
 
-            {/* Profile + mobile toggle */}
+            {/*Cart + Profile + mobile toggle */}
             <div className="flex items-center gap-3">
+              {/* Cart  */}
+              <div className="flex gap-6">
+                <ShoppingCart />
+              </div>
+
               {/* Mobile menu button */}
               <button
                 className="md:hidden text-gray-800 hover:text-black transition-colors"

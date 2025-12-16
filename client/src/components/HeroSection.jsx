@@ -71,7 +71,7 @@ const HeroSection = () => {
       </div>
 
       {/* Hero Image */}
-      <div className="rounded-3xl shadow-xl overflow-hidden">
+      <div className="rounded-3xl shadow-sm overflow-hidden">
         <div className="aspect-15/10 w-full overflow-hidden">
           <img
             src="/burger.png"

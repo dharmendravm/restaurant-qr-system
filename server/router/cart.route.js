@@ -1,9 +1,24 @@
 import express from 'express' ;
-import { addToCart } from '../controllers/cart.controller.js';
+import { addToCart, clearCart, decreaseQty, getCart, increaseQty, removeItem } from '../controllers/cart.controller.js';
 
 const router = express.Router() ;
 
+// add item to cart
+router.post("/add", addToCart);
 
-router.post('/addtocart', addToCart)
+// get cart by userId
+router.get("/:userId", getCart);
 
-export default router
+// increase quantity
+router.put("/increase", increaseQty);
+
+// decrease quantity
+router.put("/decrease", decreaseQty);
+
+// remove single item
+router.delete("/remove", removeItem);
+
+// clear full cart
+router.delete("/clear", clearCart);
+
+export default router;

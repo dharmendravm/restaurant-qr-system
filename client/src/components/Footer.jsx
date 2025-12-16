@@ -6,6 +6,7 @@ import {
   Instagram,
   Facebook,
   Youtube,
+  InstagramIcon,
 } from "lucide-react";
 
 const AppFooter = () => {
@@ -87,7 +88,7 @@ const AppFooter = () => {
 
             <div className="flex items-center gap-2">
               <Phone className="w-4 h-4 text-orange-700" />
-              <span className="text-sm text-gray-700">+91 98765 43210</span>
+              <span className="text-sm text-gray-700">+91 0000000000</span>
             </div>
 
             <div className="flex items-center gap-2">

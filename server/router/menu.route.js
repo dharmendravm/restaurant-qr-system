@@ -11,6 +11,4 @@ router.post('/menu' , upload.single('image') , createMenu)
 
 
 export default router;
-
-
 //  verifyToken, checkRole(["admin"]),

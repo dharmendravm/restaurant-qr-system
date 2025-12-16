@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import HeroSection from "@/components/HeroSection";
 import { MenuCard } from "@/components/ui/MenuCard";
-// import MenuSection from "@/components/MenuSection";
+import MenuSection from "@/components/MenuSection";
+import CartPage from "@/components/Cart";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -20,6 +21,7 @@ const HomePage = () => {
   return (
     <div className="space-y-12 container mx-auto px-4">
       <HeroSection />
+      <CartPage/>
 
       {/* Signature dishes */}
       <section className="space-y-5">
@@ -39,7 +41,7 @@ const HomePage = () => {
             </button>
           </div>
         </div>
-        {/* <MenuSection /> */}
+        <MenuSection />
       </section>
     </div>
   );

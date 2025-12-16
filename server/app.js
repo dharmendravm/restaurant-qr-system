@@ -41,7 +41,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1", sessionRoute);
 app.use("/api/v1", tableRoute);
 app.use('/api/v1' , menuRoutes);
-app.use('/api/v1', cartRoute)
+app.use('/api/v1/cart', cartRoute)
 
 // User Routes
 app.use("/api/v1", getTotalUsers);
