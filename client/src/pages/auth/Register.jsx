@@ -12,14 +12,13 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { BrandLogo } from "@/components/shared/BrandLogo";
+import { BrandLogo } from "@/components/BrandLogo";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "@/redux/authSlice";
 
 // import { Card } from "@/components/ui/MemberShipCard";
 import { Award, Percent, Sparkles } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
-import ThemeToggle from "@/components/ThemeToggle";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -70,10 +69,7 @@ const Register = () => {
       });
   };
   return (
-    <div className="min-h-screen flex items-center justify-center py-4 px-4  overflow-hidden  bg-app-bg text-text-main relative">
-      <div className="absolute top-4 right-4 z-50">
-        <ThemeToggle />
-      </div>
+    <div className="min-h-screen flex items-center justify-center py-4 px-4  overflow-hidden  bg-app-bg text-text-main ">
       <div className="relative w-full max-w-6xl rounded-3xl overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch overflow-hidden">
           <div className="flex flex-col">
@@ -222,7 +218,7 @@ const Register = () => {
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 flex items-center justify-center">
                   <Sparkles
-                    className="bg-brand-main-300 drop-shadow-[0_0_4px_orange]"
+                    className="text-brand-main/80 drop-shadow-[0_0_4px_orange]"
                     size={30}
                   />
                 </div>
@@ -241,7 +237,7 @@ const Register = () => {
             <div className="bg-card-bg border border-border rounded-2xl p-6 ">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-white text-lg font-semibold flex items-center gap-2">
-                  <Award className="bg-brand-main-300" /> Loyalty Program
+                  <Award className="text-brand-main" /> Loyalty Program
                 </h3>
                 <span className="text-text-muted text-xs">Member benefits</span>
               </div>
@@ -318,7 +314,7 @@ const InputFild = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="w-full pl-11 pr-3 py-2.5 bg-hover border border-border rounded-lg text-text-main placeholder-gray-500 focus:outline-none focus:border-orange-300/40 focus:ring-1 focus:ring-orange-400/20 transition-all duration-200 text-sm"
+          className="w-full pl-11 pr-3 py-2.5 bg-hover border border-border rounded-lg text-text-main placeholder-brand-fade/70 focus:outline-none focus:border-orange-300/40 focus:ring-1 focus:ring-orange-400/20 transition-all duration-200 text-sm"
         />
       </div>
     </div>

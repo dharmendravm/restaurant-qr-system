@@ -1,4 +1,4 @@
-import { BrandLogo } from "@/components/shared/BrandLogo";
+import { BrandLogo } from "@/components/BrandLogo";
 import { Gift, LogIn, Sparkles, User, UserPlus } from "lucide-react";
 import React from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -6,7 +6,6 @@ import { UtensilsCrossed, ChefHat, Leaf, Bell, Clock } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { session as createSession } from "@/redux/guestSlice";
 import { useToast } from "@/components/ui/toast";
-import ThemeToggle from "@/components/ThemeToggle";
 
 const Welcome = () => {
   const dispatch = useDispatch();
@@ -37,11 +36,7 @@ const Welcome = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-app-bg text-text-main relative">
-      {/* Theme Toggle */}
-      <div className="absolute top-4 right-4 z-50">
-        <ThemeToggle />
-      </div>
+    <div className="min-h-screen flex items-center justify-center px-4 bg-app-bg text-text-main">
       <div className="relative w-full max-w-6xl rounded-3xl overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
           {/* LEFT */}

@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import AppFooter from "../components/Footer";
 import ThemeToggle from "@/components/ThemeToggle";
-import { BrandLogo } from "@/components/shared/BrandLogo";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const AuthenticatedLayout = ({ children }) => {
   const dispatch = useDispatch();

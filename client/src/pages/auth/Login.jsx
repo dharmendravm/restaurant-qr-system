@@ -4,11 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "@/redux/authSlice";
 import { Mail, Lock, ArrowRight, Gift, LogIn } from "lucide-react";
-import { BrandLogo } from "@/components/shared/BrandLogo";
+import { BrandLogo } from "@/components/BrandLogo";
 import { GoogleLoginUI } from "@/components/ui/GoogleUI";
 import { Sparkles, Award, Percent } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
-import ThemeToggle from "@/components/ThemeToggle";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -45,10 +44,7 @@ const Login = () => {
       });
   };
   return (
-    <div className="min-h-screen flex items-center justify-center bg-app-bg text-text-main relative">
-      <div className="absolute top-4 right-4 z-50">
-        <ThemeToggle />
-      </div>
+    <div className="min-h-screen flex items-center justify-center bg-app-bg text-text-main">
       <div className="w-full max-w-6xl rounded-3xl overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
           {/* LeftContent */}
@@ -135,6 +131,9 @@ const Login = () => {
                       Register <ArrowRight className="w-4" />
                     </Link>
                   </p>
+                    <Link to="/recovery">
+                    Forgot Password{" "}
+                    </Link>
                 </div>
               </div>
             </div>

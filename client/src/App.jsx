@@ -13,6 +13,7 @@ import AdminMenu from "@/pages/admin/AdminMenu";
 import UserProfile from "./pages/UserProfile";
 import CartPage from "./pages/CartPage";
 import FindYourAccount from "./pages/auth/FindYourAccount";
+import ForceDarkPages from "./routes/ForceDarkPages";
 
 function App() {
   return (
@@ -20,9 +21,40 @@ function App() {
       <Router>
         <Routes>
           {/* Public Routes */}
-          <Route path="/welcome" element={<Welcome />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/welcome"
+            element={
+              <ForceDarkPages>
+                <Welcome />
+              </ForceDarkPages>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <ForceDarkPages>
+                <Login />
+              </ForceDarkPages>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <ForceDarkPages>
+                <Register />
+              </ForceDarkPages>
+            }
+          />
+          {/* User Forgot Password */}
+
+          <Route
+            path="/recovery"
+            element={
+              <ForceDarkPages>
+                <FindYourAccount />
+              </ForceDarkPages>
+            }
+          />
 
           {/* Protected Routes with main app layout */}
           <Route
@@ -43,17 +75,6 @@ function App() {
               <ProtectedRoutes>
                 <AuthenticatedLayout>
                   <UserProfile />
-                </AuthenticatedLayout>
-              </ProtectedRoutes>
-            }
-          />
-          {/* User Forgot Password */}
-          <Route
-            path="/recovery"
-            element={
-              <ProtectedRoutes>
-                <AuthenticatedLayout>
-                  <FindYourAccount />
                 </AuthenticatedLayout>
               </ProtectedRoutes>
             }
