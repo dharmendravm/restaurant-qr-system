@@ -128,7 +128,7 @@ const AuthenticatedLayout = ({ children }) => {
 
               {/* Mobile menu button */}
               <button
-                className="md:hidden text-text-main hover:text-brand-main transition-colors"
+                className="cursor-pointer md:hidden text-text-main hover:text-brand-main transition-colors"
                 onClick={() => setIsMobileOpen((p) => !p)}
                 aria-label="Toggle navigation menu"
               >
@@ -143,7 +143,7 @@ const AuthenticatedLayout = ({ children }) => {
               <div className="hidden md:block relative">
                 <button
                   onClick={() => setIsProfileOpen((p) => !p)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card-bg border border-border shadow-sm"
+                  className="cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full bg-card-bg border border-border shadow-sm"
                 >
                   <div className="w-8 h-8 rounded-full bg-brand-main flex items-center justify-center shadow">
                     <User className="w-4 h-4 text-white" />
@@ -159,7 +159,7 @@ const AuthenticatedLayout = ({ children }) => {
                   </div>
 
                   <ChevronDown
-                    className={`w-4 h-4 text-text-muted transition-transform ${
+                    className={` w-4 h-4 text-text-muted transition-transform ${
                       isProfileOpen ? "rotate-180" : ""
                     }`}
                   />
@@ -168,7 +168,7 @@ const AuthenticatedLayout = ({ children }) => {
                 {isProfileOpen && (
                   <>
                     <button
-                      className="fixed inset-0 z-10 cursor-default"
+                      className=" fixed inset-0 z-10 cursor-default"
                       onClick={() => setIsProfileOpen(false)}
                     />
                     <div className="absolute right-0 mt-4 w-64 bg-card-bg border border-border rounded-2xl shadow-2xl">
@@ -199,7 +199,7 @@ const AuthenticatedLayout = ({ children }) => {
                             setIsProfileOpen(false);
                             handleLogout();
                           }}
-                          className="mt-1 w-full flex items-center gap-2 px-3 py-2 text-[12px] text-danger hover:bg-hover rounded-xl transition"
+                          className="cursor-pointer mt-1 w-full flex items-center gap-2 px-3 py-2 text-[12px] text-danger hover:bg-hover rounded-xl transition"
                         >
                           <LogOut className="w-4 h-4" />
                           <span>Logout</span>

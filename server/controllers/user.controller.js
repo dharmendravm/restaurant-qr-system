@@ -35,16 +35,7 @@ export const getUserByToken = async (req, res, next) => {
 };
 
 
-// Update password 
 
-// export const updatePassword = async (req , res , next ) => {
-//   try {
-//     const { email } = req.body; 
-//     if
-//   } catch (error) {
-    
-//   }
-// }
 // Update user
 export const updateUser = async (req, res, next) => {
   try {

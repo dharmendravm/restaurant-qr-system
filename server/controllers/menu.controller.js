@@ -5,7 +5,7 @@ export const createMenu = async (req, res, next) => {
   try {
     if (!req.file) {
       const error = new Error("Image is required");
-      error.status = 400;
+      error.statusCode = 400;
       throw error;
     }
 

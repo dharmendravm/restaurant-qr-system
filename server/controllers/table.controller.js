@@ -11,7 +11,7 @@ export const registerTable = async (req, res, next) => {
 
     if (!tableNumber || !capacity) {
       const error = new Error("Table number and capacity are required");
-      error.status = 400;
+      error.statusCode = 400;
       throw error;
     }
 
@@ -66,7 +66,7 @@ export const getTableBySlug = async (req, res, next) => {
 
     if (!table) {
       const error = new Error("No table found with this slug");
-      error.status = 404;
+      error.statusCode = 404;
       throw error;
     }
 
@@ -87,7 +87,7 @@ export const getAllTables = async (req, res, next) => {
 
     if (!tables.length) {
       const error = new Error("No tables found");
-      error.status = 404;
+      error.statusCode = 404;
       throw error;
     }
 

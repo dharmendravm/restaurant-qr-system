@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema({
     type: Number,
   },
   loyalPoints: {
-    type: Number,  // Loyalty Points
+    type: Number, // Loyalty Points
   },
   isActive: {
     type: Boolean,
@@ -39,6 +39,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
   },
   referenceTokenExpiresTime: {
+    type: Date,
+  },
+  resetPasswordToken: {
+    type: String,
+  },
+  resetPasswordExpires: {
     type: Date,
   },
   lastLogin: {

@@ -13,7 +13,7 @@ export default function ThemeToggle() {
   }, [dark]);
 
   return (
-    <button onClick={() => setDark(prev => !prev)}>
+    <button className="cursor-pointer" onClick={() => setDark(prev => !prev)}>
       {dark ? (
         <Sun className="text-yellow-300" />
       ) : (

@@ -11,7 +11,7 @@ export const register = async (req, res, next) => {
   try {
     if (!name || !email || !phone || !password) {
       const error = new Error("All fields are required");
-      error.status = 400;
+      error.statusCode = 400;
       throw error;
     }
 
@@ -22,7 +22,7 @@ export const register = async (req, res, next) => {
     const existing = await User.findOne({ email: normalizedEmail });
     if (existing) {
       const error = new Error("Account already exists");
-      error.status = 400;
+      error.statusCode = 400;
       throw error;
     }
 
@@ -43,23 +43,19 @@ export const register = async (req, res, next) => {
     const userResponse = newUser.toObject();
     delete userResponse.password;
 
-    //integrate mail service here
-    // integrate mail service here
-    const info = await transporter.sendMail({
+     await transporter.sendMail({
       from: MAIL_USER,
       to: newUser.email,
       subject: "Welcome to TableOrbit 🎉 | 30% OFF Inside",
       html: registerTemplate({
         customerName: newUser.name,
-        restaurantName: "TableOrbit",
         orderLink: "https//",
       }),
     });
-    console.log("mail sent", info.messageId);
 
     res.status(201).json({
       success: true,
-      message: "Account created sucsessfully",
+      message: "Account created successfully",
       data: userResponse,
     });
   } catch (error) {
@@ -74,7 +70,7 @@ export const login = async (req, res, next) => {
 
     if (!email || !password) {
       const error = new Error("Email and password are required");
-      error.status = 400;
+      error.statusCode = 400;
       throw error;
     }
     // Check user exists
@@ -82,7 +78,7 @@ export const login = async (req, res, next) => {
 
     if (!user) {
       const error = new Error("Invalid email or password");
-      error.status = 401;
+      error.statusCode = 401;
       throw error;
     }
 
@@ -91,7 +87,7 @@ export const login = async (req, res, next) => {
 
     if (!isPasswordMatch) {
       const error = new Error("Invalid email or password");
-      error.status = 401;
+      error.statusCode = 401;
       throw error;
     }
 
@@ -107,7 +103,7 @@ export const login = async (req, res, next) => {
     const refreshToken = generateRefreshToken(payload);
 
     user.refreshToken = refreshToken;
-    user.refreshTokenExpiresTime = new Date(
+    user.referenceTokenExpiresTime = new Date(
       Date.now() + 7 * 24 * 60 * 60 * 1000
     );
     user.lastLogin = new Date();

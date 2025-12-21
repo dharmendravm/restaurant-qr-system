@@ -23,6 +23,7 @@ import { useToast } from "@/components/ui/toast";
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   const { loading, error } = useSelector((state) => state.auth);
   const { success, error: toastError } = useToast(); // toast helpers
 
@@ -34,6 +35,7 @@ const Register = () => {
   });
 
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,12 +45,12 @@ const Register = () => {
     }));
   };
 
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (formData.password !== confirmPassword) {
+      setPasswordError("Passwords do not match");
+      return;
+    }
     console.log("Form submitted:", formData);
 
     // Register API call + toast on success / error
@@ -61,10 +63,10 @@ const Register = () => {
         );
         navigate("/");
       })
-      .catch((errMsg) => {
+      .catch((err) => {
         toastError(
           "Registration failed",
-          errMsg || "Something went wrong. Please try again."
+          err?.message || "Something went wrong. Please try again."
         );
       });
   };
@@ -97,6 +99,11 @@ const Register = () => {
                 {error && (
                   <div className="mt-4 p-3 bg-danger/10 border border-danger/30 rounded-lg text-danger text-sm">
                     {error}
+                  </div>
+                )}
+                {passwordError && (
+                  <div className="mt-4 p-3 bg-danger/10 border border-danger/30 rounded-lg text-danger text-sm">
+                    {passwordError}
                   </div>
                 )}
 
@@ -147,8 +154,13 @@ const Register = () => {
                       type="password"
                       name="password"
                       value={formData.password}
-                      onChange={handleChange}
-                      placeholder="At least 6 characters"
+                      onChange={(e) => {
+                        handleChange(e);
+                        setPasswordStrength(
+                          getPasswordStrength(e.target.value)
+                        );
+                      }}
+                      placeholder="At least 6 characters place"
                     />
                   </div>
 
@@ -160,7 +172,10 @@ const Register = () => {
                     type="password"
                     name="confirmPassword"
                     value={confirmPassword}
-                    onChange={handleConfirmPasswordChange}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                      setPasswordError("");
+                    }}
                     placeholder="Confirm password"
                   />
 
@@ -171,7 +186,8 @@ const Register = () => {
                     />
                     <p className="text-text-muted text-xs">
                       I agree to the{" "}
-                      <span className="text-text-accent underline">Terms</span> &{" "}
+                      <span className="text-text-accent underline">Terms</span>{" "}
+                      &{" "}
                       <span className="text-text-accent underline">
                         Privacy Policy
                       </span>
@@ -314,7 +330,7 @@ const InputFild = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="w-full pl-11 pr-3 py-2.5 bg-hover border border-border rounded-lg text-text-main placeholder-brand-fade/70 focus:outline-none focus:border-orange-300/40 focus:ring-1 focus:ring-orange-400/20 transition-all duration-200 text-sm"
+          className="w-full pl-11 pr-3 py-2.5 bg-hover border border-border rounded-lg text-text-main placeholder-text-muted focus:outline-none focus:border-orange-300/40 focus:ring-1 focus:ring-orange-400/20 transition-all duration-200 text-sm"
         />
       </div>
     </div>

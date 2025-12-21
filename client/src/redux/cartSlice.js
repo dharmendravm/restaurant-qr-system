@@ -3,7 +3,9 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-// Get Cart
+/* ================= THUNKS ================= */
+
+// GET CART
 export const getCartThunk = createAsyncThunk(
   "cart/getCart",
   async (userId, thunkApi) => {
@@ -18,7 +20,7 @@ export const getCartThunk = createAsyncThunk(
   }
 );
 
-//  Add To Cart
+// ADD TO CART
 export const addToCartThunk = createAsyncThunk(
   "cart/addToCart",
   async ({ userId, menuItemId, quantity }, thunkApi) => {
@@ -28,149 +30,140 @@ export const addToCartThunk = createAsyncThunk(
         menuItemId,
         quantity,
       });
-
       return res.data.cart;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.response?.data?.message || "Failed to add item to cart"
+        error.response?.data?.message || "Failed to add item"
       );
     }
   }
 );
-//  Incrase Cart item
+
+// INCREASE QTY
 export const increaseQtyCartThunk = createAsyncThunk(
-  "cart/increase",
-  async ({ userId, menuItemId, quantity }, thunkApi) => {
+  "cart/increaseQty",
+  async ({ userId, menuItemId }, thunkApi) => {
     try {
-      const res = await axios.post(`${API_URL}/api/v1/cart/increase`, {
+      const res = await axios.patch(`${API_URL}/api/v1/cart/increase`, {
         userId,
         menuItemId,
-        quantity,
       });
-
       return res.data.cart;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.response?.data?.message || "Failed to add item to cart"
+        error.response?.data?.message || "Failed to increase quantity"
       );
     }
   }
 );
+
+// DECREASE QTY
 export const decreaseQtyCartThunk = createAsyncThunk(
-  "cart/decrease",
-  async ({ userId, menuItemId, quantity }, thunkApi) => {
+  "cart/decreaseQty",
+  async ({ userId, menuItemId }, thunkApi) => {
     try {
-      const res = await axios.post(`${API_URL}/api/v1/cart/decrease`, {
+      const res = await axios.patch(`${API_URL}/api/v1/cart/decrease`, {
         userId,
         menuItemId,
-        quantity,
       });
-
       return res.data.cart;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.response?.data?.message || "Failed to add item to cart"
-      );
-    }
-  }
-);
-export const removeToCartThunk = createAsyncThunk(
-  "cart/removeToCart",
-  async ({ userId, menuItemId, quantity }, thunkApi) => {
-    try {
-      const res = await axios.post(`${API_URL}/api/v1/cart/add`, {
-        userId,
-        menuItemId,
-        quantity,
-      });
-
-      return res.data.cart;
-    } catch (error) {
-      return thunkApi.rejectWithValue(
-        error.response?.data?.message || "Failed to add item to cart"
+        error.response?.data?.message || "Failed to decrease quantity"
       );
     }
   }
 );
 
-//  Slice
+// REMOVE ITEM
+export const removeItemCartThunk = createAsyncThunk(
+  "cart/removeItem",
+  async ({ userId, menuItemId }, thunkApi) => {
+    try {
+      const res = await axios.delete(`${API_URL}/api/v1/cart/remove`, {
+        data: { userId, menuItemId },
+      });
+      return res.data.cart;
+    } catch (error) {
+      return thunkApi.rejectWithValue(
+        error.response?.data?.message || "Failed to remove item"
+      );
+    }
+  }
+);
+
+// CLEAR CART
+export const clearCartThunk = createAsyncThunk(
+  "cart/clearCart",
+  async (userId, thunkApi) => {
+    try {
+      await axios.delete(`${API_URL}/api/v1/cart/clear`, {
+        data: { userId },
+      });
+      return null;
+    } catch (error) {
+      return thunkApi.rejectWithValue(
+        error.response?.data?.message || "Failed to clear cart"
+      );
+    }
+  }
+);
+
+/* ================= SLICE ================= */
 
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    cartItems: [],
-    totalCartPrice: 0,
+    cart: null,      //
     loading: false,
     error: null,
   },
-
+  reducers: {},
   extraReducers: (builder) => {
     builder
 
-      // Get Cart
+      // GET CART
       .addCase(getCartThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(getCartThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = action.payload.items;
-        state.totalCartPrice = action.payload.totalCartPrice;
-
-        console.log("get cart action.payload", action.payload.items);
+        state.cart = action.payload;
       })
       .addCase(getCartThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // Add To Cart
-      .addCase(addToCartThunk.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(addToCartThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        state.cartItems = action.payload.items;
-         state.totalCartPrice = action.payload.totalCartPrice;
-      })
-      .addCase(addToCartThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-
-      // increaseQty
-      .addCase(increaseQtyCartThunk.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-
-      .addCase(increaseQtyCartThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        state.cartItems = action.payload.items;
-        state.totalCartPrice = action.payload.totalCartPrice;
-      })
-
-      .addCase(increaseQtyCartThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      // decreaseQty
-      .addCase(decreaseQtyCartThunk.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-
-      .addCase(decreaseQtyCartThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        state.cartItems = action.payload.items;
-        state.totalCartPrice = action.payload.totalCartPrice;
-      })
-
-      .addCase(decreaseQtyCartThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
+      // ALL CART MUTATIONS (ADD / INC / DEC / REMOVE)
+      .addMatcher(
+        (action) =>
+          action.type.startsWith("cart/") &&
+          action.type.endsWith("/pending"),
+        (state) => {
+          state.loading = true;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        (action) =>
+          action.type.startsWith("cart/") &&
+          action.type.endsWith("/fulfilled"),
+        (state, action) => {
+          state.loading = false;
+          state.cart = action.payload;
+        }
+      )
+      .addMatcher(
+        (action) =>
+          action.type.startsWith("cart/") &&
+          action.type.endsWith("/rejected"),
+        (state, action) => {
+          state.loading = false;
+          state.error = action.payload;
+        }
+      );
   },
 });
 

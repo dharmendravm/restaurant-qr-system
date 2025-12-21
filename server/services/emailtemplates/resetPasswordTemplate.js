@@ -1,20 +1,12 @@
-import { FRONTEND_URL } from "../../config.js";
-
-const registerTemplate = ({
-  userName,
-  orderLink,
-  year = new Date().getFullYear(),
-}) => {
-  const supportEmail = `support@${'TableOrbit'
-    .replace(/\s+/g, "")
-    .toLowerCase()}.com`;
+const resetPasswordTemplate = ({ userName, resetLink, appName }) => {
+  const supportEmail = `support@${(appName || "TableOrbit").toLowerCase()}.com`;
 
   return `<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Welcome to TableOrbit</title>
+  <title>Reset your password</title>
 
   <style>
     .preheader {
@@ -42,7 +34,7 @@ const registerTemplate = ({
 <body style="margin:0; padding:0; background-color:#0b1220; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
 
   <div class="preheader">
-    Welcome to TableOrbit. Enjoy 30% off on your first order.
+    Password reset requested for your ${appName || 'TableOrbit'} account. This link expires in 15 minutes.
   </div>
 
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#0b1220;">
@@ -58,9 +50,9 @@ const registerTemplate = ({
               <!-- Header -->
               <table role="presentation" width="100%">
                 <tr>
-                  <td style="padding-bottom:16px;">
+                  <td style="padding-bottom:20px;">
                     <p style="margin:0; font-size:16px; font-weight:700; color:#e5e7eb;">
-                      TableOrbit
+                      ${appName || 'TableOrbit'}
                     </p>
                   </td>
                 </tr>
@@ -68,45 +60,25 @@ const registerTemplate = ({
                 <tr>
                   <td>
                     <h1 style="margin:0 0 10px 0; font-size:24px; font-weight:700; color:#f8fafc;">
-                      Welcome, ${userName || "there"}
+                      Reset your password
                     </h1>
 
                     <p style="margin:0 0 18px 0; font-size:14px; line-height:1.6; color:#cbd5f5;">
-                      Thank you for joining <strong>TableOrbit</strong>.
-                      We're excited to serve you delicious food, delivered fresh to your doorstep.
-                    </p>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- Offer -->
-              <table role="presentation" width="100%" style="margin:22px 0;">
-                <tr>
-                  <td style="
-                    background-color:#020617;
-                    border:1px dashed rgba(99,102,241,0.6);
-                    border-radius:12px;
-                    padding:18px;
-                    text-align:center;
-                  ">
-                    <p style="margin:0; font-size:13px; color:#a5b4fc; font-weight:600;">
-                      WELCOME OFFER
-                    </p>
-                    <p style="margin:10px 0; font-size:22px; color:#f8fafc; font-weight:700;">
-                      Use Code: FIRST30
-                    </p>
-                    <p style="margin:0; font-size:14px; color:#cbd5f5;">
-                      Get <strong>30% OFF</strong> on your first order
+                      Hello ${userName || "there"},
+                      <br /><br />
+                      We received a request to reset the password for your <strong>${appName || 'TableOrbit'}</strong> account.
+                      Click the button below to set a new password.
+                      This link will expire in <strong>15 minutes</strong>.
                     </p>
                   </td>
                 </tr>
               </table>
 
               <!-- CTA -->
-              <table role="presentation" width="100%" style="margin:26px 0;">
+              <table role="presentation" width="100%" style="margin:24px 0;">
                 <tr>
                   <td align="center">
-                    <a href="${orderLink || FRONTEND_URL}" target="_blank" rel="noopener noreferrer"
+                    <a href="${resetLink}" target="_blank" rel="noopener noreferrer"
                       class="cta"
                       style="
                         display:inline-block;
@@ -118,35 +90,52 @@ const registerTemplate = ({
                         border-radius:10px;
                         text-decoration:none;
                       ">
-                      Order Now
+                      Reset Password
                     </a>
                   </td>
                 </tr>
               </table>
 
-              <!-- Footer text -->
+              <!-- Fallback link -->
               <table role="presentation" width="100%">
                 <tr>
-                  <td style="font-size:13px; color:#9ca3af; line-height:1.6;">
-                    <p style="margin:0;">
-                      This offer is valid for a limited time and applicable on your first order only.
+                  <td style="font-size:13px; color:#94a3b8; line-height:1.6;">
+                    <p style="margin:0 0 6px 0;">
+                      If the button doesn't work, copy and paste this link into your browser:
+                    </p>
+                    <p style="margin:0; word-break:break-all;">
+                      <a href="${resetLink}" target="_blank" style="color:#93c5fd;">
+                        ${resetLink}
+                      </a>
                     </p>
                   </td>
                 </tr>
               </table>
 
-              <!-- Support -->
+              <!-- Security notice -->
+              <table role="presentation" width="100%" style="margin-top:18px;">
+                <tr>
+                  <td style="font-size:13px; color:#9ca3af; line-height:1.6;">
+                    <p style="margin:0;">
+                      If you did not request a password reset, no action is required.
+                      Your account remains secure.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Footer -->
               <table role="presentation" width="100%" style="margin-top:24px; border-top:1px solid rgba(255,255,255,0.05);">
                 <tr>
                   <td style="padding-top:16px; font-size:12px; color:#7c8db0;">
                     <p style="margin:0;">
-                      Need help? Contact us at
+                      Need help? Contact our support team at
                       <a href="mailto:${supportEmail}" style="color:#93c5fd; text-decoration:none;">
                         ${supportEmail}
                       </a>
                     </p>
                     <p style="margin:6px 0 0 0;">
-                      © ${year} TableOrbit. All rights reserved.
+                      — The ${appName || 'TableOrbit'} Team
                     </p>
                   </td>
                 </tr>
@@ -163,4 +152,4 @@ const registerTemplate = ({
 </html>`;
 };
 
-export default registerTemplate;
+export default resetPasswordTemplate;

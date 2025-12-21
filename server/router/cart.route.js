@@ -10,10 +10,10 @@ router.post("/add", addToCart);
 router.get("/:userId", getCart);
 
 // increase quantity
-router.put("/increase", increaseQty);
+router.patch("/increase", increaseQty);
 
 // decrease quantity
-router.put("/decrease", decreaseQty);
+router.patch("/decrease", decreaseQty);
 
 // remove single item
 router.delete("/remove", removeItem);

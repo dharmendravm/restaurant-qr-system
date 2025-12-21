@@ -11,9 +11,11 @@ import AuthenticatedLayout from "@/layout/AuthenticatedLayout";
 import AdminRoute from "@/routes/AdminRoute";
 import AdminMenu from "@/pages/admin/AdminMenu";
 import UserProfile from "./pages/UserProfile";
-import CartPage from "./pages/CartPage";
-import FindYourAccount from "./pages/auth/FindYourAccount";
 import ForceDarkPages from "./routes/ForceDarkPages";
+import CartPage from "./pages/CartPage/CartPage";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
+
 
 function App() {
   return (
@@ -46,12 +48,20 @@ function App() {
             }
           />
           {/* User Forgot Password */}
-
           <Route
             path="/recovery"
             element={
               <ForceDarkPages>
-                <FindYourAccount />
+                <ForgotPassword />
+              </ForceDarkPages>
+            }
+          />
+          {/* User reset Password */}
+          <Route
+            path="/reset-password/:token"
+            element={
+              <ForceDarkPages>
+                <ResetPassword />
               </ForceDarkPages>
             }
           />

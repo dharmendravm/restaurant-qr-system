@@ -46,23 +46,23 @@ const HeroSection = () => {
         <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 mb-4">
           <button
             onClick={scrollToMenu}
-            className="group w-full bg-brand-main text-white hover:opacity-90 sm:w-auto items-center rounded-full flex justify-center px-6 py-2.5 text-sm font-semibold shadow-[0_12px_30px_rgba(0,0,0,0.25)] active:scale-95 transition"
+            className="cursor-pointer group w-full bg-brand-main text-white hover:opacity-90 sm:w-auto items-center rounded-full flex justify-center px-6 py-2.5 text-sm font-semibold shadow-[0_12px_30px_rgba(0,0,0,0.25)] active:scale-95 transition"
           >
             Explore Menu
             <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
           </button>
 
-          <button className="w-full bg-btn-black text-white hover:opacity-90 sm:w-auto rounded-full flex justify-center items-center px-6 py-2.5 text-sm font-semibold shadow-[0_12px_30px_rgba(0,0,0,0.25)] active:scale-95 transition">
+          <button className="cursor-pointer w-full bg-btn-black text-white hover:opacity-90 sm:w-auto rounded-full flex justify-center items-center px-6 py-2.5 text-sm font-semibold shadow-[0_12px_30px_rgba(0,0,0,0.25)] active:scale-95 transition">
             <Calendar className="h-4 w-4 mr-2" />
             Reserve a Table
           </button>
 
-          <button className="w-full bg-hover text-brand-main border border-border hover:border-brand-main sm:w-auto rounded-full flex justify-center items-center px-21 py-2.5 text-xs sm:text-sm font-semibold  transition delay-75 ease-in-out duration-100">
+          <button className="cursor-pointer w-full bg-hover text-brand-main border border-border hover:border-brand-main sm:w-auto rounded-full flex justify-center items-center px-21 py-2.5 text-xs sm:text-sm font-semibold  transition delay-75 ease-in-out duration-100">
             Free Delivery Above ₹500
           </button>
         </div>
 
-        <div className="inline-flex items-center gap-1 text-[11px] text-[#a08f7d]">
+        <div className="inline-flex items-center gap-1 text-[11px] text-cat-all-bg">
           <div className="p-1 rounded-full bg-hover">
             <Star className="h-4 w-4 text-brand-main
 " />

@@ -9,6 +9,8 @@ export const CLOUD_NAME = process.env.CLOUD_NAME;
 export const CLOUD_API_KEY = process.env.CLOUD_API_KEY;
 export const CLOUD_API_SECRET = process.env.CLOUD_API_SECRET;
 
+export const FRONTEND_URL = process.env.FRONTEND_URL;
+
 export const MAIL_USER = process.env.MAIL_USER;
 export const APP_PASSWORD = process.env.APP_PASSWORD;
 

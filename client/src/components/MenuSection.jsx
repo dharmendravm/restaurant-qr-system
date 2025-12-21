@@ -4,7 +4,6 @@ import { memo, useEffect, useState } from "react";
 import { addToCartThunk } from "@/redux/cartSlice";
 
 // MenuCard 
-
 const MenuCard = memo(({ item }) => {
   const [isAdding, setIsAdding] = useState(false);
   const dispatch = useDispatch();
@@ -77,7 +76,6 @@ const MenuCard = memo(({ item }) => {
 });
 
 // MenuSection
-
 const MenuSection = () => {
   const dispatch = useDispatch();
   const { menuItems, categories, selectedCategory } = useSelector(
