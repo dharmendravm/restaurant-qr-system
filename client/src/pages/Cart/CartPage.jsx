@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { CartHeader } from "./CartHeader";
 import { CartItemsList } from "./CartItemsList";
 import { OrderSummary } from "./OrderSummary";
-import { GuestCart } from "./guestCart";
 import { EmptyCart } from "./EmptyCart";
 import { useEffect } from "react";
 import {
@@ -12,12 +11,11 @@ import {
   removeItemCartThunk,
 } from "@/redux/cartSlice";
 import CartSkeleton from "./CartSkeleton";
-import { useToast } from "@/components/ui/toast";
+import { GuestCart } from "./GuestCart";
 
 const CartPage = () => {
   const { userId, email } = useSelector((state) => state.auth);
   const { cart, loading, error } = useSelector((state) => state.cart);
-  const { success, error: toastError } = useToast();
 
   const isLoggedIn = !!email;
 
@@ -29,15 +27,18 @@ const CartPage = () => {
     }
   }, [isLoggedIn, userId, cart, dispatch]);
 
-  const cartActions = useMemo(() => ({
-    increase: (id) =>
-      dispatch(increaseQtyCartThunk({ userId, menuItemId: id })),
+  const cartActions = useMemo(
+    () => ({
+      increase: (id) =>
+        dispatch(increaseQtyCartThunk({ userId, menuItemId: id })),
 
-    decrease: (id) =>
-      dispatch(decreaseQtyCartThunk({ userId, menuItemId: id })),
+      decrease: (id) =>
+        dispatch(decreaseQtyCartThunk({ userId, menuItemId: id })),
 
-    remove: (id) => dispatch(removeItemCartThunk({ userId, menuItemId: id })),
-}), [dispatch, userId]);
+      remove: (id) => dispatch(removeItemCartThunk({ userId, menuItemId: id })),
+    }),
+    [dispatch, userId]
+  );
 
   if (!isLoggedIn) {
     return <GuestCart />;
@@ -68,7 +69,7 @@ const CartPage = () => {
 
         {/* Mobile */}
         <div className="lg:hidden">
-          <OrderSummary totalprice={cart.totalCartPrice}/>
+          <OrderSummary totalprice={cart.totalCartPrice} />
         </div>
 
         {/* Desktop */}

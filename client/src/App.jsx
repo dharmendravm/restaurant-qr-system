@@ -12,7 +12,7 @@ import AdminRoute from "@/routes/AdminRoute";
 import AdminMenu from "@/pages/admin/AdminMenu";
 import UserProfile from "./pages/UserProfile";
 import ForceDarkPages from "./routes/ForceDarkPages";
-import CartPage from "./pages/CartPage/CartPage";
+import CartPage from "./pages/Cart/CartPage";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 
