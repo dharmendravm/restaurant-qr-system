@@ -2,6 +2,10 @@ import { useToast } from "@/components/ui/toast";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import AuthCard from "@/components/auth/AuthCart";
+import AuthError from "@/components/auth/AuthError";
+import AuthInput from "@/components/auth/AuthInput";
+import AuthButton from "@/components/auth/AuthButton";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -46,65 +50,31 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-app-bg px-4">
-      <div
-        className="w-full max-w-[400px] flex flex-col gap-6 bg-card-bg/10 backdrop-blur-xl border border-border
-        rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] p-6"
-      >
-        {/* Title */}
-        <div className="text-center">
-          <h1 className="text-2xl font-bold tracking-tight text-brand-main">
-            Reset Password
-          </h1>
-          <p className="text-sm text-text-muted mt-1">
-            Choose a strong new password
-          </p>
-        </div>
+    <AuthCard title="Reset Password" description="Choose a strong new password">
+      <AuthError message={error} />
 
-        {/* Error */}
-        {error && (
-          <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
-            {error}
-          </div>
-        )}
+      <form onSubmit={handleSubmit} className="space-y-5 mt-3">
+        <AuthInput
+          type="password"
+          placeholder="Enter new password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            placeholder="Enter new password"
-            className=" w-full px-4 py-2.5 bg-hover border border-border rounded-lg text-text-main text-sm
-           placeholder-text-muted focus:outline-none focus:border-brand-main/40 focus:ring-1 focus:ring-brand-main/20
-           transition-all hover:border-brand-main/30"/>
+        <AuthInput
+          type="password"
+          placeholder="Confirm new password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+        />
 
-          <input
-            type="password"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            placeholder="confirm new password"
-            className=" w-full px-4 py-2.5 bg-hover border border-border rounded-lg text-text-main text-sm
-           placeholder-text-muted focus:outline-none focus:border-brand-main/40 focus:ring-1 focus:ring-brand-main/20
-           transition-all hover:border-brand-main/30"/>
-
-          <button
-            disabled={loading}
-            type="submit"
-            className="w-full bg-brand-main text-white font-semibold py-2.5 rounded-xl
-              shadow-md hover:shadow-lg hover:opacity-90
-              disabled:opacity-60 disabled:cursor-not-allowed
-              transition-all active:scale-95"
-          >
-            {loading ? "Updating..." : "Change Password"}
-          </button>
-        </form>
-      </div>
-    </div>
+        <AuthButton loading={loading} loadingText="Updating...">
+          Change Password
+        </AuthButton>
+      </form>
+    </AuthCard>
   );
 };
 

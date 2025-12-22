@@ -1,3 +1,8 @@
+import AuthButton from "@/components/auth/AuthButton";
+import AuthCard from "@/components/auth/AuthCart";
+import AuthError from "@/components/auth/AuthError";
+import AuthInput from "@/components/auth/AuthInput";
+
 import { useToast } from "@/components/ui/toast";
 import axios from "axios";
 import { useState } from "react";
@@ -31,7 +36,6 @@ function ForgotPassword() {
       // Toast (global)
       toastError("Error", message);
 
-      // Inline error (optional)
       setError(message);
     } finally {
       setLoading(false);
@@ -44,58 +48,25 @@ function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-app-bg px-4">
-      <div
-        className="w-full max-w-[400px] flex flex-col gap-6 bg-card-bg/10 backdrop-blur-xl border border-border
-        rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] p-6"
-      >
-        {/* Title */}
-        <div className="text-center">
-          <h1 className="text-2xl font-bold tracking-tight text-brand-main">
-            Account Recovery
-          </h1>
-        </div>
+    <AuthCard
+      title="Account Recovery"
+      description="Enter the email associated with your account"
+    >
+      <AuthError message={error} />
 
-        {/* Description */}
-        <p className="text-text-muted text-sm mt-1 text-center tracking-tight">
-          Enter the email associated with your account to receive a password
-          reset link.
-        </p>
-        {/* ERROR */}
-        {error && (
-          <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
-            {error}
-          </div>
-        )}
+      <form onSubmit={handleSubmit} className="space-y-4 mt-3">
+        <AuthInput
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email"
+        />
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder="Enter your email"
-            className=" w-full px-4 py-2.5 bg-hover border border-border rounded-lg text-text-main text-sm
-           placeholder-text-muted focus:outline-none focus:border-brand-main/40 focus:ring-1 focus:ring-brand-main/20
-           transition-all hover:border-brand-main/30"
-          />
-
-          <p className="text-xs text-text-muted">
-            If the email exists, you'll receive a reset link.
-          </p>
-
-          <button
-            disabled={loading}
-            type="submit"
-            className="w-full bg-brand-main hover:opacity-90 py-2.5 text-white border border-border shadow-md hover:shadow-lg disabled:opacity-60 font-semibold transition-all duration-150 rounded-xl active:scale-95 disabled:cursor-not-allowed"
-          >
-            {loading ? "Sending..." : "Send Reset Link"}
-          </button>
-        </form>
-      </div>
-    </div>
+        <AuthButton loading={loading} loadingText="Sending...">
+          Send Reset Link
+        </AuthButton>
+      </form>
+    </AuthCard>
   );
 }
 

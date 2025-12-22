@@ -14,7 +14,6 @@ const registerTemplate = ({
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Welcome to TableOrbit</title>
 
   <style>
     .preheader {
@@ -42,7 +41,7 @@ const registerTemplate = ({
 <body style="margin:0; padding:0; background-color:#0b1220; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
 
   <div class="preheader">
-    Welcome to TableOrbit. Enjoy 30% off on your first order.
+    Enjoy 30% off on your first order.
   </div>
 
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#0b1220;">
