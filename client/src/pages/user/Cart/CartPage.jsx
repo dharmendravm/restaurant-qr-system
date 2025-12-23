@@ -70,13 +70,7 @@ const CartPage = () => {
           <CartItemsList items={cart.items} actions={cartActions} />
         </div>
 
-        {/* Mobile */}
-        <div className="lg:hidden">
-          <OrderSummary totalprice={cart.totalCartPrice} />
-        </div>
-
-        {/* Desktop */}
-        <div className="hidden lg:block">
+        <div className="block lg:sticky lg:top-20">
           <OrderSummary totalprice={cart.totalCartPrice} />
         </div>
       </div>

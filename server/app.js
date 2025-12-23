@@ -1,17 +1,18 @@
 import express from "express";
 import cors from "cors";
 import "./globallogs.js";
-import ConnectDB from "./config/database.js";
 import { PORT } from "./config.js";
+import ConnectDB from "./config/database.js";
+
+import adminRoutes from './router/admin.route.js';
 
 import authRoutes from "./router/auth.route.js";
 import sessionRoute from "./router/session.route.js";
 import tableRoute from "./router/table.route.js";
 import menuRoutes from "./router/menu.route.js";
-import getTotalUsers from "./router/user.route.js";
-import { errorHandler, notFound } from "./middlewares/errormiddleware.js";
 import cartRoute from "./router/cart.route.js";
 import couponRoute from './router/coupen.route.js'
+import { errorHandler, notFound } from "./middlewares/errormiddleware.js";
 
 const app = express();
 
@@ -39,6 +40,9 @@ app.get("/", (req, res) => {
   res.send("Server is Live");
 });
 
+// Admin Routes
+app.use("/api/v1/admin", adminRoutes);
+
 // Api Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1", sessionRoute);
@@ -48,7 +52,7 @@ app.use('/api/v1/cart', cartRoute)
 app.use('/api/v1/coupens', couponRoute)
 
 // User Routes
-app.use("/api/v1", getTotalUsers);
+// app.use("/api/v1", getTotalUsers);
 
 // 404 Handler
 app.use(notFound);

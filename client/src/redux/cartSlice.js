@@ -39,8 +39,7 @@ export const addToCartThunk = createAsyncThunk(
       const res = await axios.post(
         `${API_URL}/api/v1/cart/add`,
         {
-          menuItemId,
-          quantity,
+          menuItemId, quantity,
         },
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
@@ -62,9 +61,7 @@ export const increaseQtyCartThunk = createAsyncThunk(
 
       const res = await axios.patch(
         `${API_URL}/api/v1/cart/increase`,
-        {
-          menuItemId,
-        },
+        { menuItemId },
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
       return res.data.cart;
@@ -87,9 +84,7 @@ export const decreaseQtyCartThunk = createAsyncThunk(
 
       const res = await axios.patch(
         `${API_URL}/api/v1/cart/decrease`,
-        {
-          menuItemId,
-        },
+        { menuItemId},
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
       return res.data.cart;

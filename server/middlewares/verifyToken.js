@@ -1,9 +1,11 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
-import { JWT_SECRET } from "../config.js";
+import { ACCESS_TOKEN_SECRET } from "../config.js";
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Verify Access Token
-export const verifyToken = async (req, res, next) => {
+export const verifyToken = async (req, _res, next) => {
   try {
     const authHeader = req.headers.authorization;
     // No Token Provided
@@ -16,7 +18,7 @@ export const verifyToken = async (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
     // Verify Access Token
-    const decoded = jwt.verify(token, JWT_SECRET || process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET || process.env.ACCESS_TOKEN_SECRET);
 
     // Fetch user from DB
     const user = await User.findById(decoded.id).select("-password -refreshToken");

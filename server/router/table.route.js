@@ -8,5 +8,4 @@ const router = express.Router();
 
 router.post('/tables', verifyToken, checkRole(["admin"]), registerTable);
 
-logController("tableRoute console printed")
 export default router;

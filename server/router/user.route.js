@@ -1,13 +1,10 @@
-import express from 'express';
-import { getTotalUsers } from '../controllers/user.controller.js';
-import { verifyToken } from '../middlewares/verifyToken.js';
-import { checkRole } from '../middlewares/checkRole.js';
+// import express from 'express';
+// import { verifyToken } from '../middlewares/verifyToken.js';
+// import { checkRole } from '../middlewares/checkRole.js';
 
-const router = express.Router();
+// const router = express.Router();
 
-// getTotalUsers
-router.post('/admin/all',verifyToken, checkRole(["admin"]), getTotalUsers);
+// // getTotalUsers
+// router.post('/admin/all',verifyToken, checkRole(["admin"]), getTotalUsers);
 
-logController("user route console printed")
-
-export default router;
+// export default router;
