@@ -1,16 +1,16 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
-const ProtectedRoutes = ({ children }) => {
+const ProtectedRoutes = () => {
   const accessToken = localStorage.getItem("accessToken");
   const sessionToken = localStorage.getItem("sessionToken");
   
 
   if (!accessToken && !sessionToken) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace/>;
   }
 
-  return <div>{children}</div>;
+  return <Outlet />
 };
 
 export default ProtectedRoutes;

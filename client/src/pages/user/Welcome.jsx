@@ -1,4 +1,4 @@
-import { BrandLogo } from "@/components/BrandLogo";
+import { BrandLogo } from "@/components/shared/BrandLogo";
 import { Gift, LogIn, Sparkles, User, UserPlus } from "lucide-react";
 import React from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -31,6 +31,7 @@ const Welcome = () => {
       success("Guest session started");
       navigate("/");
     } catch (err) {
+      console.error("Error starting guest session:", err);
       toastError("Guest login failed");
     }
   };
@@ -164,7 +165,8 @@ const features = [
   },
 ];
 
-const FeatureCard = ({ icon: Icon, title, desc }) => {
+const FeatureCard = ({ icon, title, desc }) => {
+  const Icon = icon;
   return (
     <div className="bg-card-bg border border-border rounded-xl p-2.5 transition hover:bg-hover flex items-start gap-3">
       <Icon className="w-5 h-5 text-brand-main" />

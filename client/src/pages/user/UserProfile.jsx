@@ -1,4 +1,4 @@
-import { User, Mail, Phone, Shield, Lock, Verified, VerifiedIcon } from "lucide-react";
+import { User, Mail, Phone, Shield, Lock, Verified } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const UserProfile = () => {

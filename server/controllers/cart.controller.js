@@ -31,7 +31,9 @@ const updateTotalPrice = async (cart) => {
 // ---------------- ADD TO CART ----------------
 export const addToCart = async (req, res, next) => {
   try {
-    const { userId, menuItemId, quantity = 1 } = req.body;
+    const userId = req.user.id;
+
+    const { menuItemId, quantity = 1 } = req.body;
 
     const menu = await findMenu(menuItemId);
     if (!menu) {
@@ -70,13 +72,14 @@ export const addToCart = async (req, res, next) => {
 // ---------------- GET CART ----------------
 export const getCart = async (req, res, next) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
 
     const cart = await findCart(userId);
     if (!cart) {
-      const error = new Error("Your cart is empty");
-      error.statusCode = 404;
-      throw error;
+      return res.status(200).json({
+        success: true,
+        cart: null,
+      });
     }
 
     await cart.populate(
@@ -96,7 +99,8 @@ export const getCart = async (req, res, next) => {
 // ---------------- INCREASE QTY ----------------
 export const increaseQty = async (req, res, next) => {
   try {
-    const { userId, menuItemId } = req.body;
+    const userId = req.user.id;
+    const { menuItemId } = req.body;
 
     const cart = await findCart(userId);
     if (!cart) {
@@ -129,7 +133,8 @@ export const increaseQty = async (req, res, next) => {
 // ---------------- DECREASE QTY ----------------
 export const decreaseQty = async (req, res, next) => {
   try {
-    const { userId, menuItemId } = req.body;
+    const userId = req.user.id;
+    const { menuItemId } = req.body;
 
     const cart = await findCart(userId);
     if (!cart) {
@@ -169,7 +174,8 @@ export const decreaseQty = async (req, res, next) => {
 // ---------------- REMOVE ITEM ----------------
 export const removeItem = async (req, res, next) => {
   try {
-    const { userId, menuItemId } = req.body;
+    const userId = req.user.id;
+    const { menuItemId } = req.body;
 
     const cart = await findCart(userId);
     if (!cart) {
@@ -197,7 +203,7 @@ export const removeItem = async (req, res, next) => {
 // ---------------- CLEAR CART ----------------
 export const clearCart = async (req, res, next) => {
   try {
-    const { userId } = req.body;
+    const userId = req.user.id;
 
     const cart = await findCart(userId);
     if (!cart) {

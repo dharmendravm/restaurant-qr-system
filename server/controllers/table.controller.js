@@ -17,19 +17,19 @@ export const registerTable = async (req, res, next) => {
 
     // Generate unique QR slug
     const qrSlug = crypto.randomBytes(6).toString("hex");
-    // http://192.168.1.5/
-    // Generate QR scan URL
-    // const qrCodeURL = `http://localhost:5173/welcome?qr=${qrSlug}`;
+    // Generate QR scan URL based on local network IP if available
+    const nets = os.networkInterfaces();
+    let ipAddress = "localhost";
 
-    console.log(os.networkInterfaces()["Wi-Fi"]);
-
-    const data = os.networkInterfaces()["Wi-Fi"];
-    let ipAddress = null;
-    for (const el of data) {
-      if (el.family === "IPv4") ipAddress = el.address;
+    for (const name of Object.keys(nets)) {
+      for (const iface of nets[name] || []) {
+        if (iface.family === "IPv4" && !iface.internal) {
+          ipAddress = iface.address;
+          break;
+        }
+      }
+      if (ipAddress !== "localhost") break;
     }
-    console.log(ipAddress);
-    // 192.168.1.5
 
     const qrCodeURL = `http://${ipAddress}:5173/welcome?qr=${qrSlug}`;
     const qrImage = await QRCode.toDataURL(qrCodeURL);

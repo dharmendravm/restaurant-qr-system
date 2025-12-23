@@ -30,35 +30,42 @@ export const register = createAsyncThunk(
 const setAuthToLocalStorage = (payload) => {
   const { data, accessToken, refreshToken } = payload;
 
-  localStorage.setItem("userId", data._id);
-  localStorage.setItem("name", data.name);
-  localStorage.setItem("email", data.email);
-  localStorage.setItem("role", data.role);
+  localStorage.setItem(
+    "user",
+    JSON.stringify({
+      id: data._id,
+      name: data.name,
+      email: data.email,
+      role: data.role,
+    })
+  );
+
   localStorage.setItem("accessToken", accessToken);
   localStorage.setItem("refreshToken", refreshToken);
 };
 
+const storedUser = localStorage.getItem("user");
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     loading: false,
     error: null,
-    userId: localStorage.getItem("userId") || null,
-    name: localStorage.getItem("name") || null,
-    email: localStorage.getItem("email") || null,
-    role: localStorage.getItem("role") || null,
-    accessToken: null,
-    refreshToken: null,
+
+    user: storedUser ? JSON.parse(storedUser) : null,
+
+    accessToken: localStorage.getItem("accessToken"),
+    refreshToken: localStorage.getItem("refreshToken"),
   },
 
   reducers: {
     logout: (state) => {
-      state.userId = null;
-      state.name = null;
-      state.email = null;
-      state.role = null;
-      state.refreshToken = null;
+      state.user = null;
       state.accessToken = null;
+      state.refreshToken = null;
+
+      localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
     },
   },
 
@@ -68,15 +75,18 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(login.fulfilled, (state, action) => {
-        console.log(action.payload);
+        const { data, accessToken, refreshToken } = action.payload;
 
         setAuthToLocalStorage(action.payload);
-        state.userId = action.payload.data._id;
-        state.name = action.payload.data.name;
-        state.email = action.payload.data.email;
-        state.role = action.payload.data.role;
-        state.accessToken = action.payload.accessToken;
-        state.refreshToken = action.payload.refreshToken;
+
+        state.user = {
+          id: data._id,
+          name: data.name,
+          email: data.email,
+          role: data.role,
+        };
+        state.accessToken = accessToken;
+        state.refreshToken = refreshToken;
         state.loading = false;
       })
       .addCase(login.rejected, (state, action) => {
@@ -90,8 +100,19 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(register.fulfilled, (state, action) => {
-        console.log(action.payload);
+        const { data, accessToken, refreshToken } = action.payload;
+
         setAuthToLocalStorage(action.payload);
+
+        state.user = {
+          id: data._id,
+          name: data.name,
+          email: data.email,
+          role: data.role,
+        };
+
+        state.accessToken = accessToken;
+        state.refreshToken = refreshToken;
         state.loading = false;
       })
       .addCase(register.rejected, (state, action) => {

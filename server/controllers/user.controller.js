@@ -27,7 +27,8 @@ export const getUserByToken = async (req, res, next) => {
     }
     res.status(200).json({
       success: true,
-      message: "User now updated",
+      message: "User fetched successfully",
+      data: user,
     });
   } catch (error) {
     next(error);

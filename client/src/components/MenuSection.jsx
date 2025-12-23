@@ -2,12 +2,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchMenuItems, setSelectedCategory } from "@/redux/menuSlice";
 import { memo, useEffect, useState } from "react";
 import { addToCartThunk } from "@/redux/cartSlice";
+import { UtensilsCrossed } from "lucide-react";
 
-// MenuCard 
+// MenuCard
 const MenuCard = memo(({ item }) => {
   const [isAdding, setIsAdding] = useState(false);
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.auth.userId);
+  const userId = useSelector((state) => state.auth.user?.id);
 
   const handleClick = async (menuItemId) => {
     if (!userId) {
@@ -17,57 +18,51 @@ const MenuCard = memo(({ item }) => {
 
     setIsAdding(true);
     try {
-      await dispatch(addToCartThunk({ userId, menuItemId })).unwrap();
+      await dispatch(addToCartThunk({ menuItemId })).unwrap();
     } finally {
       setIsAdding(false);
     }
   };
 
   return (
-    <div className="bg-card-bg rounded-xl border border-border shadow-sm hover:shadow-md transition overflow-hidden">
-      {/* Image */}
-      <div className="w-full aspect-4/3 overflow-hidden bg-muted-bg">
+    <div className="group relative bg-card-bg rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-xl transition-all duration-30">
+      {/* IMAGE */}
+      <div className="relative h-44 overflow-hidden">
         <img
           src={item.image}
           alt={item.name}
           loading="lazy"
-          decoding="async"
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            e.currentTarget.src = "/no-image.png";
-          }}
+          className=" w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 "
+          onError={(e) => (e.currentTarget.src = "/no-image.png")}
         />
+
+        {/* PRICE BADGE */}
+        <span className=" absolute top-3 right-3 bg-black/70 backdrop-blur-md text-white text-sm font-semibold px-3 py-1 rounded-full">
+          ₹{item.price}
+        </span>
       </div>
 
-      {/* Content */}
+      {/* CONTENT */}
       <div className="p-4 space-y-2">
-        {/* Name + Price */}
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-text-main">
-            {item.name}
-          </h3>
-          <p className="text-lg font-semibold text-brand-main">
-            ₹{item.price}
-          </p>
-        </div>
+        <h3 className="text-base font-semibold text-text-main leading-snug">
+          {item.name}
+        </h3>
 
-        {/* Description */}
         <p className="text-sm text-text-muted line-clamp-2">
           {item.description}
         </p>
 
-        {/* Category + Button */}
-        <div className="flex items-center justify-between pt-2">
-          <span className="text-xs text-text-subtle uppercase tracking-wide">
+        <div className="flex items-center justify-between pt-3">
+          <span className="text-[10px] uppercase tracking-wider text-text-subtle bg-hover px-2 py-1 rounded-full">
             {item.category}
           </span>
 
           <button
             disabled={isAdding}
             onClick={() => handleClick(item._id)}
-            className="px-4 py-2 bg-brand-main text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-60 transition"
+            className=" flex items-center gap-1 px-4 py-1.5 bg-brand-main text-white text-sm font-medium rounded-full transition-all hover:scale-105 active:scale-95 disabled:opacity-60 "
           >
-            {isAdding ? "Adding..." : "Add to Cart"}
+            {isAdding ? "Adding..." : "+ Add"}
           </button>
         </div>
       </div>
@@ -90,10 +85,10 @@ const MenuSection = () => {
     <section id="menu-section" className="space-y-8 pt-12">
       {/* Title */}
       <div>
-        <h2 className="text-xl md:text-2xl font-extrabold text-text-main">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-text-main tracking-tight">
           Our Signature Dishes
         </h2>
-        <p className="text-[12px] text-text-muted max-w-md mt-1">
+        <p className="text-sm text-text-muted max-w-md mt-1">
           From classic favorites to modern culinary creations, each dish is made
           with fresh ingredients & an extra dash of love.
         </p>
@@ -108,7 +103,7 @@ const MenuSection = () => {
             <button
               key={cat}
               onClick={() => dispatch(setSelectedCategory(cat))}
-              className={`px-4 py-2 rounded-full text-sm font-medium border transition
+              className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all
                 ${
                   isActive
                     ? "bg-brand-main text-white border-brand-main"
@@ -131,9 +126,15 @@ const MenuSection = () => {
 
       {/* Empty State */}
       {menuItems.length === 0 && (
-        <p className="text-center text-text-muted py-12">
-          No items available.
-        </p>
+        <div className="text-center py-16 space-y-2">
+          <p className="text-lg font-medium text-text-main">
+            No dishes found
+            <UtensilsCrossed className="w-5 h-5" />
+          </p>
+          <p className="text-sm text-text-muted">
+            Try selecting a different category.
+          </p>
+        </div>
       )}
     </section>
   );

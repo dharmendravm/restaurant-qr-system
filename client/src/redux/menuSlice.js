@@ -41,10 +41,10 @@ const menuSlice = createSlice({
     setSelectedCategory: (state, action) => {
       state.selectedCategory = action.payload;
     },
-    SetSearchQuery: (state, action) => {
+    setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
     },
-    clearMenuItem: (state) => {
+    clearMenuItems: (state) => {
       state.menuItems = [];
       state.allMenuItems = [];
       state.categories = [];

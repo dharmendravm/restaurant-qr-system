@@ -1,26 +1,19 @@
 import React, { useState } from "react";
-import {
-  User,
-  Mail,
-  Lock,
-  ArrowRight,
-  GiftIcon,
-  UserPlus,
-  LockKeyhole,
-  TabletSmartphone,
-} from "lucide-react";
+import { User, Mail, Lock, ArrowRight, GiftIcon, UserPlus, LockKeyhole, TabletSmartphone } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-
-import { BrandLogo } from "@/components/BrandLogo";
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "@/redux/authSlice";
 
-import { useToast } from "@/components/ui/toast";
+import { register as authRegister } from "@/redux/authSlice";
 
+import { BrandLogo } from "@/components/shared/BrandLogo";
 import AuthError from "@/components/auth/AuthError";
 import AuthInput from "@/components/auth/AuthInput";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthAsideContent from "@/components/ui/AuthAsideContent";
+import { useToast } from "@/components/ui/toast";
+
+
+
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -56,7 +49,7 @@ const Register = () => {
     console.log("Form submitted:", formData);
 
     // Register API call + toast on success / error
-    dispatch(register(formData))
+    dispatch(authRegister(formData))
       .unwrap()
       .then(() => {
         success(
@@ -204,7 +197,6 @@ const Register = () => {
             </div>
           </div>
 
-          {/* RightContent */}
           <AuthAsideContent />
         </div>
       </div>

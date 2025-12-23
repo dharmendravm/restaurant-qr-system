@@ -1,11 +1,5 @@
 import { borderVariants } from "./borderVariants";
 
-const iconMap = {
-  "Earn Points": "emerald",
-  "Redeem Points": "cyan",
-  "Bonus Points": "amber",
-};
-
 const LoyaltyCard = ({ title, value, icon, border }) => {
   return (
     <div

@@ -57,15 +57,17 @@ const HeroSection = () => {
             Reserve a Table
           </button>
 
-          <button className="cursor-pointer w-full bg-hover text-brand-main border border-border hover:border-brand-main sm:w-auto rounded-full flex justify-center items-center px-21 py-2.5 text-xs sm:text-sm font-semibold  transition delay-75 ease-in-out duration-100">
+          <button className="cursor-pointer w-full bg-hover text-brand-main border border-border hover:border-brand-main sm:w-auto rounded-full flex justify-center items-center px-21 py-2.5 text-xs sm:text-sm font-semibold  transition delay-75 ease-in-out duration-100 whitespace-nowrap">
             Free Delivery Above ₹500
           </button>
         </div>
 
         <div className="inline-flex items-center gap-1 text-[11px] text-cat-all-bg">
           <div className="p-1 rounded-full bg-hover">
-            <Star className="h-4 w-4 text-brand-main
-" />
+            <Star
+              className="h-4 w-4 text-brand-main
+"
+            />
           </div>
           4.8/5 rated by 2k+ happy diners
         </div>

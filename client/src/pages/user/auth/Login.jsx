@@ -4,12 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "@/redux/authSlice";
 import { Mail, Lock, ArrowRight, Gift, LogIn } from "lucide-react";
-import { BrandLogo } from "@/components/BrandLogo";
+import { BrandLogo } from "@/components/shared/BrandLogo";
 import { GoogleLoginUI } from "@/components/ui/GoogleUI";
 import { useToast } from "@/components/ui/toast";
 
 import AuthError from "@/components/auth/AuthError";
-
 import AuthInput from "@/components/auth/AuthInput";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthAsideContent from "@/components/ui/AuthAsideContent";

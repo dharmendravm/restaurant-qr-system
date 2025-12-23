@@ -1,6 +1,7 @@
 import { useEffect } from "react";
+import { Outlet } from "react-router-dom";
 
-function ForceDarkPages({ children }) {
+function ForceDarkPages() {
   useEffect(() => {
     document.documentElement.classList.add("dark");
 
@@ -8,7 +9,7 @@ function ForceDarkPages({ children }) {
     };
   }, []);
 
-  return <>{children}</>;
+  return <Outlet/>;
 }
 
 export default ForceDarkPages;

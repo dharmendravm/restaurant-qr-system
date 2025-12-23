@@ -1,21 +1,19 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Login from "@/pages/auth/Login";
-import Register from "@/pages/auth/Register";
+import Welcome from "@/pages/user/Welcome";
+import Login from "@/pages/user/auth/Login";
+import Register from "@/pages/user/auth/Register";
+import ForgotPassword from "./pages/user/auth/ForgotPassword";
+import ResetPassword from "./pages/user/auth/ResetPassword";
 
 import ProtectedRoutes from "@/routes/ProtectedRoutes";
-import HomePage from "@/pages/HomePage";
-import Welcome from "@/pages/Welcome";
-import AuthenticatedLayout from "@/layout/AuthenticatedLayout";
-import AdminRoute from "@/routes/AdminRoute";
-import AdminMenu from "@/pages/admin/AdminMenu";
-import UserProfile from "./pages/UserProfile";
 import ForceDarkPages from "./routes/ForceDarkPages";
-import CartPage from "./pages/Cart/CartPage";
-import ForgotPassword from "./pages/auth/ForgotPassword";
-import ResetPassword from "./pages/auth/ResetPassword";
 
+import AuthenticatedLayout from "@/layout/AuthenticatedLayout";
+import HomePage from "@/pages/user/HomePage";
+import CartPage from "./pages/user/Cart/CartPage";
+import UserProfile from "./pages/user/UserProfile";
 
 function App() {
   return (
@@ -23,95 +21,23 @@ function App() {
       <Router>
         <Routes>
           {/* Public Routes */}
-          <Route
-            path="/welcome"
-            element={
-              <ForceDarkPages>
-                <Welcome />
-              </ForceDarkPages>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <ForceDarkPages>
-                <Login />
-              </ForceDarkPages>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <ForceDarkPages>
-                <Register />
-              </ForceDarkPages>
-            }
-          />
-          {/* User Forgot Password */}
-          <Route
-            path="/recovery"
-            element={
-              <ForceDarkPages>
-                <ForgotPassword />
-              </ForceDarkPages>
-            }
-          />
-          {/* User reset Password */}
-          <Route
-            path="/reset-password/:token"
-            element={
-              <ForceDarkPages>
-                <ResetPassword />
-              </ForceDarkPages>
-            }
-          />
+          <Route element={<ForceDarkPages />}>
+            <Route path="/welcome" element={<Welcome />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/recovery" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
+          </Route>
 
           {/* Protected Routes with main app layout */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoutes>
-                <AuthenticatedLayout>
-                  <HomePage />
-                </AuthenticatedLayout>
-              </ProtectedRoutes>
-            }
-          />
+          <Route element={<ProtectedRoutes />}>
+            <Route element={<AuthenticatedLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/user/profile" element={<UserProfile />} />
+              <Route path="/user/cart" element={<CartPage />} />
+            </Route>
+          </Route>
 
-          {/* User Profile */}
-          <Route
-            path="/user/profile"
-            element={
-              <ProtectedRoutes>
-                <AuthenticatedLayout>
-                  <UserProfile />
-                </AuthenticatedLayout>
-              </ProtectedRoutes>
-            }
-          />
-
-          {/* User Cart */}
-          <Route
-            path="/user/cart"
-            element={
-              <ProtectedRoutes>
-                <AuthenticatedLayout>
-                  <CartPage />
-                </AuthenticatedLayout>
-              </ProtectedRoutes>
-            }
-          />
-          {/* Admin dashboard */}
-          <Route
-            path="/admin/menu"
-            element={
-              <AdminRoute>
-                <AuthenticatedLayout>
-                  <AdminMenu />
-                </AuthenticatedLayout>
-              </AdminRoute>
-            }
-          />
         </Routes>
       </Router>
     </div>

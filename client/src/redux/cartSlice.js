@@ -3,18 +3,27 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-/* ================= THUNKS ================= */
+// redux/helpers/getAuthToken.js
+export const requireAuthToken = (thunkApi) => {
+  const token = thunkApi.getState().auth.accessToken;
+  if (!token) throw new Error("Not authenticated");
+  return token;
+};
 
 // GET CART
 export const getCartThunk = createAsyncThunk(
   "cart/getCart",
-  async (userId, thunkApi) => {
+  async (_, thunkApi) => {
     try {
-      const res = await axios.get(`${API_URL}/api/v1/cart/${userId}`);
+      const accessToken = requireAuthToken(thunkApi);
+
+      const res = await axios.get(`${API_URL}/api/v1/cart`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
       return res.data.cart;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.response?.data?.message || "Failed to fetch cart"
+        error.message || error.response?.data?.message || "Failed to fetch cart"
       );
     }
   }
@@ -23,17 +32,22 @@ export const getCartThunk = createAsyncThunk(
 // ADD TO CART
 export const addToCartThunk = createAsyncThunk(
   "cart/addToCart",
-  async ({ userId, menuItemId, quantity }, thunkApi) => {
+  async ({ menuItemId, quantity }, thunkApi) => {
     try {
-      const res = await axios.post(`${API_URL}/api/v1/cart/add`, {
-        userId,
-        menuItemId,
-        quantity,
-      });
+      const accessToken = requireAuthToken(thunkApi);
+
+      const res = await axios.post(
+        `${API_URL}/api/v1/cart/add`,
+        {
+          menuItemId,
+          quantity,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
       return res.data.cart;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.response?.data?.message || "Failed to add item"
+        error.message || error.response?.data?.message || "Failed to add item"
       );
     }
   }
@@ -42,16 +56,23 @@ export const addToCartThunk = createAsyncThunk(
 // INCREASE QTY
 export const increaseQtyCartThunk = createAsyncThunk(
   "cart/increaseQty",
-  async ({ userId, menuItemId }, thunkApi) => {
+  async (menuItemId, thunkApi) => {
     try {
-      const res = await axios.patch(`${API_URL}/api/v1/cart/increase`, {
-        userId,
-        menuItemId,
-      });
+      const accessToken = requireAuthToken(thunkApi);
+
+      const res = await axios.patch(
+        `${API_URL}/api/v1/cart/increase`,
+        {
+          menuItemId,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
       return res.data.cart;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.response?.data?.message || "Failed to increase quantity"
+        error.message ||
+          error.response?.data?.message ||
+          "Failed to increase quantity"
       );
     }
   }
@@ -60,16 +81,23 @@ export const increaseQtyCartThunk = createAsyncThunk(
 // DECREASE QTY
 export const decreaseQtyCartThunk = createAsyncThunk(
   "cart/decreaseQty",
-  async ({ userId, menuItemId }, thunkApi) => {
+  async (menuItemId, thunkApi) => {
     try {
-      const res = await axios.patch(`${API_URL}/api/v1/cart/decrease`, {
-        userId,
-        menuItemId,
-      });
+      const accessToken = requireAuthToken(thunkApi);
+
+      const res = await axios.patch(
+        `${API_URL}/api/v1/cart/decrease`,
+        {
+          menuItemId,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
       return res.data.cart;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.response?.data?.message || "Failed to decrease quantity"
+        error.message ||
+          error.response?.data?.message ||
+          "Failed to decrease quantity"
       );
     }
   }
@@ -78,15 +106,21 @@ export const decreaseQtyCartThunk = createAsyncThunk(
 // REMOVE ITEM
 export const removeItemCartThunk = createAsyncThunk(
   "cart/removeItem",
-  async ({ userId, menuItemId }, thunkApi) => {
+  async (menuItemId, thunkApi) => {
     try {
+      const accessToken = requireAuthToken(thunkApi);
+
       const res = await axios.delete(`${API_URL}/api/v1/cart/remove`, {
-        data: { userId, menuItemId },
+        data: { menuItemId },
+        headers: { Authorization: `Bearer ${accessToken}` },
       });
+
       return res.data.cart;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.response?.data?.message || "Failed to remove item"
+        error.message ||
+          error.response?.data?.message ||
+          "Failed to remove item"
       );
     }
   }
@@ -95,15 +129,18 @@ export const removeItemCartThunk = createAsyncThunk(
 // CLEAR CART
 export const clearCartThunk = createAsyncThunk(
   "cart/clearCart",
-  async (userId, thunkApi) => {
+  async (_, thunkApi) => {
     try {
+      const accessToken = requireAuthToken(thunkApi);
+
       await axios.delete(`${API_URL}/api/v1/cart/clear`, {
-        data: { userId },
+        headers: { Authorization: `Bearer ${accessToken}` },
       });
+
       return null;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.response?.data?.message || "Failed to clear cart"
+        error.message || error.response?.data?.message || "Failed to clear cart"
       );
     }
   }
@@ -114,7 +151,7 @@ export const clearCartThunk = createAsyncThunk(
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    cart: null,      //
+    cart: null, //
     loading: false,
     error: null,
   },
@@ -140,6 +177,7 @@ const cartSlice = createSlice({
       .addMatcher(
         (action) =>
           action.type.startsWith("cart/") &&
+          !action.type.startsWith("cart/getCart") &&
           action.type.endsWith("/pending"),
         (state) => {
           state.loading = true;
@@ -149,6 +187,7 @@ const cartSlice = createSlice({
       .addMatcher(
         (action) =>
           action.type.startsWith("cart/") &&
+          !action.type.startsWith("cart/getCart") &&
           action.type.endsWith("/fulfilled"),
         (state, action) => {
           state.loading = false;
@@ -157,8 +196,7 @@ const cartSlice = createSlice({
       )
       .addMatcher(
         (action) =>
-          action.type.startsWith("cart/") &&
-          action.type.endsWith("/rejected"),
+          action.type.startsWith("cart/") && action.type.endsWith("/rejected"),
         (state, action) => {
           state.loading = false;
           state.error = action.payload;

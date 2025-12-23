@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { CartHeader } from "./CartHeader";
 import { CartItemsList } from "./CartItemsList";
 import { OrderSummary } from "./OrderSummary";
 import { EmptyCart } from "./EmptyCart";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import {
   decreaseQtyCartThunk,
   getCartThunk,
@@ -14,30 +13,26 @@ import CartSkeleton from "./CartSkeleton";
 import { GuestCart } from "./GuestCart";
 
 const CartPage = () => {
-  const { userId, email } = useSelector((state) => state.auth);
+  const userId = useSelector((state) => state.auth.user?.id);
   const { cart, loading, error } = useSelector((state) => state.cart);
 
-  const isLoggedIn = !!email;
+  const isLoggedIn = !!userId;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (isLoggedIn && userId && !cart) {
-      dispatch(getCartThunk(userId));
+      dispatch(getCartThunk());
     }
   }, [isLoggedIn, userId, cart, dispatch]);
 
   const cartActions = useMemo(
     () => ({
-      increase: (id) =>
-        dispatch(increaseQtyCartThunk({ userId, menuItemId: id })),
-
-      decrease: (id) =>
-        dispatch(decreaseQtyCartThunk({ userId, menuItemId: id })),
-
-      remove: (id) => dispatch(removeItemCartThunk({ userId, menuItemId: id })),
+      increase: (id) => dispatch(increaseQtyCartThunk(id)),
+      decrease: (id) => dispatch(decreaseQtyCartThunk(id)),
+      remove: (id) => dispatch(removeItemCartThunk(id)),
     }),
-    [dispatch, userId]
+    [dispatch]
   );
 
   if (!isLoggedIn) {
@@ -57,7 +52,15 @@ const CartPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         {/* LEFT */}
         <div className="lg:col-span-2 space-y-6">
-          <CartHeader />
+          <div>
+            <h1 className="text-3xl font-extrabold tracking-tight">
+              Your Cart
+            </h1>
+            <p className="text-text-muted text-sm mt-1">
+              Review your items before checkout
+            </p>
+            <div className="h-px bg-border mt-5" />
+          </div>
           {error && (
             <div className="mb-4 p-3 rounded-xl border border-danger/30 bg-danger/10 text-danger text-sm">
               {error}
