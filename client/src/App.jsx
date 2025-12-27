@@ -19,7 +19,7 @@ import ProtectedAdmin from "./routes/ProtectedAdmin";
 import AdminLayout from "./layout/AdminLayout";
 import Dashboard from "./pages/admin/dashboard/Dashboard";
 import UsersPage from "./pages/admin/users/UserPage";
-import TablePage from './pages/admin/tables/tablesPage';
+import TablesPage from './pages/admin/tables/TablesPage';
 
 function App() {
   return (
@@ -48,7 +48,7 @@ function App() {
             <Route element={<AdminLayout />}>
               <Route path="/admin" element={<Dashboard />} />
               <Route path="/admin/users" element={<UsersPage />} />
-              <Route path="/admin/tables" element={<TablePage />} />
+              <Route path="/admin/tables" element={<TablesPage />} />
             </Route>
           </Route>
         </Routes>
