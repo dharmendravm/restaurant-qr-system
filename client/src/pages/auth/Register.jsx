@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {
-  User,
-  Mail,
-  Lock,
-  ArrowRight,
-  GiftIcon,
-  UserPlus,
-  LockKeyhole,
-  TabletSmartphone,
-} from "lucide-react";
+import { User, Mail, Lock, ArrowRight, GiftIcon, UserPlus, LockKeyhole, TabletSmartphone } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -164,9 +155,11 @@ const Register = () => {
                   <div className="flex items-start gap-3">
                     <input
                       type="checkbox"
+                      className="checkbox validator w-4 h-4"
                       required
-                      className="w-4 h-4 accent-orange-400 mt-1"
+                      title="Required"
                     />
+
                     <p className="text-text-muted text-xs">
                       I agree to the{" "}
                       <span className="text-text-accent underline">Terms</span>{" "}

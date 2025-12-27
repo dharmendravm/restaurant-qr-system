@@ -49,6 +49,9 @@ const Navbar = () => {
       el.scrollIntoView({ behavior: "smooth" });
     }
   };
+  const isLoggedInUser = user?.role === "admin" || user?.role === "customer";
+  const isGuest = !isLoggedInUser;
+
   return (
     <header className="sticky top-0 z-40 flex justify-center w-full">
       <nav className="w-full md:w-full rounded-b-md bg-blend-color backdrop-blur-xl px-4 md:px-6 py-2">
@@ -94,8 +97,9 @@ const Navbar = () => {
             {displayRole === "admin" && (
               <li>
                 <Link
-                  to="/admin/menu"
-                  className="flex items-center gap-2 rounded-full px-3 py-1.5 bg-admin text-white"
+                  to="/admin"
+                  className="flex items-center gap-2 rounded-full px-3 py-1.5 bg-card-bg animate-pulse text-text-accent 
+                  hover:text-admin ease-in delay-150 duration-300 transition-all"
                 >
                   <Shield className="w-5 h-5" />
                   Admin
@@ -133,97 +137,101 @@ const Navbar = () => {
             <div className="hidden md:block relative">
               <button
                 onClick={() => setIsProfileOpen((p) => !p)}
-                className="flex items-center gap-3 px-3 py-2 rounded-xl bg-card-bg hover:bg-hover transition"
+                className="cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full bg-card-bg border border-border shadow-sm"
               >
-                {/* Icon */}
-                <div
-                  className=" w-9 h-9 rounded-xl bg-card-bg border border-border flex items-center justify-center"
-                >
-                  <User className="w-4 h-4 text-text-muted" />
+                <div className="w-8 h-8 rounded-full bg-brand-main flex items-center justify-center shadow">
+                  <User className="w-4 h-4 text-white" />
                 </div>
 
-                {/* Identity */}
-                <div className="text-left min-w-0">
-                  <p className="text-sm font-medium text-text-main truncate">
+                <div className="text-left leading-tight">
+                  <p className="text-[11px] font-semibold text-text-main line-clamp-1">
                     {displayName}
                   </p>
-                  <p className="text-[11px] text-text-muted truncate">
+                  <p className="text-[10px] uppercase tracking-wide text-text-muted line-clamp-1">
                     {displayRole}
                   </p>
                 </div>
 
-                {/* Arrow */}
                 <ChevronDown
-                  className={`ml-1 w-4 h-4 text-text-muted transition-transform duration-200 ${isProfileOpen ? "rotate-180" : ""}`}
+                  className={` w-4 h-4 text-text-muted transition-transform ${
+                    isProfileOpen ? "rotate-180" : ""
+                  }`}
                 />
               </button>
 
               {isProfileOpen && (
                 <>
-                  <div
-                    className="fixed inset-0 z-40"
+                  {/* Backdrop */}
+                  <button
+                    className="fixed inset-0 z-10 cursor-default"
                     onClick={() => setIsProfileOpen(false)}
+                    aria-hidden="true"
                   />
 
-                  <div className=" absolute right-0 mt-4 z-50 w-[260px] rounded-2xl border border-border bg-card-bg shadow-[0_25px_60px_-20px_rgba(0,0,0,0.6)] overflow-hidden">
-                    <div className="px-4 pt-5 pb-4 text-center border-b border-border">
-                      <div className=" mx-auto mb-3 w-10 h-10 rounded-full  bg-brand-main/15 text-brand-main flex items-center justify-center text-sm font-semibold ">
-                        {displayName?.charAt(0)}
-                      </div>
-
-                      <p className="text-sm font-medium text-text-main truncate">
+                  {/* Dropdown */}
+                  <div className="absolute right-0 mt-4 w-64 z-20 bg-card-bg border border-border rounded-2xl shadow-2xl">
+                    {/* Header */}
+                    <div className="p-4 border-b border-border">
+                      <p className="text-sm font-semibold text-text-main line-clamp-1">
                         {displayName}
                       </p>
-                      <p className="text-[11px] text-text-muted truncate">
+                      <p className="text-[11px] text-text-muted line-clamp-1">
                         {displayEmail}
                       </p>
-
-                      <span className=" mt-2 inline-block text-[10px] uppercase tracking-wider text-brand-main ">
+                      <p className="mt-1 text-[9px] uppercase tracking-wide text-brand-main">
                         {displayRole}
-                      </span>
+                      </p>
                     </div>
 
-                    {/* Menu */}
-                    <div className="py-2">
-                      {user?.role === "admin" || user?.role === "customer" ? (
-                        <>
-                          <MenuItem
-                            icon={User}
-                            label="Profile"
-                            to="/user/profile"
-                            active
-                          />
-
-                          <MenuItem icon={Shield} label="Account" />
-                        </>
+                    {/* Actions */}
+                    <div className="p-2">
+                      {isLoggedInUser ? (
+                        <Link
+                          to="/user/profile"
+                          onClick={() => setIsProfileOpen(false)}
+                          className="w-full flex items-center gap-2 px-3 py-2 text-[12px] text-brand-main hover:bg-hover rounded-xl transition"
+                        >
+                          <User className="w-4 h-4" />
+                          <span>Profile</span>
+                        </Link>
                       ) : (
-                        <MenuItem
-                          icon={UserPlus}
-                          label="Register"
+                        <Link
                           to="/register"
-                          active
-                        />
+                          onClick={() => setIsProfileOpen(false)}
+                          className="w-full flex items-center gap-2 px-3 py-2 text-[12px] text-text-main hover:bg-hover rounded-xl transition"
+                        >
+                          <UserPlus className="w-4 h-4" />
+                          <span>Register Now</span>
+                        </Link>
                       )}
-                      <MenuItem icon={ShoppingCart} label="Orders" />
-                    </div>
 
-                    {/* Divider */}
-                    <div className="h-px bg-border mx-3 my-2" />
-
-                    {(user?.role === "admin" || user?.role === "customer") && (
-                      <div className="pb-2">
+                      {isGuest && (
                         <button
+                          type="button"
                           onClick={() => {
                             setIsProfileOpen(false);
                             handleLogout();
                           }}
-                          className="w-full flex items-center gap-3 px-4 py-2 text-sm text-danger hover:bg-danger/10 transition"
+                          className="mt-1 w-full flex items-center gap-2 px-3 py-2 text-[12px] text-danger hover:bg-hover rounded-xl transition"
+                        >
+                          <X className="w-4 h-4" />
+                          <span>destroy session</span>
+                        </button>
+                      )}
+                      {isLoggedInUser && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsProfileOpen(false);
+                            handleLogout();
+                          }}
+                          className="mt-1 w-full flex items-center gap-2 px-3 py-2 text-[12px] text-danger hover:bg-hover rounded-xl transition"
                         >
                           <LogOut className="w-4 h-4" />
-                          <span>Sign out</span>
+                          <span>Logout</span>
                         </button>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </>
               )}

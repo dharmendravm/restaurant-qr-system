@@ -24,7 +24,16 @@ const HeroSection = () => {
 
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-main leading-tight mb-3">
           Savor the Taste of <br />
-          <span className="text-brand-main">Perfection.</span>
+          <span className="text-rotate text-brand-main">
+            <span className="justify-items-start">
+              <span>FRESHNESS</span>
+              <span>CHOICE</span>
+              <span>CONVENIENCE</span>
+              <span>SERVICE</span>
+              <span>DELIGHT</span>
+              <span>MORE</span>
+            </span>
+          </span>
         </h1>
 
         <p className="max-w-md text-sm text-text-muted mb-5">
@@ -37,6 +46,7 @@ const HeroSection = () => {
             <Clock4 className="h-4 w-4 text-brand-main" />
             Fast Delivery
           </div>
+
           <div className="inline-flex items-center gap-1 text-[11px] text-[#a08f7d] sm:flex-c">
             <UtensilsCrossed className="h-4 w-4 text-brand-main" />
             100% Vegetarian

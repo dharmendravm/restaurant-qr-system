@@ -23,14 +23,16 @@ const AdminNavbar = () => {
   };
 
   return (
-    <header className="h-14 flex items-center justify-between px-6 border-b border-border bg-card-bg">
-      <h1 className="text-sm font-semibold text-text-main">Admin Panel</h1>
+    <header className="h-14 flex items-center justify-between px-6 border-b border-border bg-card-bg/50">
+      <div className="px-3 py-2 border border-border rounded-3xl">
+      <h1 className="text-sm font-semibold text-text-main">TableOrbit</h1>
+      </div>
 
       <div className="flex items-center gap-4">
         <span className="text-xs text-text-muted">Admin</span>
       </div>
 
-      <div className="mr-2 flex justify-end">
+      <div className="flex gap-1 justify-end">
         <ThemeToggle />
      
       <button
@@ -40,7 +42,6 @@ const AdminNavbar = () => {
         className=" flex items-center gap-3 px-4 py-2 text-sm text-danger rounded-2xl hover:bg-danger/10 transition"
       >
         <LogOut className="w-4 h-4" />
-        <span>Sign out</span>
       </button>
        </div>
     </header>

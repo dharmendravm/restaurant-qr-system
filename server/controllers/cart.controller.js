@@ -1,5 +1,6 @@
 import Cart from "../models/cart.js";
 import Menu from "../models/menu.js";
+import AppError from "../utils/appError.js";
 
 // ---------------- HELPERS ----------------
 
@@ -37,9 +38,7 @@ export const addToCart = async (req, res, next) => {
 
     const menu = await findMenu(menuItemId);
     if (!menu) {
-      const error = new Error("No menu item found");
-      error.statusCode = 404;
-      throw error;
+      return next(new AppError("No menu item found", 400));
     }
 
     let cart = await findCart(userId);
@@ -104,14 +103,14 @@ export const increaseQty = async (req, res, next) => {
 
     const cart = await findCart(userId);
     if (!cart) {
-      const error = new Error("Cart not found");
-      error.statusCode = 404;
-      throw error;
+      return next(new AppError("Cart not found", 400));
     }
 
     const item = cart.items.find((i) => i.menuItemId.toString() === menuItemId);
 
     if (!item) {
+            return next(new AppError("Item not found", 400));
+
       const error = new Error("Item not found");
       error.statusCode = 404;
       throw error;

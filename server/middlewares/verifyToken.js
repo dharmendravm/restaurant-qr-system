@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
-import { ACCESS_TOKEN_SECRET } from "../config.js";
+import { ACCESS_TOKEN_SECRET, JWT_SECRET } from "../config.js";
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -43,24 +43,24 @@ export const verifyToken = async (req, _res, next) => {
 
 
 
-// verify SessionToken 
-export const verfiySessionToken = (req, res, next) => {
-  try {
-    const sessionHead = req.headers.authorization;
-    if(!sessionHead || !sessionHead.startsWith("Bearer ")){
-      return next({
-        statusCode: 401,
-        message: "Access denied. No session token provided.",
-      });
-    }
+// // verify SessionToken 
+// export const verfiySessionToken = (req, res, next) => {
+//   try {
+//     const sessionHead = req.headers.authorization;
+//     if(!sessionHead || !sessionHead.startsWith("Bearer ")){
+//       return next({
+//         statusCode: 401,
+//         message: "Access denied. No session token provided.",
+//       });
+//     }
 
-    const token = sessionHead.split(" ")[1];
-    // Verify Session Token
-    const decoded = jwt.verify(token, JWT_SECRET || process.env.JWT_SECRET);
+//     const token = sessionHead.split(" ")[1];
+//     // Verify Session Token
+//     const decoded = jwt.verify(token, JWT_SECRET || process.env.JWT_SECRET);
 
-    // Fetch user 
+//     // Fetch user 
 
-  } catch (error) {
+//   } catch (error) {
     
-  }
-}
+//   }
+// }

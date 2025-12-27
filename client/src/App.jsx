@@ -2,21 +2,24 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Welcome from "@/pages/user/Welcome";
-import Login from "@/pages/user/auth/Login";
-import Register from "@/pages/user/Register";
-import ForgotPassword from "./pages/user/auth/ForgotPassword";
-import ResetPassword from "./pages/user/auth/ResetPassword";
+import Login from "@/pages/auth/Login";
+import Register from "@/pages/auth/Register";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
 
 import ProtectedRoutes from "@/routes/ProtectedRoutes";
 import ForceDarkPages from "./routes/ForceDarkPages";
 
 import AuthenticatedLayout from "@/layout/AuthenticatedLayout";
 import HomePage from "@/pages/user/HomePage";
-import CartPage from "./pages/user/Cart/CartPage";
+import CartPage from "./pages/Cart/CartPage";
 import UserProfile from "./pages/user/UserProfile";
+
 import ProtectedAdmin from "./routes/ProtectedAdmin";
 import AdminLayout from "./layout/AdminLayout";
 import Dashboard from "./pages/admin/dashboard/Dashboard";
+import UsersPage from "./pages/admin/users/UserPage";
+import TablePage from './pages/admin/tables/tablesPage';
 
 function App() {
   return (
@@ -44,6 +47,8 @@ function App() {
           <Route element={<ProtectedAdmin />}>
             <Route element={<AdminLayout />}>
               <Route path="/admin" element={<Dashboard />} />
+              <Route path="/admin/users" element={<UsersPage />} />
+              <Route path="/admin/tables" element={<TablePage />} />
             </Route>
           </Route>
         </Routes>

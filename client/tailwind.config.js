@@ -1,4 +1,5 @@
-/** @type {import('tailwindcss').Config} */
+import animate from "tailwindcss-animate"
+
 export default {
   content: [
     "./index.html",
@@ -7,6 +8,11 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [
-  ],
+  plugins: [animate, require("daisyui")],
+
+  daisyui: {
+    themes: false,
+    darkTheme: false,
+    base: false,
+  },
 }

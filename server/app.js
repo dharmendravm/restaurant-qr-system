@@ -4,12 +4,16 @@ import "./globallogs.js";
 import { PORT } from "./config.js";
 import ConnectDB from "./config/database.js";
 
-import adminRoutes from './router/admin.route.js';
+import adminMenuRoutes from "./router/admin/menu.route.js";
+import adminCouponRoutes from "./router/admin/coupon.route.js";
+import adminUserRoutes from "./router/admin/user.route.js";
+import adminTableRoutes from "./router/admin/table.route.js";
 
 import authRoutes from "./router/auth.route.js";
 import sessionRoute from "./router/session.route.js";
 import tableRoute from "./router/table.route.js";
 import menuRoutes from "./router/menu.route.js";
+import orderRoute from './router/order.route.js';
 import cartRoute from "./router/cart.route.js";
 import couponRoute from './router/coupen.route.js'
 import { errorHandler, notFound } from "./middlewares/errormiddleware.js";
@@ -41,15 +45,19 @@ app.get("/", (req, res) => {
 });
 
 // Admin Routes
-app.use("/api/v1/admin", adminRoutes);
+app.use('/api/v1/admin/users', adminUserRoutes);
+app.use('/api/v1/admin/coupons', adminCouponRoutes);
+app.use('/api/v1/admin/menu', adminMenuRoutes);
+app.use('/api/v1/admin/tables', adminTableRoutes);
 
 // Api Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1", sessionRoute);
-app.use("/api/v1", tableRoute);
+app.use("/api/v1/tables", tableRoute);
 app.use('/api/v1' , menuRoutes);
+app.use('/api/v1/orders', orderRoute);
 app.use('/api/v1/cart', cartRoute)
-app.use('/api/v1/coupens', couponRoute)
+app.use('/api/v1/coupons', couponRoute)
 
 // User Routes
 // app.use("/api/v1", getTotalUsers);

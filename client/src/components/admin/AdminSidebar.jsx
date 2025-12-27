@@ -5,24 +5,25 @@ import {
   UtensilsCrossed,
   Users,
   Settings,
+  Table,
 } from "lucide-react";
 
 const menu = [
   { name: "Dashboard", to: "/admin", icon: LayoutDashboard },
   { name: "Orders", to: "/admin/orders", icon: ShoppingCart },
   { name: "Menu", to: "/admin/menu", icon: UtensilsCrossed },
+  { name: "Tables", to: "/admin/tables", icon: Table },
   { name: "Users", to: "/admin/users", icon: Users },
   { name: "Settings", to: "/admin/settings", icon: Settings },
 ];
 
 const AdminSidebar = () => {
   return (
-    <aside className="w-60 border-r border-border bg-card-bg flex flex-col">
+    <aside className="w-60 border-r border-border bg-card-bg/50 flex flex-col">
       {/* Top */}
-      <div className="px-4 py-4 text-xs font-semibold text-text-muted uppercase">
+      <div className="px-4 py-4 text-xs font-semibold text-text-muted  uppercase">
         Navigation
       </div>
-
       {/* Menu */}
       <nav className="flex-1 px-2 space-y-1">
         {menu.map(({ name, to, icon: Icon }) => (

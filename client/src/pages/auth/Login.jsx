@@ -118,6 +118,7 @@ const Login = () => {
                   {/* GOOGLE LOGIN */}
                   <GoogleLoginUI />
                 </form>
+                
                 <div className="pt-2 text-center text-xs text-text-muted">
                   <p>
                     Don't have an account?{" "}

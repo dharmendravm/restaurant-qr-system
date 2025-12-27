@@ -13,5 +13,6 @@ export const CLOUD_NAME = process.env.CLOUD_NAME;
 export const CLOUD_API_KEY = process.env.CLOUD_API_KEY;
 export const CLOUD_API_SECRET = process.env.CLOUD_API_SECRET;
 
+export const JWT_SECRET = process.env.JWT_SECRET;
 export const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 export const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;

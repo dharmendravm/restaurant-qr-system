@@ -1,20 +1,5 @@
 import User from "../models/user.js";
 
-//get all users Admin
-export const getTotalUsers = async (req, res, next) => {
-  try {
-    const users = await User.find().select("-password");
-
-    return res.status(200).json({
-      success: true,
-      totalUsers: users.length,
-      users,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 // Get profile by token
 export const getUserByToken = async (req, res, next) => {
   try {

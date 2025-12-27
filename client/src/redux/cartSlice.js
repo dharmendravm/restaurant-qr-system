@@ -1,3 +1,4 @@
+import api from "@/lib/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -36,7 +37,7 @@ export const addToCartThunk = createAsyncThunk(
     try {
       const accessToken = requireAuthToken(thunkApi);
 
-      const res = await axios.post(
+      const res = await api.post(
         `${API_URL}/api/v1/cart/add`,
         {
           menuItemId, quantity,

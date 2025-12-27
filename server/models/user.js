@@ -35,10 +35,10 @@ const UserSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
   },
-  referenceToken: {
+  refreshToken: {
     type: String,
   },
-  referenceTokenExpiresTime: {
+  refreshTokenExpiresAt: {
     type: Date,
   },
   resetPasswordToken: {
