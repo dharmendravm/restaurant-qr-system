@@ -4,6 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
   baseURL: `${API_URL}/api/v1/`,
+   withCredentials: true
 });
 
 // REQUEST INTERCEPTOR
@@ -29,10 +30,7 @@ api.interceptors.response.use(
     }
 
     // Access token expired
-    if (
-      error.response.status === 401 &&
-      !originalRequest._retry
-    ) {
+    if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
@@ -44,15 +42,15 @@ api.interceptors.response.use(
 
         const res = await axios.post(
           `${API_URL}/api/v1/auth/refresh`,
-          { refreshToken }
+          { refreshToken },
+          { withCredentials: true }
         );
 
         const newAccessToken = res.data.accessToken;
 
         localStorage.setItem("accessToken", newAccessToken);
 
-        originalRequest.headers.Authorization =
-          `Bearer ${newAccessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
         return api(originalRequest);
       } catch (err) {

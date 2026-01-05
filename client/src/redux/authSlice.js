@@ -1,3 +1,4 @@
+import api from "@/lib/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -6,10 +7,13 @@ const API_URL = import.meta.env.VITE_API_URL;
 // Login
 export const login = createAsyncThunk("/auth/login", async (data, thunkApi) => {
   try {
-    const res = await axios.post(`${API_URL}/api/v1/auth/login`, data);
+    const res = await api.post(`auth/login`, data);
     return res.data;
   } catch (error) {
-    return thunkApi.rejectWithValue(error.response.data.message);
+    const message =
+      error?.response?.data?.message || error?.message || "Server error";
+
+    return thunkApi.rejectWithValue(message);
   }
 });
 
@@ -21,7 +25,10 @@ export const register = createAsyncThunk(
       const res = await axios.post(`${API_URL}/api/v1/auth/register`, data);
       return res.data;
     } catch (error) {
-      return thunkApi.rejectWithValue(error.response.data.message);
+      const message =
+        error?.response?.data?.message || error?.message || "Server error";
+
+      return thunkApi.rejectWithValue(message);
     }
   }
 );

@@ -94,6 +94,20 @@ const Toast = ({ toast, onClose }) => {
   const conf = typeStyles[type] || typeStyles.info;
   const Icon = conf.icon;
 
+  const safeTitle =
+    typeof title === "string" || typeof title === "number"
+      ? title
+      : title != null
+      ? JSON.stringify(title)
+      : null;
+
+  const safeDescription =
+    typeof description === "string" || typeof description === "number"
+      ? description
+      : description != null
+      ? JSON.stringify(description)
+      : null;
+
   return (
     <div
       className={`border shadow-[0_12px_30px_rgba(0,0,0,0.18)] rounded-2xl px-4 py-3 flex gap-3 items-start ${conf.container}`}
@@ -104,14 +118,14 @@ const Toast = ({ toast, onClose }) => {
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <div>
-            {title && (
+            {safeTitle && (
               <p className="text-xs font-semibold leading-tight mb-0.5 line-clamp-2">
-                {title}
+                {safeTitle}
               </p>
             )}
-            {description && (
+            {safeDescription && (
               <p className="text-[11px] leading-snug opacity-80 line-clamp-3">
-                {description}
+                {safeDescription}
               </p>
             )}
           </div>
