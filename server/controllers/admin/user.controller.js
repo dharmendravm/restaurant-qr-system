@@ -1,7 +1,7 @@
 import User from "../../models/user.js";
 
 //get all users
-export const getTotalUsers = async (req, res, next) => {
+export const getTotalUsers = async (_req, res, next) => {
   try {
     const users = await User.find().select(
       "-password -refreshToken -resetPasswordToken -resetPasswordExpires -referenceTokenExpiresTime"

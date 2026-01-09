@@ -1,33 +1,16 @@
-import { getAllTables, toggleTableLocal } from "@/redux/admin/tableSlice";
+import {
+  getAllTables,
+  toggleTableStatus,
+} from "@/store/admin/tableSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TableSkeleton from "@/components/admin/tables/TableSkeleton";
 import { Download } from "lucide-react";
-import axios from "axios";
 
 const TablesPage = () => {
-  const API_URL = import.meta.env.VITE_API_URL;
-
   const dispatch = useDispatch();
 
   const { tables, loading, error } = useSelector((state) => state.table);
-
-  const toggleTableStatus = async (id) => {
-    try {
-      const res = await axios.patch(
-        `${API_URL}/api/v1/admin/tables/${id}/toggle`
-      );
-
-      dispatch(
-        toggleTableLocal({
-          id,
-          isActive: res.data.isActive,
-        })
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
     dispatch(getAllTables());
@@ -83,7 +66,7 @@ const TablesPage = () => {
                         onChange={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          toggleTableStatus(table._id);
+                          dispatch(toggleTableStatus(table._id));
                         }}
                         className="toggle toggle-sm bg-danger border border-danger [--tglbg:white] checked:bg-(--color-admin) checked:border-(--color-admin) transition-all duration-300 ease-out hover:scale-[1.04] active:scale-95 checked:shadow-[0_0_0_3px_rgba(34,197,94,0.25)] shadow-[0_0_0_3px_rgba(239,68,68,0.20)] "
                       />
@@ -107,7 +90,7 @@ const TablesPage = () => {
           </table>
         </div>
       </div>
-      
+
       <div className="md:hidden space-y-3">
         {tables.map((table) => (
           <div

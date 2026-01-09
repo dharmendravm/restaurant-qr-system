@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "@/redux/authSlice";
+import { login } from "@/store/authSlice";
 import { Mail, Lock, ArrowRight, Gift, LogIn } from "lucide-react";
 import { BrandLogo } from "@/components/shared/BrandLogo";
 import { GoogleLoginUI } from "@/components/ui/GoogleUI";

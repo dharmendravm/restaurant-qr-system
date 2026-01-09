@@ -1,30 +1,26 @@
 import { useDispatch, useSelector } from "react-redux";
 import { CartItemsList } from "./CartItemsList";
 import { OrderSummary } from "./OrderSummary";
-import { EmptyCart } from "./EmptyCart";
+import { EmptyCart } from "../../components/EmptyCart";
 import { useEffect, useMemo } from "react";
 import {
   decreaseQtyCartThunk,
   getCartThunk,
   increaseQtyCartThunk,
   removeItemCartThunk,
-} from "@/redux/cartSlice";
-import CartSkeleton from "./CartSkeleton";
-import { GuestCart } from "./GuestCart";
+} from "@/store/cartSlice";
+import CartSkeleton from "../../components/CartSkeleton";
 
 const CartPage = () => {
-  const userId = useSelector((state) => state.auth.user?.id);
   const { cart, loading, error } = useSelector((state) => state.cart);
-
-  const isLoggedIn = !!userId;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isLoggedIn && userId && !cart) {
+    if (!cart) {
       dispatch(getCartThunk());
     }
-  }, [isLoggedIn, userId, cart, dispatch]);
+  }, [cart, dispatch]);
 
   const cartActions = useMemo(
     () => ({
@@ -34,10 +30,6 @@ const CartPage = () => {
     }),
     [dispatch]
   );
-
-  if (!isLoggedIn) {
-    return <GuestCart />;
-  }
 
   if (loading && !cart) {
     return <CartSkeleton />;
@@ -71,7 +63,7 @@ const CartPage = () => {
         </div>
 
         <div className="block lg:sticky lg:top-20">
-          <OrderSummary totalprice={cart.totalCartPrice} />
+          <OrderSummary/> 
         </div>
       </div>
     </div>

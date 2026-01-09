@@ -3,6 +3,6 @@ import { session } from '../controllers/session.controller.js';
 
 const router = express.Router() ;
 
-router.post('/session', session)
+router.post('/', session)
 
 export default router

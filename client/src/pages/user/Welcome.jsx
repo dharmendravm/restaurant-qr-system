@@ -4,7 +4,7 @@ import React from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { UtensilsCrossed, ChefHat, Leaf, Bell, Clock } from "lucide-react";
 import { useDispatch } from "react-redux";
-import { session as createSession } from "@/redux/guestSlice";
+import { session as createSession } from "@/store/guestSlice";
 import { useToast } from "@/components/ui/toast";
 
 const Welcome = () => {
@@ -25,11 +25,28 @@ const Welcome = () => {
   const handleContinueAsGuest = async () => {
     try {
       const qrSlug = searchParams.get("qr");
+
+      if (!qrSlug) {
+        toastError("Invalid QR link");
+        return;
+      }
+
+      const existingSessionToken = localStorage.getItem("sessionToken");
+
+      if (!existingSessionToken) {
+        navigate("/");
+      }
+
       const deviceId = getDeviceId();
 
-      await dispatch(createSession({ deviceId, qrSlug })).unwrap();
+      const res = await dispatch(createSession({ deviceId, qrSlug })).unwrap();
+
+      localStorage.setItem("sessionToken", res.data.sessionToken);
+      localStorage.setItem("tableNumber", res.data.tableNumber);
+
       success("Guest session started");
       navigate("/");
+      
     } catch (err) {
       console.error("Error starting guest session:", err);
       toastError("Guest login failed");

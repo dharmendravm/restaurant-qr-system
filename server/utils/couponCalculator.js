@@ -11,7 +11,8 @@ export const calculateCouponForCart = ({
     (!coupon.validFrom || currentDate >= coupon.validFrom) &&
     (!coupon.validTo || currentDate <= coupon.validTo);
 
-  const isOrderIsUserFirstOrder = userTotalOrders === 0;
+  const isOrderIsUserFirstOrder =
+    typeof userTotalOrders === "number" && userTotalOrders === 0;
   const isCouponIsForFirstOrder = coupon.isFirstOrder;
 
   const isAvailableCoupon =

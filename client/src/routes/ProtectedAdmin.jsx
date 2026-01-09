@@ -6,7 +6,10 @@ const ProtectedAdmin = () => {
 
   const { user, loading } = useSelector((state) => state.auth);
 
+  
+
   if (!accessToken) {
+    localStorage.clear();
     return <Navigate to="/login" replace />;
   }
 

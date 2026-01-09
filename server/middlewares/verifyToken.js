@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
-import { ACCESS_TOKEN_SECRET, JWT_SECRET } from "../config.js";
+import { ACCESS_TOKEN_SECRET } from "../config.js";
 import dotenv from 'dotenv';
 import AppError from '../utils/appError.js'
 dotenv.config();

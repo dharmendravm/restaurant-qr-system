@@ -3,7 +3,7 @@ import { User, Mail, Lock, ArrowRight, GiftIcon, UserPlus, LockKeyhole, TabletSm
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { register as authRegister } from "@/redux/authSlice";
+import { register as authRegister } from "@/store/authSlice";
 
 import { BrandLogo } from "@/components/shared/BrandLogo";
 import AuthError from "@/components/auth/AuthError";

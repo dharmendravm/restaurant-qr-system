@@ -4,6 +4,11 @@ const cartSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    default: null,
+  },
+  sessionToken: {
+    type: String,
+    default: null,
   },
   items: [
     {
@@ -16,6 +21,7 @@ const cartSchema = new mongoose.Schema({
       },
     },
   ],
+
   totalCartPrice: {
     type: Number,
   },

@@ -3,11 +3,21 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-// redux/helpers/getAuthToken.js
-export const requireAuthToken = (thunkApi) => {
+export const getOptionalAuthHeaders = (thunkApi) => {
   const token = thunkApi.getState().auth.accessToken;
-  if (!token) throw new Error("Not authenticated");
-  return token;
+  const headers = {};
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  // guest token (VERY IMPORTANT)
+  const guestToken = localStorage.getItem("sessionToken");
+  if (guestToken) {
+    headers["x-session-token"] = guestToken;
+  }
+
+  return headers;
 };
 
 // GET CART
@@ -15,15 +25,13 @@ export const getCartThunk = createAsyncThunk(
   "cart/getCart",
   async (_, thunkApi) => {
     try {
-      const accessToken = requireAuthToken(thunkApi);
+      const headers = getOptionalAuthHeaders(thunkApi);
 
-      const res = await api.get("cart", {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      const res = await api.get("cart", { headers });
       return res.data.cart;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.message || error.response?.data?.message || "Failed to fetch cart"
+        error.response?.data?.message || "Failed to fetch cart"
       );
     }
   }
@@ -34,7 +42,7 @@ export const addToCartThunk = createAsyncThunk(
   "cart/addToCart",
   async ({ menuItemId, quantity }, thunkApi) => {
     try {
-      const accessToken = requireAuthToken(thunkApi);
+      const headers = getOptionalAuthHeaders(thunkApi);
 
       const res = await api.post(
         "cart/add",
@@ -42,12 +50,12 @@ export const addToCartThunk = createAsyncThunk(
           menuItemId,
           quantity,
         },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
+        { headers }
       );
       return res.data.cart;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.message || error.response?.data?.message || "Failed to add item"
+        error.response?.data?.message || "Failed to add item"
       );
     }
   }
@@ -58,19 +66,13 @@ export const increaseQtyCartThunk = createAsyncThunk(
   "cart/increaseQty",
   async (menuItemId, thunkApi) => {
     try {
-      const accessToken = requireAuthToken(thunkApi);
+      const headers = getOptionalAuthHeaders(thunkApi);
 
-      const res = await api.patch(
-        'cart/increase',
-        { menuItemId },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
+      const res = await api.patch("cart/increase", { menuItemId }, { headers });
       return res.data.cart;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.message ||
-          error.response?.data?.message ||
-          "Failed to increase quantity"
+        error.response?.data?.message || "Failed to increase quantity"
       );
     }
   }
@@ -81,19 +83,13 @@ export const decreaseQtyCartThunk = createAsyncThunk(
   "cart/decreaseQty",
   async (menuItemId, thunkApi) => {
     try {
-      const accessToken = requireAuthToken(thunkApi);
+      const headers = getOptionalAuthHeaders(thunkApi);
 
-      const res = await api.patch(
-        'cart/decrease',
-        { menuItemId },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
+      const res = await api.patch("cart/decrease", { menuItemId }, { headers });
       return res.data.cart;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.message ||
-          error.response?.data?.message ||
-          "Failed to decrease quantity"
+        error.response?.data?.message || "Failed to decrease quantity"
       );
     }
   }
@@ -104,19 +100,17 @@ export const removeItemCartThunk = createAsyncThunk(
   "cart/removeItem",
   async (menuItemId, thunkApi) => {
     try {
-      const accessToken = requireAuthToken(thunkApi);
+      const headers = getOptionalAuthHeaders(thunkApi);
 
-      const res = await api.delete('cart/remove', {
+      const res = await api.delete("cart/remove", {
         data: { menuItemId },
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers,
       });
 
       return res.data.cart;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.message ||
-          error.response?.data?.message ||
-          "Failed to remove item"
+        error.response?.data?.message || "Failed to remove item"
       );
     }
   }
@@ -127,16 +121,16 @@ export const clearCartThunk = createAsyncThunk(
   "cart/clearCart",
   async (_, thunkApi) => {
     try {
-      const accessToken = requireAuthToken(thunkApi);
+      const headers = getOptionalAuthHeaders(thunkApi);
 
-      await api.delete('cart/clear', {
-        headers: { Authorization: `Bearer ${accessToken}` },
+      await api.delete("cart/clear", {
+        headers,
       });
 
       return null;
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.message || error.response?.data?.message || "Failed to clear cart"
+        error.response?.data?.message || "Failed to clear cart"
       );
     }
   }
@@ -146,11 +140,11 @@ export const clearCartThunk = createAsyncThunk(
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    cart: null, //
+    cart: null,
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: { },
   extraReducers: (builder) => {
     builder
 

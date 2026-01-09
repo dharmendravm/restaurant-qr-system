@@ -38,11 +38,15 @@ export const createOrder = async (req, res, next) => {
 
     // User & Cart
     const userId = req.user?.id || null;
-    const user = userId ? await User.findById(userId) : null;
+    const sessionToken = req.headers["x-session-token"] || null;
 
-    const cart = user
-      ? await Cart.findOne({ userId }).populate("items.menuItemId")
-      : null;
+    if (!userId && !sessionToken) {
+      return next(new AppError("Unauthorized", 401));
+    }
+
+    const cart = await Cart.findOne(
+      userId ? { userId } : { sessionToken }
+    ).populate("items.menuItemId");
 
     if (!cart || cart.items.length === 0) {
       return next(new AppError("Cart is empty", 400));
@@ -103,11 +107,9 @@ export const createOrder = async (req, res, next) => {
       tableNumber,
       paymentMethod,
 
-      customer: {
-        name: customerName,
-        email: customerEmail,
-        phone: customerPhone,
-      },
+      customerName,
+      customerEmail,
+      customerPhone,
 
       notes,
       items: orderItems,
@@ -162,6 +164,24 @@ export const createOrder = async (req, res, next) => {
       orderId: order._id,
       message: "Payment initiated successfully",
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getOrderById = async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    return res.status(200).json(order);
   } catch (error) {
     next(error);
   }

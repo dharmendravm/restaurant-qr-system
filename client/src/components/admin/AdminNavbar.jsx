@@ -1,7 +1,7 @@
 import { Menu, LogOut } from "lucide-react";
 import ThemeToggle from "../shared/ThemeToggle";
 import { useDispatch } from "react-redux";
-import { logout } from "@/redux/authSlice";
+import { logout } from "@/store/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "../ui/toast";
 
@@ -33,7 +33,8 @@ const AdminNavbar = ({ onMenuClick }) => {
         </button>
 
         <div className="px-3 py-1 border border-border rounded-2xl">
-          <h1 className="text-sm font-semibold">TableOrbit</h1>
+          <span className="skeleton skeleton-text">TableOrbit</span>
+          {/* <h1 className="text-sm font-semibold">TableOrbit</h1> */}
         </div>
       </div>
       <div>

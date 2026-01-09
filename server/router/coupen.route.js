@@ -1,9 +1,11 @@
 import express from "express";
-import { getAllCouponsAndApply } from "../controllers/coupon.controller.js";
-import { verifyToken } from "../middlewares/verifyToken.js";
+import { getAllCouponsWithCalculation } from "../controllers/coupon.controller.js";
+import checkGuestOrUser from "../middlewares/checkGuestOrUser.js";
+import requireUserOrGuestSession from "../middlewares/requireUserOrGuestSession.js";
 
 const router = express.Router();
 
-router.get("/apply", verifyToken, getAllCouponsAndApply);
+router.use(checkGuestOrUser)
+router.get("/preview", requireUserOrGuestSession, getAllCouponsWithCalculation);
 
 export default router;

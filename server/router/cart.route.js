@@ -7,15 +7,19 @@ import {
   increaseQty,
   removeItem,
 } from "../controllers/cart.controller.js";
-import { verifyToken } from "../middlewares/verifyToken.js";
+import checkGuestOrUser from "../middlewares/checkGuestOrUser.js";
+import requireUserOrGuestSession from "../middlewares/requireUserOrGuestSession.js";
 
 const router = express.Router();
 
-router.get("/", verifyToken, getCart);
-router.post("/add", verifyToken, addToCart);
-router.patch("/increase", verifyToken, increaseQty);
-router.patch("/decrease", verifyToken, decreaseQty);
-router.delete("/remove", verifyToken, removeItem);
-router.delete("/clear", verifyToken, clearCart);
+router.use(checkGuestOrUser);
+
+
+router.get("/", requireUserOrGuestSession, getCart);
+router.post("/add", requireUserOrGuestSession, addToCart);
+router.patch("/increase", requireUserOrGuestSession, increaseQty);
+router.patch("/decrease", requireUserOrGuestSession, decreaseQty);
+router.delete("/remove", requireUserOrGuestSession, removeItem);
+router.delete("/clear", requireUserOrGuestSession, clearCart);
 
 export default router;

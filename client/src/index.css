@@ -6,19 +6,8 @@ body {
   height: 100%;
   scroll-behavior: smooth;
 }
-@theme {
-  --color-app-bg: #0b0f14;
-  --color-card-bg: #111827;
 
-  --color-text-main: #e5e7eb;
-  --color-text-muted: #9ca3af;
-
-  --color-border: #1f2937;
-  --color-hover: #1f2933;
-
-  --color-brand-main: #fb923c;
-}
-
+/* ================= BASE THEME (LIGHT) ================= */
 
 @theme {
   /* App */
@@ -36,9 +25,6 @@ body {
   --color-text-muted: #6b7280;
   --color-text-subtle: #9ca3af;
 
-  /* Hero heading text */
-  --color-text-accent: #d97706; /* amber-600 */
-
   /* UI */
   --color-border: #e5e7eb;
   --color-hover: #fff7ed;
@@ -46,29 +32,14 @@ body {
   /* Status */
   --color-admin: #16a34a;
   --color-danger: #ef4444;
-
-  /* Success / order complete */
   --color-success: #16a34a;
 
-  /* Soft section background */
+  /* Misc */
   --color-muted-bg: #f3f4f6;
-
-  /* Categories */
-  --color-cat-all-bg: var(--color-brand-main);
-  --color-cat-all-text: #ffffff;
-
-  --color-cat-burger-bg: var(--color-hover);
-  --color-cat-burger-text: var(--color-brand-main);
-
-  --color-cat-wraps-bg: #fee2e2;
-  --color-cat-wraps-text: #b91c1c;
-
-  --color-cat-pizza-bg: #e0f2fe;
-  --color-cat-pizza-text: #2563eb;
-
   --color-btn-black: #111827;
-
 }
+
+/* ================= DARK MODE OVERRIDES ================= */
 
 .dark {
   --color-app-bg: #0b0f14;
@@ -83,27 +54,22 @@ body {
   --color-text-muted: #9ca3af;
   --color-text-subtle: #6b7280;
 
-  --color-text-accent: #facc15;
-
   --color-border: #1f2937;
   --color-hover: #1f2933;
 
   --color-admin: #22c55e;
   --color-danger: #f87171;
 
-  /* Categories */
-  --color-cat-all-bg: var(--color-brand-main);
-  --color-cat-all-text: #0b0f14;
-
-  --color-cat-burger-bg: var(--color-hover);
-  --color-cat-burger-text: var(--color-brand-main);
-
-  --color-cat-wraps-bg: #3f1d1d;
-  --color-cat-wraps-text: #fca5a5;
-
-  --color-cat-pizza-bg: #082f49;
-  --color-cat-pizza-text: #7dd3fc;
-
+  --color-muted-bg: #1f2937;
   --color-btn-black: #253141;
+}
 
+/* ================= UTILITIES ================= */
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

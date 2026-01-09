@@ -7,7 +7,8 @@ export const notFound = (req, _res, next) => {
 };
 
 // Global Error Handler
-export const globalErrorHandler = (err, req, res, next) => {
+export const globalErrorHandler = (err, req, res, _next) => {
+
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
 

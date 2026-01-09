@@ -4,8 +4,9 @@ import AppError from "../utils/appError.js";
 // HELPERS
 
 // Find cart by user
-const findCart = async (userId) => {
-  return await Cart.findOne({ userId });
+const findCart = async ({ userId, sessionToken }) => {
+  if (userId) return await Cart.findOne({ userId });
+  return await Cart.findOne({ sessionToken });
 };
 
 // Find menu item
@@ -31,7 +32,11 @@ const updateTotalPrice = async (cart) => {
 // ADD TO CART
 export const addToCart = async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user?.id || null;
+    const sessionToken = req.headers["x-session-token"] || null;
+
+    if (!userId && !sessionToken)
+      return next(new AppError("Unauthorized cart access", 401));
 
     const { menuItemId, quantity = 1 } = req.body;
 
@@ -40,9 +45,14 @@ export const addToCart = async (req, res, next) => {
       return next(new AppError("No menu item found", 400));
     }
 
-    let cart = await findCart(userId);
+    let cart = await findCart({ userId, sessionToken });
     if (!cart) {
-      cart = new Cart({ userId, items: [], totalCartPrice: 0 });
+      cart = new Cart({
+        userId: userId || null,
+        sessionToken: userId ? null : sessionToken,
+        items: [],
+        totalCartPrice: 0,
+      });
     }
 
     const existingItem = cart.items.find(
@@ -70,9 +80,10 @@ export const addToCart = async (req, res, next) => {
 // GET CART
 export const getCart = async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user?.id || null;
+    const sessionToken = req.headers["x-session-token"] || null;
 
-    const cart = await findCart(userId);
+    const cart = await findCart({ userId, sessionToken });
     if (!cart) {
       return res.status(200).json({
         success: true,
@@ -97,10 +108,12 @@ export const getCart = async (req, res, next) => {
 // INCREASE QTY
 export const increaseQty = async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user?.id || null;
+    const sessionToken = req.headers["x-session-token"] || null;
+
     const { menuItemId } = req.body;
 
-    const cart = await findCart(userId);
+    const cart = await findCart({ userId, sessionToken });
     if (!cart) {
       return next(new AppError("Cart not found", 400));
     }
@@ -127,10 +140,12 @@ export const increaseQty = async (req, res, next) => {
 // DECREASE QTY
 export const decreaseQty = async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user?.id || null;
+    const sessionToken = req.headers["x-session-token"] || null;
+
     const { menuItemId } = req.body;
 
-    const cart = await findCart(userId);
+    const cart = await findCart({ userId, sessionToken });
     if (!cart) {
       const error = new Error("Cart not found");
       error.statusCode = 404;
@@ -166,10 +181,12 @@ export const decreaseQty = async (req, res, next) => {
 // REMOVE ITEM
 export const removeItem = async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user?.id || null;
+    const sessionToken = req.headers["x-session-token"] || null;
+
     const { menuItemId } = req.body;
 
-    const cart = await findCart(userId);
+    const cart = await findCart({ userId, sessionToken });
     if (!cart) {
       return next(new AppError("Cart not found", 404));
     }
@@ -193,9 +210,10 @@ export const removeItem = async (req, res, next) => {
 // CLEAR CART
 export const clearCart = async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user?.id || null;
+    const sessionToken = req.headers["x-session-token"] || null;
 
-    const cart = await findCart(userId);
+    const cart = await findCart({ userId, sessionToken });
     if (!cart) {
       return next(new AppError("Cart not found", 404));
     }

@@ -7,93 +7,74 @@ import {
   UtensilsCrossed,
 } from "lucide-react";
 
+import GlassCard from "@/components/ui/Cart";
+
 const HeroSection = () => {
   const scrollToMenu = () => {
-    document.getElementById("menu-section").scrollIntoView({
+    document.getElementById("menu-section")?.scrollIntoView({
       behavior: "smooth",
     });
   };
 
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.1fr] gap-10 items-center">
-      <div>
-        <p className="bg-hover text-brand-main border border-border inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold mb-3">
-          <HandPlatter className="text-brand-main h-3 w-3" />
-          Fresh • Fast • Made with Love
-        </p>
+    <GlassCard
+      as="section"
+      className="px-6 py-14 lg:px-16 lg:py-18 text-center"
+    >
+      <div className="mx-auto max-w-3xl">
+        {/* rating */}
+        <div className="inline-flex items-center gap-2 mb-6 rounded-full border border-white/10 bg-card-bg/60 backdrop-blur px-5 py-2 text-[11px] font-semibold tracking-wide text-text-main shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
+          <Star className="h-3.5 w-3.5 fill-brand-main text-brand-main" />
+          Rated 4.8 / 5 by 2,000+ diners
+        </div>
 
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-main leading-tight mb-3">
-          Savor the Taste of <br />
-          <span className="text-rotate text-brand-main">
-            <span className="justify-items-start">
-              <span>FRESHNESS</span>
-              <span>CHOICE</span>
-              <span>CONVENIENCE</span>
-              <span>SERVICE</span>
-              <span>DELIGHT</span>
-              <span>MORE</span>
-            </span>
+        {/* heading */}
+        <h1 className="text-[2.6rem] lg:text-[3.1rem] font-bold tracking-[-0.015em] text-text-main leading-tight mb-6">
+          Experience
+          <span className="block bg-linear-to-r from-brand-main via-brand-soft to-brand-main bg-clip-text text-transparent">
+            Premium Vegetarian Dining
           </span>
         </h1>
 
-        <p className="max-w-md text-sm text-text-muted mb-5">
-          Fresh ingredients, mouth-watering recipes and a passion for good food
-          delivered to your table or ready for pick-up.
+        {/* description */}
+        <p className="mx-auto max-w-xl text-[15px] leading-relaxed text-text-muted mb-8">
+          Handcrafted vegetarian recipes, premium ingredients, and a refined
+          dining experience designed for those who value quality.
         </p>
 
-        <div className="flex flex-row mb-4 justify-start gap-2">
-          <div className="inline-flex items-center gap-1 text-[11px] text-text-subtle">
-            <Clock4 className="h-4 w-4 text-brand-main" />
-            Fast Delivery
-          </div>
-
-          <div className="inline-flex items-center gap-1 text-[11px] text-[#a08f7d] sm:flex-c">
-            <UtensilsCrossed className="h-4 w-4 text-brand-main" />
+        {/* features */}
+        <div className="flex flex-wrap justify-center gap-8 mb-10 text-xs text-text-muted">
+          <span className="inline-flex items-center gap-2">
+            <Clock4 className="h-4 w-4 text-brand-main/80" />
+            Fast Service
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <UtensilsCrossed className="h-4 w-4 text-brand-main/80" />
             100% Vegetarian
-          </div>
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <HandPlatter className="h-4 w-4 text-brand-main/80" />
+            Premium Quality
+          </span>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 mb-4">
+        {/* CTA */}
+        <div className="flex flex-col sm:flex-row justify-center gap-5">
           <button
             onClick={scrollToMenu}
-            className="cursor-pointer group w-full bg-brand-main text-white hover:opacity-90 sm:w-auto items-center rounded-full flex justify-center px-6 py-2.5 text-sm font-semibold shadow-[0_12px_30px_rgba(0,0,0,0.25)] active:scale-95 transition"
+            className="group inline-flex items-center justify-center rounded-full bg-brand-main px-9 py-4 text-sm font-semibold text-white shadow-[0_18px_45px_color-mix(in_oklab,var(--color-brand-main),transparent_65%)] transition-all duration-700 ease-out hover:brightness-110"
           >
             Explore Menu
-            <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-700 group-hover:translate-x-1" />
           </button>
 
-          <button className="cursor-pointer w-full bg-btn-black text-white hover:opacity-90 sm:w-auto rounded-full flex justify-center items-center px-6 py-2.5 text-sm font-semibold shadow-[0_12px_30px_rgba(0,0,0,0.25)] active:scale-95 transition">
-            <Calendar className="h-4 w-4 mr-2" />
-            Reserve a Table
+          <button className="inline-flex items-center justify-center rounded-full border border-border bg-card-bg/60 backdrop-blur px-9 py-4 text-sm font-semibold text-text-muted transition-all duration-700 ease-out hover:text-text-main hover:bg-hover">
+            <Calendar className="mr-2 h-4 w-4" />
+            Reserve Table
           </button>
-
-          <button className="cursor-pointer w-full bg-hover text-brand-main border border-border hover:border-brand-main sm:w-auto rounded-full flex justify-center items-center px-21 py-2.5 text-xs sm:text-sm font-semibold  transition delay-75 ease-in-out duration-100 whitespace-nowrap">
-            Free Delivery Above ₹500
-          </button>
-        </div>
-
-        <div className="inline-flex items-center gap-1 text-[11px] text-cat-all-bg">
-          <div className="p-1 rounded-full bg-hover">
-            <Star
-              className="h-4 w-4 text-brand-main
-"
-            />
-          </div>
-          4.8/5 rated by 2k+ happy diners
         </div>
       </div>
-
-      {/* Hero Image */}
-      <div className="rounded-3xl shadow-sm overflow-hidden border border-border bg-card-bg">
-        <div className="aspect-15/10 w-full overflow-hidden">
-          <img
-            src="/burger.png"
-            alt="Burger"
-            className="w-full h-full object-cover"
-          />
-        </div>
-      </div>
-    </section>
+    </GlassCard>
   );
 };
 

@@ -10,21 +10,25 @@ import ResetPassword from "./pages/auth/ResetPassword";
 import ProtectedRoutes from "@/routes/ProtectedRoutes";
 import ForceDarkPages from "./routes/ForceDarkPages";
 
-import AuthenticatedLayout from "@/layout/AuthenticatedLayout";
+import AuthenticatedLayout from "@/layouts/AuthenticatedLayout";
 import HomePage from "@/pages/user/HomePage";
 import CartPage from "./pages/Cart/CartPage";
 import UserProfile from "./pages/user/UserProfile";
 
 import ProtectedAdmin from "./routes/ProtectedAdmin";
-import AdminLayout from "./layout/AdminLayout";
+import AdminLayout from "./layouts/AdminLayout";
 import Dashboard from "./pages/admin/dashboard/Dashboard";
 import UsersPage from "./pages/admin/users/UserPage";
 import TablesPage from "./pages/admin/tables/TablesPage";
 import Users from "./pages/admin/orders/Orders";
+import Checkout from "./pages/order/CheckOutPage";
+import Orders from "./pages/admin/orders/Orders";
+import OrderSuccess from "./pages/order/OrderSuccessPage";
+import OrderDetails from "./pages/order/OrderDetails";
 
 function App() {
   return (
-    <div className="bg-background min-h-screen">
+    <>
       <Router>
         <Routes>
           {/* Public Routes */}
@@ -43,6 +47,12 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/user/cart" element={<CartPage />} />
               <Route path="/user/profile" element={<UserProfile />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route
+                path="/order-success/:orderId"
+                element={<OrderSuccess />}
+              />
+              <Route path="/orders/:orderId" element={<OrderDetails />} />
             </Route>
           </Route>
 
@@ -50,12 +60,13 @@ function App() {
             <Route element={<AdminLayout />}>
               <Route path="/admin" element={<Dashboard />} />
               <Route path="/admin/users" element={<UsersPage />} />
+              <Route path="/admin/orders" element={<Orders />} />
               <Route path="/admin/tables" element={<TablesPage />} />
             </Route>
           </Route>
         </Routes>
       </Router>
-    </div>
+    </>
   );
 }
 

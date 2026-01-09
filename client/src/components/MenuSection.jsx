@@ -1,21 +1,15 @@
 import { useSelector, useDispatch } from "react-redux";
-import { fetchMenuItems, setSelectedCategory } from "@/redux/menuSlice";
+import { fetchMenuItems, setSelectedCategory } from "@/store/menuSlice";
 import { memo, useEffect, useState } from "react";
-import { addToCartThunk } from "@/redux/cartSlice";
+import { addToCartThunk } from "@/store/cartSlice";
 import { UtensilsCrossed } from "lucide-react";
 
 // MenuCard
 const MenuCard = memo(({ item }) => {
   const [isAdding, setIsAdding] = useState(false);
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.auth.user?.id);
 
   const handleClick = async (menuItemId) => {
-    if (!userId) {
-      alert("Please login first");
-      return;
-    }
-
     setIsAdding(true);
     try {
       await dispatch(addToCartThunk({ menuItemId })).unwrap();

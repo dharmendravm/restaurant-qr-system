@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "@/redux/authSlice";
+import { logout } from "@/store/authSlice";
 import { useToast } from "@/components/ui/toast";
 import {
   Menu as MenuIcon,

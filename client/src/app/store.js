@@ -1,21 +1,27 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "../redux/authSlice.js";
-import guestSlice from '../redux/guestSlice.js';
-import menuReducer from '../redux/menuSlice.js';
-import cartReducer from '../redux/cartSlice.js';
-import userReducer from '../redux/userSlice.js'
+import authReducer from "../store/authSlice.js";
+import guestSlice from "../store/guestSlice.js";
+import menuReducer from "../store/menuSlice.js";
+import cartReducer from "../store/cartSlice.js";
+import userReducer from "../store/userSlice.js";
+import couponReducer from "../store/couponSlice.js";
+import orderReducer from "@/store/orderSlice.js";
 
-import tableReducer from '../redux/admin/tableSlice.js';
+import tableReducer from "../store/admin/tableSlice.js";
+import adminUserSlice from "../store/admin/adminUserSlice.js";
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     guest: guestSlice,
     user: userReducer,
-    menu : menuReducer,
-    cart : cartReducer,
+    menu: menuReducer,
+    cart: cartReducer,
+    coupon: couponReducer,
+    table: tableReducer,
+    order: orderReducer,
 
-    table : tableReducer
+    adminUsers: adminUserSlice,
   },
 });
 

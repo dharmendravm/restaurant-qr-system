@@ -4,7 +4,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
   baseURL: `${API_URL}/api/v1/`,
-   withCredentials: true
 });
 
 // REQUEST INTERCEPTOR
@@ -13,6 +12,12 @@ api.interceptors.request.use((config) => {
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    const sessionToken = localStorage.getItem("sessionToken");
+
+    if (sessionToken) {
+      config.headers["x-session-token"] = sessionToken;
+    }
   }
 
   return config;
@@ -40,11 +45,9 @@ api.interceptors.response.use(
           return Promise.reject(error);
         }
 
-        const res = await axios.post(
-          `${API_URL}/api/v1/auth/refresh`,
-          { refreshToken },
-          { withCredentials: true }
-        );
+        const res = await axios.post(`${API_URL}/api/v1/auth/refresh`, {
+          refreshToken,
+        });
 
         const newAccessToken = res.data.accessToken;
 
