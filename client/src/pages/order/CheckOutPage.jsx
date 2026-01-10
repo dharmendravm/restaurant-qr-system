@@ -1,11 +1,10 @@
 import api from "@/lib/api";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { user } = useSelector((s) => s.user);
@@ -26,33 +25,50 @@ const Checkout = () => {
     e.preventDefault();
     try {
       const result = await getOrderApi();
-      
+
       const orderId = result?.order._id;
 
-      if (!orderId) {
+      if (form.paymentMethod === "cash" && !orderId) {
         console.error("Order ID missing");
         return;
       }
       if (form.paymentMethod === "cash") {
         navigate(`/order-success/${orderId}`);
       } else {
-        navigate(`/payment/${orderId}`);
+        const options = {
+          key: result.razorpayOrder.key,
+          amount: result.razorpayOrder.amount,
+          order_id: result.razorpayOrder.id,
+          currency: result.razorpayOrder.currency,
+          name: result.order.customerName,
+          handler: function (response) {
+            console.log(response);
+            alert(`Payment ID: ${response.razorpay_payment_id}`);
+          },
+
+          prefill: {
+            name: result.order.customerName,
+            email: result.order.customerEmail,
+            contact: result.order.customerPhone,
+          },
+          theme: {
+            color: "#1591EA",
+          },
+        };
+
+        const razorpay = new window.Razorpay(options);
+        console.log(razorpay);
+        razorpay.open();
+
+        console.log(result);
+        console.log(options);
+
+        // navigate(`/payment/${orderId}`);
       }
     } catch (error) {
       console.log("Order Failed", error);
     }
   };
-
-  useEffect(() => {
-    if (user) {
-      setForm((prev) => ({
-        ...prev,
-        customerName: user.name ?? "",
-        customerEmail: user.email ?? "",
-        customerPhone: user.phone ?? "",
-      }));
-    }
-  }, []);
 
   const getOrderApi = async () => {
     try {
@@ -77,9 +93,26 @@ const Checkout = () => {
     }
   };
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      setForm((prev) => ({
+        ...prev,
+        customerName: user.name ?? "",
+        customerEmail: user.email ?? "",
+        customerPhone: user.phone ?? "",
+      }));
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-app-bg flex items-center justify-center px-4">
-      {console.log(selectedCoupon)}
       <div className="w-full max-w-lg bg-card-bg rounded-3xl shadow-lg p-6 space-y-6">
         {/* Header */}
         <div>

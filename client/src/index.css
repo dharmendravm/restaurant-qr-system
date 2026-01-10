@@ -7,7 +7,7 @@ body {
   scroll-behavior: smooth;
 }
 
-/* ================= BASE THEME (LIGHT) ================= */
+/*  BASE THEME (LIGHT)  */
 
 @theme {
   /* App */
@@ -39,7 +39,7 @@ body {
   --color-btn-black: #111827;
 }
 
-/* ================= DARK MODE OVERRIDES ================= */
+/*  DARK MODE OVERRIDES  */
 
 .dark {
   --color-app-bg: #0b0f14;
@@ -61,10 +61,10 @@ body {
   --color-danger: #f87171;
 
   --color-muted-bg: #1f2937;
-  --color-btn-black: #253141;
+  --color-btn-black: #fbffc7;
 }
 
-/* ================= UTILITIES ================= */
+/*  UTILITIES  */
 
 .no-scrollbar {
   -ms-overflow-style: none;

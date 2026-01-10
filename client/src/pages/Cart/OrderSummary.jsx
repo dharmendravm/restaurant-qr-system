@@ -39,7 +39,6 @@ export const OrderSummary = () => {
   return (
     <div className="lg:sticky lg:top-24 bg-card-bg/40 border border-border rounded-3xl p-6 space-y-6">
       <h3 className="text-lg font-semibold">Order Summary</h3>
-      {console.log(coupons)}
       <div className="space-y-3 text-sm">
         <div className="flex justify-between">
           <span className="text-text-muted">Subtotal</span>

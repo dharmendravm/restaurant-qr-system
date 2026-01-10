@@ -7,6 +7,7 @@ import adminMenuRoutes from "./table.route.js";
 import adminCouponRoutes from "./coupon.route.js";
 import adminUserRoutes from "./user.route.js";
 import adminTableRoutes from "./table.route.js";
+import adminOrderRoute from "./order.route.js";
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.use(checkRole(["admin"]));
 
 router.use("/users", adminUserRoutes);
 router.use("/coupons", adminCouponRoutes);
+router.use("/orders", adminOrderRoute);
 router.use("/menu", adminMenuRoutes);
 router.use("/tables", adminTableRoutes);
 

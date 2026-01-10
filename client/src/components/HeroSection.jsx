@@ -31,7 +31,7 @@ const HeroSection = () => {
         {/* heading */}
         <h1 className="text-[2.6rem] lg:text-[3.1rem] font-bold tracking-[-0.015em] text-text-main leading-tight mb-6">
           Experience
-          <span className="block bg-linear-to-r from-brand-main via-brand-soft to-brand-main bg-clip-text text-transparent">
+          <span className="block bg-linear-to-r from-brand-main/90 via-orange-600 to-brand-main bg-clip-text text-transparent">
             Premium Vegetarian Dining
           </span>
         </h1>
@@ -62,13 +62,13 @@ const HeroSection = () => {
         <div className="flex flex-col sm:flex-row justify-center gap-5">
           <button
             onClick={scrollToMenu}
-            className="group inline-flex items-center justify-center rounded-full bg-brand-main px-9 py-4 text-sm font-semibold text-white shadow-[0_18px_45px_color-mix(in_oklab,var(--color-brand-main),transparent_65%)] transition-all duration-700 ease-out hover:brightness-110"
+            className="group inline-flex items-center justify-center rounded-full bg-brand-main px-9 py-4 text-sm font-semibold text-white shadow-[0_18px_45px_color-mix(in_oklab,var(--color-brand-main),transparent_65%)] hover:scale-95 transition-all duration-700 ease-out hover:brightness-110"
           >
             Explore Menu
             <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-700 group-hover:translate-x-1" />
           </button>
 
-          <button className="inline-flex items-center justify-center rounded-full border border-border bg-card-bg/60 backdrop-blur px-9 py-4 text-sm font-semibold text-text-muted transition-all duration-700 ease-out hover:text-text-main hover:bg-hover">
+          <button className="inline-flex items-center justify-center rounded-full border border-border bg-btn-black/90 backdrop-blur px-9 py-4 text-sm font-semibold text-app-bg transition-all duration-700 ease-out hover: hover:bg-btn-black hover:scale-95">
             <Calendar className="mr-2 h-4 w-4" />
             Reserve Table
           </button>

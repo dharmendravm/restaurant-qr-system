@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrderById } from "@/store/orderSlice";
+import GlassCard from "@/components/ui/Cart";
 
 const BADGE_UI = {
   neutral: "bg-card-bg text-text-main border-border",
@@ -49,76 +50,83 @@ const OrderSuccess = () => {
   if (!order) return <CenteredText text="Order not found." />;
 
   return (
-    <div className="max-w-md mx-auto mt-16 p-6 bg-card-bg rounded-xl shadow-md text-text-main">
-      <h1 className="text-2xl font-semibold text-admin mb-4">
-        🎉 Order Placed Successfully
-      </h1>
+    <GlassCard
+      as="section"
+      className="max-w-md mx-auto mt-16 p-6 shadow-md text-text-main"
+    >
+        <h1 className="text-2xl font-semibold text-admin mb-4">
+          🎉 Order Placed Successfully
+        </h1>
 
-      <div className="space-y-3">
-        <Row label="Order Number">{order.orderNumber}</Row>
+        <div className="space-y-3">
+          <Row label="Order Number">{order.orderNumber}</Row>
 
-        <Row label="Order Status">
-          {order.orderStatus === "pending" && (
-            <Badge tone="accent">Pending</Badge>
-          )}
-          {order.orderStatus === "preparing" && <Badge>Preparing</Badge>}
-          {order.orderStatus === "ready" && <Badge tone="primary">Ready</Badge>}
-          {order.orderStatus === "served" && <Badge tone="muted">Served</Badge>}
-          {order.orderStatus === "cancelled" && (
-            <Badge tone="danger">Cancelled</Badge>
-          )}
-        </Row>
+          <Row label="Order Status">
+            {order.orderStatus === "pending" && (
+              <Badge tone="accent">Pending</Badge>
+            )}
+            {order.orderStatus === "preparing" && <Badge>Preparing</Badge>}
+            {order.orderStatus === "ready" && (
+              <Badge tone="primary">Ready</Badge>
+            )}
+            {order.orderStatus === "served" && (
+              <Badge tone="muted">Served</Badge>
+            )}
+            {order.orderStatus === "cancelled" && (
+              <Badge tone="danger">Cancelled</Badge>
+            )}
+          </Row>
 
-        <Row label="Payment Method">
-          {order.paymentMethod === "cash" && <Badge>Cash</Badge>}
-          {order.paymentMethod === "razorpay" && (
-            <Badge tone="primary">Razorpay</Badge>
-          )}
-        </Row>
+          <Row label="Payment Method">
+            {order.paymentMethod === "cash" && <Badge>Cash</Badge>}
+            {order.paymentMethod === "razorpay" && (
+              <Badge tone="primary">Razorpay</Badge>
+            )}
+          </Row>
 
-        <Row label="Payment">
-          {order.paymentStatus === "pending" && (
-            <Badge tone="accent">Payment Pending</Badge>
-          )}
-          {order.paymentStatus === "success" && (
-            <Badge tone="success">Paid</Badge>
-          )}
-          {order.paymentStatus === "failed" && (
-            <Badge tone="danger">Payment Failed</Badge>
-          )}
-          {order.paymentStatus === "refund" && (
-            <Badge tone="muted">Refunded</Badge>
-          )}
-        </Row>
+          <Row label="Payment">
+            {order.paymentStatus === "pending" && (
+              <Badge tone="accent">Payment Pending</Badge>
+            )}
+            {order.paymentStatus === "success" && (
+              <Badge tone="success">Paid</Badge>
+            )}
+            {order.paymentStatus === "failed" && (
+              <Badge tone="danger">Payment Failed</Badge>
+            )}
+            {order.paymentStatus === "refund" && (
+              <Badge tone="muted">Refunded</Badge>
+            )}
+          </Row>
 
-        <Row label="Total Amount">
-          <Badge tone="primary">₹ {order.finalAmount}</Badge>
-        </Row>
-      </div>
+          <Row label="Total Amount">
+            <Badge tone="primary">₹ {order.finalAmount}</Badge>
+          </Row>
+        </div>
 
-      <div className="flex justify-center items-center">
-        {" "}
-<Link
-  to={`/orders/${order._id}`}
-  className="
+        <div className="flex justify-center items-center">
+          {" "}
+          <Link
+            to={`/orders/${order._id}`}
+            className="
     inline-flex items-center justify-center
     mt-6
     px-6 py-3
     rounded-xl
     font-semibold text-sm
-    bg-muted-bg text-app-bg
+    bg-btn-black text-app-bg
     shadow-lg shadow-muted-bg/10
     transition-all duration-300 ease-out
     hover:-translate-y-0.5 hover:shadow-xl hover:shadow-muted-bg/20
     active:translate-y-0 active:shadow-md
     focus:outline-none focus-visible:ring-2 focus-visible:ring-muted-bg/10
   "
->
-  View full order →
-</Link>
-
+          >
+            View full order →
+          </Link>
+        {/* </div> */}
       </div>
-    </div>
+    </GlassCard>
   );
 };
 

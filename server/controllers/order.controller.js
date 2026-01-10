@@ -7,6 +7,8 @@ import AppError from "../utils/appError.js";
 import { calculateCouponForCart } from "../utils/couponCalculator.js";
 import razorpay from "../config/razorpay.js";
 import { postOrderCleanUP } from "../utils/orderHelpers.js";
+import { RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET } from "../config.js";
+import mongoose from "mongoose";
 
 const generateOrderNumber = (tableNumber) => {
   const now = new Date();
@@ -44,9 +46,9 @@ export const createOrder = async (req, res, next) => {
       return next(new AppError("Unauthorized", 401));
     }
 
-    const cart = await Cart.findOne(
-      userId ? { userId } : { sessionToken }
-    ).populate("items.menuItemId");
+    const cart = await Cart.findOne({ userId, sessionToken }).populate(
+      "items.menuItemId"
+    );
 
     if (!cart || cart.items.length === 0) {
       return next(new AppError("Cart is empty", 400));
@@ -103,7 +105,8 @@ export const createOrder = async (req, res, next) => {
 
     const orderPayload = {
       orderNumber,
-      userId,
+      ...(userId && { userId }),
+      ...(!userId && sessionToken && { sessionToken }),
       tableNumber,
       paymentMethod,
 
@@ -127,6 +130,12 @@ export const createOrder = async (req, res, next) => {
 
       if (userId) {
         await postOrderCleanUP({ userId, finalAmount });
+      }
+
+      if (sessionToken) {
+        cart.items = [];
+        cart.totalCartPrice = 0;
+        await cart.save();
       }
       return res.status(201).json({
         order,
@@ -161,9 +170,38 @@ export const createOrder = async (req, res, next) => {
 
     return res.status(201).json({
       order,
-      orderId: order._id,
+      razorpayOrder: { ...razorpayOrder, key: RAZORPAY_KEY_ID },
       message: "Payment initiated successfully",
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const veryfyPayment = async (req, res, next) => {
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
+
+    const order = Order.findOne({ razorpay_order_id });
+
+    if (!order) {
+      return next(new AppError("Order not found", 404));
+    }
+
+    const generated_signature = crypto
+      .createHmac("sha256", RAZORPAY_KEY_SECRET)
+      .update(razorpay_order_id + "|" + razorpay_payment_id)
+      .digest("hex");
+
+    if (generated_signature !== razorpay_signature) {
+      res
+        .status(400)
+        .json({ success: false, message: "Payment verification failed!" });
+    }
+
+    const payment = await razorpay.payments.fetch(razorpay_payment_id);
+    console.log(payment);
   } catch (error) {
     next(error);
   }
@@ -181,8 +219,55 @@ export const getOrderById = async (req, res, next) => {
       });
     }
 
-    return res.status(200).json(order);
+    return res.status(200).json({
+      success: true,
+      message: "Order fatched successfully",
+      order,
+    });
   } catch (error) {
     next(error);
   }
 };
+
+// export const cancelOrder = async (req, res, next) => {
+//   try {
+//     const { orderId } = req.params;
+//     const reason = req.body?.reason;
+
+//     if (!mongoose.Types.ObjectId.isValid(orderId)) {
+//       return next(new AppError("Invalid order id", 400));
+//     }
+
+//     if(req.user)
+
+//     const order = await Order.findById(orderId);
+
+//     if (!order) {
+//       return res.status(404).json({ message: "Order not found" });
+//     }
+
+//     if (order.orderStatus === "cancelled") {
+//       return res.status(400).json({ message: "Order is already cancelled" });
+//     }
+
+//     if (order.orderStatus !== "pending") {
+//       return next(new AppError(`Order cannot be cancelled on this stage`, 400));
+//     }
+
+//     order.orderStatus = "cancelled";
+//     order.cancelReason = reason || "Order cancelled by customer";
+//     await order.save();
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Order cancelled successfully",
+//       data: {
+//         orderId: order._id,
+//         orderStatus: order.orderStatus,
+//         paymentStatus: order.paymentStatus,
+//       },
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
