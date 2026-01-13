@@ -17,7 +17,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "http://localhost:5174",
-      "http://restaurant-app-gold-three.vercel.app",
+      "https://restaurant-app-gold-three.vercel.app",
       "http://192.168.1.5:5173",
     ],
 
