@@ -6,8 +6,9 @@ const UserSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    uniqe: true,
-    sparse: true,
+    required: true,
+    unique: true,
+    index: true,
     lowercase: true,
     trim: true,
   },
@@ -15,7 +16,7 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  
+
   phone: {
     type: Number,
     required: false,
@@ -75,7 +76,7 @@ const UserSchema = new mongoose.Schema({
   },
   lastLogin: {
     type: Date,
-    default: Date.now,
+    default: Date,
   },
 });
 
