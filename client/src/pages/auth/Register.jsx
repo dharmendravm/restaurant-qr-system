@@ -20,7 +20,7 @@ import AuthInput from "@/components/auth/AuthInput";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthAsideContent from "@/components/ui/AuthAsideContent";
 import { useToast } from "@/components/ui/toast";
-import { GoogleLoginUI } from "@/components/buttons/GoogleLoginButton";
+import { GoogleLoginUI } from "@/components/auth/buttons/GoogleLoginButton";
 
 const Register = () => {
   const dispatch = useDispatch();

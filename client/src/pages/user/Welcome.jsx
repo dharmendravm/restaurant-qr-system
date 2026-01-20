@@ -6,8 +6,8 @@ import { UtensilsCrossed, ChefHat, Leaf, Bell, Clock } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { session as createSession } from "@/store/guestSlice";
 import { useToast } from "@/components/ui/toast";
-import { GoogleLoginUI } from "@/components/buttons/GoogleLoginButton";
-import { GitHubLoginUI } from "@/components/buttons/GithubLoginButton";
+import { GoogleLoginUI } from "@/components/auth/buttons/GoogleLoginButton";
+import { GitHubLoginUI } from "@/components/auth/buttons/GithubLoginButton";
 
 const Welcome = () => {
   const dispatch = useDispatch();

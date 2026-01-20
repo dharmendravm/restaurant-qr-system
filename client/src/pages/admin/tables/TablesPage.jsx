@@ -4,7 +4,7 @@ import {
 } from "@/store/admin/tableSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TableSkeleton from "@/components/admin/tables/TableSkeleton";
+import TableSkeleton from "@/components/skeletons/TableSkeleton";
 import { Download } from "lucide-react";
 
 const TablesPage = () => {

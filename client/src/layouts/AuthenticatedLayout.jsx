@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import AppFooter from "../components/shared/Footer";
+import AppFooter from "./Footer";
 import Navbar from "@/components/navbar/Navbar";
 
 const AuthenticatedLayout = () => {

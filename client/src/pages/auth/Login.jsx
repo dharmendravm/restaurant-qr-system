@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "@/store/authSlice";
 import { Mail, Lock, ArrowRight, Gift, LogIn } from "lucide-react";
 import { BrandLogo } from "@/components/shared/BrandLogo";
-import { GoogleLoginUI } from "@/components/buttons/GoogleLoginButton";
+import { GoogleLoginUI } from "@/components/auth/buttons/GoogleLoginButton";
 import { useToast } from "@/components/ui/toast";
 
 import AuthError from "@/components/auth/AuthError";
 import AuthInput from "@/components/auth/AuthInput";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthAsideContent from "@/components/ui/AuthAsideContent";
-import { GitHubLoginUI } from "@/components/buttons/GithubLoginButton";
+import { GitHubLoginUI } from "@/components/auth/buttons/GithubLoginButton";
 
 const Login = () => {
   const dispatch = useDispatch();

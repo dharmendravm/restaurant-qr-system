@@ -1,7 +1,7 @@
 const AuthCard = ({ title, description, children }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-app-bg px-4">
-      <div className="w-full max-w-[420px] bg-card-bg/10 backdrop-blur-xl
+      <div className="w-full max-w-26.25 bg-card-bg/10 backdrop-blur-xl
         border border-border rounded-2xl shadow-lg p-6">
         
         {title && (
