@@ -22,6 +22,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization", "x-session-token"],
   }),
 );
+app.options("*", cors());
 
 ConnectDB();
 
