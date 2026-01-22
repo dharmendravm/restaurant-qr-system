@@ -31,6 +31,7 @@ import AddCouponForm from "./pages/admin/coupons/CouponsPage";
 
 import io from "socket.io-client";
 import RegisterTable from "./pages/admin/tables/CreateTablePage";
+import ChangePassword from "./pages/user/ChangePassword";
 
 function App() {
   // const socket = io("http://localhost:3000");
@@ -58,6 +59,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/user/cart" element={<CartPage />} />
               <Route path="/user/profile" element={<UserProfile />} />
+              <Route path="/user/change-password" element={<ChangePassword />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route
                 path="/order-success/:orderId"

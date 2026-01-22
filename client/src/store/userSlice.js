@@ -1,7 +1,6 @@
 import api from "@/lib/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-
 // redux/helpers/getAuthToken.js
 export const requireAuthToken = (thunkApi) => {
   const token = thunkApi.getState().auth.accessToken;
@@ -13,75 +12,83 @@ export const getUserThunk = createAsyncThunk(
   "user/profile",
   async (_, thunkApi) => {
     try {
-      const accessToken = requireAuthToken(thunkApi);
-
-      const res = await api.get('user/get', {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      return res.data.data;
+      const res = await api.get("user/get");
+      return { data: res.data.data };
     } catch (error) {
       return thunkApi.rejectWithValue(
-        error.message || error.response?.data?.message || "Failed to fetch user"
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to fetch user",
       );
     }
-  }
+  },
+);
+
+export const updateProfileThunk = createAsyncThunk(
+  "user/updateProfile",
+  async ({ name, phone }, thunkApi) => {
+    try {
+      const res = await api.put("/user/update-profile", {
+        name,
+        phone,
+      });
+
+      return {
+        data: res.data.data,
+        message: res.data.message,
+      };
+    } catch (error) {
+      return thunkApi.rejectWithValue(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to update profile",
+      );
+    }
+  },
 );
 
 // SLICE
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: null, //
+    user: null,
     loading: false,
+    updateLoading: false,
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
 
-      // GET
       .addCase(getUserThunk.pending, (state) => {
-        state.loading = true;
+        if (!state.user) {
+          state.loading = true;
+        }
         state.error = null;
       })
       .addCase(getUserThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        state.user = action.payload.data;
       })
       .addCase(getUserThunk.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload || "Something went wrong";
       });
 
-    // ALL CART MUTATIONS (ADD / INC / DEC / REMOVE)
-    //   .addMatcher(
-    //     (action) =>
-    //       action.type.startsWith("cart/") &&
-    //       !action.type.startsWith("cart/getCart") &&
-    //       action.type.endsWith("/pending"),
-    //     (state) => {
-    //       state.loading = true;
-    //       state.error = null;
-    //     }
-    //   )
-    //   .addMatcher(
-    //     (action) =>
-    //       action.type.startsWith("cart/") &&
-    //       !action.type.startsWith("cart/getCart") &&
-    //       action.type.endsWith("/fulfilled"),
-    //     (state, action) => {
-    //       state.loading = false;
-    //       state.cart = action.payload;
-    //     }
-    //   )
-    //   .addMatcher(
-    //     (action) =>
-    //       action.type.startsWith("cart/") && action.type.endsWith("/rejected"),
-    //     (state, action) => {
-    //       state.loading = false;
-    //       state.error = action.payload;
-    //     }
-    //   );
+
+      builder
+      .addCase(updateProfileThunk.pending, (state) => {
+        state.updateLoading = true;
+        state.error = null;
+      })
+      .addCase(updateProfileThunk.fulfilled, (state, action) => {
+        state.updateLoading = false;
+        state.user = action.payload.data; // FULL updated user
+      })
+      .addCase(updateProfileThunk.rejected, (state, action) => {
+        state.updateLoading = false;
+        state.error = action.payload;
+      });
   },
 });
 
