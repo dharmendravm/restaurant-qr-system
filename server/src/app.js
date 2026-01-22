@@ -7,7 +7,6 @@ import apiRoutes from "./router/index.js";
 import { globalErrorHandler, notFound } from "./middlewares/errormiddleware.js";
 
 const app = express();
-app.use(express.json());
 
 app.use(
   cors({
@@ -15,14 +14,15 @@ app.use(
       "http://localhost:5173",
       "http://localhost:5174",
       "https://restaurant-app-gold-three.vercel.app",
-      "http://192.168.1.5:5173",
     ],
 
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "x-session-token"],
   }),
 );
+
 app.options("*", cors());
+app.use(express.json());
 
 ConnectDB();
 
