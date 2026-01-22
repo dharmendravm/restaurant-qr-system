@@ -1,5 +1,5 @@
 import googleIcon from "@/assets/google.png";
-import { auth, googleProvider } from "@/config/firebase";
+import { auth, googleProvider } from "@/firebase/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { googleLogin } from "@/store/authSlice";

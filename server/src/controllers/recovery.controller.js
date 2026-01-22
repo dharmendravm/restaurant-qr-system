@@ -1,8 +1,8 @@
 import User from "../models/user.js";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
-import resetPasswordTemplate from "../services/emailtemplates/resetPasswordTemplate.js";
-import transporter from "../services/email.service.js";
+import resetPasswordTemplate from "../services/email/templates/resetPasswordTemplate.js";
+import transporter from "../services/email/email.service.js";
 import AppError from "../utils/appError.js";
 
 export const forgotPassword = async (req, res, next) => {

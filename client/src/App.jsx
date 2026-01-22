@@ -29,7 +29,14 @@ import OrderDetailsAdmin from "./pages/admin/orders/OrderDetailPage";
 import MenuPage from "./pages/admin/menu/AddNewMenuPage";
 import AddCouponForm from "./pages/admin/coupons/CouponsPage";
 
+import io from "socket.io-client";
+
 function App() {
+  // const socket = io("http://localhost:3000");
+  // socket.on("order", (data) => {
+  //   console.log("order", data);
+  // });
+
   return (
     <>
       <Router>

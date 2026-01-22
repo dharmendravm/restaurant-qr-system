@@ -4,7 +4,7 @@ import Order from "../models/order.js";
 import Table from "../models/table.js";
 import AppError from "../utils/appError.js";
 import { calculateCouponForCart } from "../utils/couponCalculator.js";
-import razorpay from "../config/razorpay.js";
+import razorpay from "../services/integrations/razorpay.service.js";
 import { postOrderCleanUP } from "../utils/orderHelpers.js";
 import mongoose from "mongoose";
 

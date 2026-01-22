@@ -2,9 +2,10 @@ import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
 import User from "../models/user.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import transporter from "../services/email.service.js";
-import registerTemplate from "../services/emailtemplates/registerTemplate.js";
+import transporter from "../services/email/email.service.js";
+import registerTemplate from "../services/email/templates/registerTemplate.js";
 import AppError from "../utils/appError.js";
+import { comparePassword, hashPassword } from "../utils/password.js";
 
 // Register new user
 export const register = async (req, res, next) => {
@@ -24,8 +25,7 @@ export const register = async (req, res, next) => {
     }
 
     // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
+    const passwordHash = await hashPassword(password)
 
     const data = {
       name,
@@ -57,6 +57,8 @@ export const register = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+    console.log(error);
+    
   }
 };
 
@@ -78,7 +80,7 @@ export const login = async (req, res, next) => {
     }
 
     // Compare password
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    const isPasswordMatch = await comparePassword(password, user.password)
 
     if (!isPasswordMatch) {
       return next(new AppError("Invalid email or password", 400));

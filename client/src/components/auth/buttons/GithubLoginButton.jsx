@@ -1,6 +1,6 @@
 import githubIcon from "@/assets/github-mark-white.png";
 // import githubIcon from "@/assets/github.png";
-import { auth, githubProvider } from "@/config/firebase";
+import { auth, githubProvider } from "@/firebase/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
