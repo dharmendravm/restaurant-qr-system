@@ -1,7 +1,7 @@
 import { getAllCouponsThunk, setSelectedCoupon } from "@/store/couponSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import CartSkeleton from "../../components/skeletons/CartSkeleton";
+import CartSkeleton from "../../components/shared/skeletons/CartSkeleton";
 import { useNavigate } from "react-router-dom";
 
 export const OrderSummary = () => {

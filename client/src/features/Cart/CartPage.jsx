@@ -1,15 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { CartItemsList } from "./CartItemsList";
 import { OrderSummary } from "./OrderSummary";
-import { EmptyCart } from "../../components/skeletons/EmptyCart";
+import { EmptyCart } from "../../components/shared/skeletons/EmptyCart";
 import { useEffect, useMemo } from "react";
 import {
   decreaseQtyCartThunk,
   getCartThunk,
   increaseQtyCartThunk,
   removeItemCartThunk,
-} from "@/store/cartSlice";
-import CartSkeleton from "../../components/skeletons/CartSkeleton";
+} from "@/features/Cart/cartSlice";
+import CartSkeleton from "../../components/shared/skeletons/CartSkeleton";
 
 const CartPage = () => {
   const { cart, loading, error } = useSelector((state) => state.cart);

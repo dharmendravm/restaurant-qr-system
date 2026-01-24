@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Save, Lock } from "lucide-react";
-import { changePasswordApi } from "@/api/user.api";
+import { changePasswordApi } from "@/lib/user.api";
 import { useToast } from "@/components/ui/toast";
 
 /* ---------- INPUT FIELD ---------- */

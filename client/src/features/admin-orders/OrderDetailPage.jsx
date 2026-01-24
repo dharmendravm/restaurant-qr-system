@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getOrderByIdAdmin } from "@/store/admin/adminOrderSlice";
+import { getOrderByIdAdmin } from "@/features/admin-orders/adminOrderSlice";
 
 const OrderDetailsAdmin = () => {
   const { id } = useParams();

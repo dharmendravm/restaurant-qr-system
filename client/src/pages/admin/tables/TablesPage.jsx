@@ -1,7 +1,7 @@
 import { getAllTables, toggleTableStatus } from "@/store/admin/tableSlice";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TableSkeleton from "@/components/skeletons/TableSkeleton";
+import TableSkeleton from "@/components/shared/skeletons/TableSkeleton";
 import { Download } from "lucide-react";
 import { Link } from "react-router-dom";
 

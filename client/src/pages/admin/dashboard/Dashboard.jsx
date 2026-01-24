@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getOrderForDashBoard,
   getOrderStatusForDashBoard,
-} from "@/store/admin/adminOrderSlice";
+} from "@/features/admin-orders/adminOrderSlice";
 
 const METRICS = (data) => [
   {

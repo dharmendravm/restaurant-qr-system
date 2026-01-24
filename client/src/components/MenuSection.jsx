@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { fetchMenuItems, setSelectedCategory } from "@/store/menuSlice";
 import { memo, useEffect, useState } from "react";
-import { addToCartThunk } from "@/store/cartSlice";
+import { addToCartThunk } from "@/features/Cart/cartSlice";
 import { UtensilsCrossed } from "lucide-react";
 
 // MenuCard

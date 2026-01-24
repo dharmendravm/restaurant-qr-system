@@ -1,89 +1,68 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { routesConfig } from "./routes/config";
 
-import Welcome from "@/pages/user/Welcome";
-import Login from "@/pages/auth/Login";
-import Register from "@/pages/auth/Register";
-import ForgotPassword from "./pages/auth/ForgotPassword";
-import ResetPassword from "./pages/auth/ResetPassword";
-
+// Layouts & Guards
+import PageSkeleton from "./components/shared/skeletons/PageSkeleton";
+const NotFound = lazy(() => import('@/components/ui/NotFound'))
 import ProtectedRoutes from "@/routes/ProtectedRoutes";
+import ProtectedAdmin from "./routes/ProtectedAdmin";
+import AuthenticatedLayout from "@/layouts/AuthenticatedLayout";
+import AdminLayout from "./layouts/AdminLayout";
 import ForceDarkPages from "./routes/ForceDarkPages";
 
-import AuthenticatedLayout from "@/layouts/AuthenticatedLayout";
-import HomePage from "@/pages/user/HomePage";
-import CartPage from "./pages/Cart/CartPage";
-import UserProfile from "./pages/user/UserProfile";
-import OrderSuccess from "./pages/order/OrderSuccessPage";
-import OrderDetails from "./pages/order/OrderDetails";
-
-import ProtectedAdmin from "./routes/ProtectedAdmin";
-import AdminLayout from "./layouts/AdminLayout";
-import Dashboard from "./pages/admin/dashboard/Dashboard";
-import UsersPage from "./pages/admin/users/UserPage";
-import TablesPage from "./pages/admin/tables/TablesPage";
-import Users from "./pages/admin/orders/Orders";
-import Checkout from "./pages/order/CheckOutPage";
-import Orders from "./pages/admin/orders/Orders";
-import OrderDetailsAdmin from "./pages/admin/orders/OrderDetailPage";
-import MenuPage from "./pages/admin/menu/AddNewMenuPage";
-import AddCouponForm from "./pages/admin/coupons/CouponsPage";
-
-import io from "socket.io-client";
-import RegisterTable from "./pages/admin/tables/CreateTablePage";
-import ChangePassword from "./pages/user/ChangePassword";
+// Simple Loading Component
+const PageLoader = () => (
+  <div className="flex h-screen items-center justify-center">Loading...</div>
+);
 
 function App() {
-  // const socket = io("http://localhost:3000");
-  // socket.on("order", (data) => {
-  //   console.log("order", data);
-  // });
-
   return (
-    <>
-      <Router>
+    <Router>
+      <Suspense fallback={<PageSkeleton />}>
         <Routes>
-          {/* Public Routes */}
+          {/* 1. PUBLIC ROUTES */}
           <Route element={<ForceDarkPages />}>
-            <Route path="/welcome" element={<Welcome />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/recovery" element={<ForgotPassword />} />
-            <Route path="/reset-password/:token" element={<ResetPassword />} />
-            <Route path="/users" element={<Users />} />
+            {routesConfig.public.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element}
+              />
+            ))}
           </Route>
 
-          {/* Protected Routes with main app layout */}
+          {/* 2. USER PROTECTED ROUTES */}
           <Route element={<ProtectedRoutes />}>
             <Route element={<AuthenticatedLayout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/user/cart" element={<CartPage />} />
-              <Route path="/user/profile" element={<UserProfile />} />
-              <Route path="/user/change-password" element={<ChangePassword />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route
-                path="/order-success/:orderId"
-                element={<OrderSuccess />}
-              />
-              <Route path="/orders/:orderId" element={<OrderDetails />} />
+              {routesConfig.user.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={route.element}
+                />
+              ))}
             </Route>
           </Route>
 
+          {/* 3. ADMIN PROTECTED ROUTES */}
           <Route element={<ProtectedAdmin />}>
             <Route element={<AdminLayout />}>
-              <Route path="/admin" element={<Dashboard />} />
-              <Route path="/admin/users" element={<UsersPage />} />
-              <Route path="/admin/orders" element={<Orders />} />
-              <Route path="/admin/orders/:id" element={<OrderDetailsAdmin />} />
-              <Route path="/admin/tables" element={<TablesPage />} />
-              <Route path="/admin/tables/create" element={<RegisterTable />} />
-              <Route path="/admin/create/menu" element={<MenuPage />} />
-              <Route path="/admin/create/coupon" element={<AddCouponForm />} />
+              {routesConfig.admin.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={route.element}
+                />
+              ))}
             </Route>
           </Route>
+
+          {/* 4. FALLBACK */}
+          <Route path="*" element={<NotFound/>} />
         </Routes>
-      </Router>
-    </>
+      </Suspense>
+    </Router>
   );
 }
 
