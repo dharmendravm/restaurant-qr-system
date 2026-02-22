@@ -8,7 +8,7 @@ import tableRoute from "./table.route.js";
 import menuRoutes from "./menu.route.js";
 import orderRoute from "./order.route.js";
 import cartRoute from "./cart.route.js";
-import couponRoute from "./coupen.route.js";
+import couponRoute from "./coupon.route.js";
 
 import { verifyToken } from "../middlewares/verifyToken.js";
 import { checkRole } from "../middlewares/checkRole.js";

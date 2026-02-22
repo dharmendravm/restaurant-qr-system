@@ -1,25 +1,52 @@
 import http from "http";
+import dotenv from "dotenv";
 import app from "./src/app.js";
 import { Server } from "socket.io";
-import cors from "cors";
+import ConnectDB from "./src/config/database.js";
+
+dotenv.config();
+
 const server = http.createServer(app);
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://restaurant-app-gold-three.vercel.app",
+];
+
 const io = new Server(server, {
   cors: {
-    origin: [
-      "http://localhost:5173",
-      "https://restaurant-app-gold-three.vercel.app",
-    ],
+    origin: allowedOrigins,
     credentials: true,
   },
 });
 
 io.on("connection", (socket) => {
-  console.log("New user connected", socket.id);
+  console.log("New user connected:", socket.id);
+
+  socket.emit("connected", {
+    message: "Socket connected successfully",
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
 });
 
-io.emit("order", { orderId: 1, amount: 200 });
+export { io };
 
-const port = process.env.PORT || 4000;
-server.listen(port, "0.0.0.0", () => {
-  console.log(`Server is Running on Port: ${port}"`);
-});
+const startServer = async () => {
+  try {
+    await ConnectDB();
+
+    const PORT = process.env.PORT || 4000;
+
+    server.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Database connection failed:", error.message);
+    process.exit(1);
+  }
+};
+
+startServer();
