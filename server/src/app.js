@@ -7,13 +7,18 @@ import { globalErrorHandler, notFound } from "./middlewares/errormiddleware.js";
 
 const app = express();
 
-const allowedOrigins = [process.env.FRONTEND_URL];
+const configuredOrigins = [
+  process.env.FRONTEND_URL,
+  ...(process.env.FRONTEND_URLS || "").split(","),
+]
+  .map((origin) => origin?.trim())
+  .filter(Boolean);
 
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
+      if (configuredOrigins.length === 0 || configuredOrigins.includes(origin)) {
         return callback(null, true);
       }
       return callback(new Error("Not allowed by CORS"));
