@@ -1,16 +1,18 @@
 import api from "@/lib/api";
+import { useToast } from "@/components/ui/toast";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const { error: toastError } = useToast();
 
   const { user } = useSelector((s) => s.user);
   const { selectedCoupon } = useSelector((s) => s.coupon);
 
   const [form, setForm] = useState({
-    tableNumber: "",
+    tableNumber: localStorage.getItem("tableNumber") || "",
     customerName: "",
     customerEmail: "",
     customerPhone: "",
@@ -39,6 +41,11 @@ const Checkout = () => {
   // CHECKOUT HANDLER
   const handleCheckout = async (e) => {
     e.preventDefault();
+
+    if (!form.tableNumber?.trim()) {
+      toastError("Table Number Required", "Please enter your table number to continue checkout.");
+      return;
+    }
 
     try {
       const result = await createOrderApi();
@@ -135,6 +142,7 @@ const Checkout = () => {
           <input
             name="tableNumber"
             placeholder="Table Number"
+            value={form.tableNumber}
             onChange={onChange}
             className="input input-bordered w-full rounded-xl"
             required
