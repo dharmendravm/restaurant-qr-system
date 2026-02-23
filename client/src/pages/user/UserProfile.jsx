@@ -52,6 +52,8 @@ export default function UserProfile() {
 
   const { user, loading, error, updateLoading } = useSelector((s) => s.user);
   const userId = useSelector((s) => s.auth.user?.id);
+  const role = useSelector((s) => s.auth.user?.role);
+  const isViewer = role === "viewer";
 
   const [preview, setPreview] = useState(null);
   const [form, setForm] = useState({
@@ -119,6 +121,19 @@ export default function UserProfile() {
       <div className="max-w-6xl mx-auto p-6 space-y-6 animate-pulse">
         <div className="h-32 bg-card-bg rounded-xl" />
         <div className="h-80 bg-card-bg rounded-xl" />
+      </div>
+    );
+  }
+
+  if (isViewer) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="rounded-xl border border-border bg-card-bg p-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-text-main">Account Settings Restricted</h2>
+          <p className="mt-2 text-sm text-text-muted">
+            Viewer accounts cannot update profile or password.
+          </p>
+        </div>
       </div>
     );
   }

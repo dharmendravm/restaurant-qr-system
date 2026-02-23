@@ -26,11 +26,14 @@ const Login = () => {
   });
 
   const { user } = useSelector((state) => state.auth);
+  const viewerCredentials = [
+    { email: "viewer1@tableorbit.com", password: "Viewer@123" },
+  ];
 
   useEffect(() => {
     if (!user) return;
 
-    if (user.role === "admin") {
+    if (user.role === "admin" || user.role === "viewer") {
       navigate("/admin", { replace: true });
     } else {
       navigate("/", { replace: true });
@@ -133,6 +136,29 @@ const Login = () => {
                   <Link to="/recovery" className="hover:underline">
                     Forgot your password?
                   </Link>
+                </div>
+
+                <div className="mt-4 rounded-xl border border-border bg-hover/40 p-3">
+                  <p className="text-[11px] font-semibold text-text-main uppercase tracking-wide">
+                    Viewer Login (Admin-view)
+                  </p>
+                  <div className="mt-2 space-y-2 text-[12px] text-text-muted">
+                    {viewerCredentials.map((cred) => (
+                      <div
+                        key={cred.email}
+                        className="rounded-lg border border-border/70 px-3 py-2"
+                      >
+                        <p>
+                          <span className="text-text-main font-medium">Email:</span>{" "}
+                          {cred.email}
+                        </p>
+                        <p>
+                          <span className="text-text-main font-medium">Password:</span>{" "}
+                          {cred.password}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

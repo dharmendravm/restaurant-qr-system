@@ -2,6 +2,14 @@ import User from "../models/user.js";
 import AppError from "../utils/appError.js";
 import { comparePassword, hashPassword } from "../utils/password.js";
 
+const blockViewerAccountChanges = (req, next) => {
+  if (req.user?.role === "viewer") {
+    next(new AppError("Viewer accounts are read-only.", 403));
+    return true;
+  }
+  return false;
+};
+
 // Get profile by token
 export const getUserByToken = async (req, res, next) => {
   try {
@@ -22,6 +30,8 @@ export const getUserByToken = async (req, res, next) => {
 // Update user
 export const updateUser = async (req, res, next) => {
   try {
+    if (blockViewerAccountChanges(req, next)) return;
+
     const { name, phone } = req.body;
 
     const existingUser = await User.findById(req.user.id);
@@ -66,6 +76,8 @@ export const updateUser = async (req, res, next) => {
 
 export const changePassword = async (req, res, next) => {
   try {
+    if (blockViewerAccountChanges(req, next)) return;
+
     const { currentPassword, newPassword } = req.body;
 
     const user = await User.findById(req.user.id).select("+password");
@@ -103,6 +115,8 @@ export const changePassword = async (req, res, next) => {
 // Deactivate user
 export const deactivateUser = async (req, res, next) => {
   try {
+    if (blockViewerAccountChanges(req, next)) return;
+
     const user = await User.findByIdAndUpdate(
       req.params.id,
       { isActive: false },

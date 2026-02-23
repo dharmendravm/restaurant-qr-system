@@ -50,8 +50,10 @@ const Navbar = () => {
       el.scrollIntoView({ behavior: "smooth" });
     }
   };
-  const isLoggedInUser = user?.role === "admin" || user?.role === "customer";
+  const isLoggedInUser =
+    user?.role === "admin" || user?.role === "viewer" || user?.role === "customer";
   const isGuest = !isLoggedInUser;
+  const canAccessAdmin = displayRole === "admin" || displayRole === "viewer";
 
   return (
     <header className="sticky top-0 z-40 flex justify-center w-full">
@@ -176,7 +178,7 @@ const Navbar = () => {
 
                     {/* Actions */}
                     <div className="p-2">
-                      {isLoggedInUser ? (
+                      {isLoggedInUser && displayRole !== "viewer" ? (
                         <Link
                           to="/user/profile"
                           onClick={() => setIsProfileOpen(false)}
@@ -195,7 +197,7 @@ const Navbar = () => {
                           <span>Register Now</span>
                         </Link>
                       )}
-                      {displayRole === "admin" && (
+                      {canAccessAdmin && (
                         <li>
                           <Link
                             to="/admin"
@@ -203,7 +205,7 @@ const Navbar = () => {
                             className="w-full flex items-center gap-2 px-3 py-2 text-[12px] text-text-main hover:bg-hover rounded-xl transition"
                           >
                             <Shield className="w-4 h-4" />
-                            <span>Admin</span>
+                            <span>Admin Panel</span>
                           </Link>
                         </li>
                       )}
@@ -265,7 +267,7 @@ const Navbar = () => {
               Menu
             </Link>
 
-            {displayRole === "admin" && (
+            {canAccessAdmin && (
               <Link
                 to="/admin"
                 onClick={() => setIsMobileOpen(false)}
@@ -276,13 +278,15 @@ const Navbar = () => {
               </Link>
             )}
 
-            <Link
-              to="/user/profile"
-              className="mt-1 w-full flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] text-text-main hover:bg-hover transition"
-            >
-              <User className="w-4 h-4" />
-              <span>Profile</span>
-            </Link>
+            {displayRole !== "viewer" && (
+              <Link
+                to="/user/profile"
+                className="mt-1 w-full flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] text-text-main hover:bg-hover transition"
+              >
+                <User className="w-4 h-4" />
+                <span>Profile</span>
+              </Link>
+            )}
 
             <button
               type="button"

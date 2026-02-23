@@ -6,6 +6,8 @@ import { Search, RefreshCcw, UserCheck, UserX, Users, IndianRupee, MoreVertical 
 const UserPage = () => {
   const dispatch = useDispatch();
   const { users = [], loading } = useSelector((state) => state.adminUsers);
+  const role = useSelector((state) => state.auth?.user?.role);
+  const isViewer = role === "viewer";
   
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -13,6 +15,21 @@ const UserPage = () => {
   useEffect(() => {
     dispatch(fetchAdminUsers());
   }, [dispatch]);
+
+  if (isViewer) {
+    return (
+      <div className="min-h-screen bg-app-bg p-4 lg:p-8 text-text-main">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-card-bg border border-border rounded-2xl p-6 shadow-sm">
+            <h1 className="text-2xl font-bold text-text-main">User Information Restricted</h1>
+            <p className="mt-2 text-sm text-text-muted">
+              You are signed in as a viewer. User details are sensitive and are not visible in viewer mode.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const filteredStats = useMemo(() => {
     let customers = users.filter((u) => u.role === "customer");

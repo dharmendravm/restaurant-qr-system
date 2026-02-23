@@ -9,6 +9,8 @@ const TablesPage = () => {
   const dispatch = useDispatch();
 
   const { tables, loading, error } = useSelector((state) => state.table);
+  const role = useSelector((state) => state.auth?.user?.role);
+  const isViewer = role === "viewer";
 
   useEffect(() => {
     dispatch(getAllTables());
@@ -24,14 +26,16 @@ const TablesPage = () => {
 
   return (
     <>
-      <div className="flex justify-end mt-1 mb-3">
-        <Link
-          to="/admin/tables/create"
-          className="btn text-black bg-btn-black rounded-xl w-40"
-        >
-          Add Table
-        </Link>
-      </div>
+      {!isViewer && (
+        <div className="flex justify-end mt-1 mb-3">
+          <Link
+            to="/admin/tables/create"
+            className="btn text-black bg-btn-black rounded-xl w-40"
+          >
+            Add Table
+          </Link>
+        </div>
+      )}
       <div className="overflow-x-auto rounded-box border border-border bg-app-bg text-text-muted">
         <div className="hidden md:block overflow-x-auto rounded-box border border-border bg-app-bg">
           <table className="table text-text-main">
@@ -69,6 +73,7 @@ const TablesPage = () => {
                       <input
                         type="checkbox"
                         checked={table.isActive}
+                        disabled={isViewer}
                         onChange={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
@@ -110,7 +115,8 @@ const TablesPage = () => {
               <input
                 type="checkbox"
                 checked={table.isActive}
-                onChange={() => toggleTableStatus(table._id)}
+                disabled={isViewer}
+                onChange={() => dispatch(toggleTableStatus(table._id))}
                 className="toggle toggle-sm bg-danger checked:bg-(--color-admin)"
               />
             </div>

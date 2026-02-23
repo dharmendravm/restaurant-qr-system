@@ -9,6 +9,7 @@ import {
   X,
   TicketPercent,
 } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const menu = [
   { name: "Dashboard", to: "/admin", icon: LayoutDashboard },
@@ -20,6 +21,21 @@ const menu = [
 ];
 
 const AdminSidebar = ({ open, onClose }) => {
+  const userRole = useSelector((state) => state.auth?.user?.role);
+  const isViewer = userRole === "viewer";
+
+  const visibleMenu = isViewer
+    ? menu.filter(
+        (item) =>
+          item.to === "/admin" ||
+          item.to === "/admin/orders" ||
+          item.to === "/admin/create/menu" ||
+          item.to === "/admin/create/coupon" ||
+          item.to === "/admin/tables" ||
+          item.to === "/admin/users",
+      )
+    : menu;
+
   return (
     <>
       {/* Overlay */}
@@ -46,7 +62,7 @@ const AdminSidebar = ({ open, onClose }) => {
         </div>
 
         <nav className="flex-1 px-2 space-y-1">
-          {menu.map(({ name, to, icon: Icon }) => (
+          {visibleMenu.map(({ name, to, icon: Icon }) => (
             <NavLink
               key={name}
               to={to}

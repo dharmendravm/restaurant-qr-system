@@ -5,6 +5,8 @@ import { fetchCoupons, toggleCouponStatus } from "@/store/admin/couponSlice"; //
 
 const CouponsDashboard = () => {
   const dispatch = useDispatch();
+  const role = useSelector((state) => state.auth?.user?.role);
+  const isViewer = role === "viewer";
   
   const { items: coupons, loading, error, pageLoading } = useSelector((state) => state.adminCoupons);
 
@@ -74,14 +76,16 @@ const CouponsDashboard = () => {
                       <td className="px-2">
                         <input
                           type="checkbox"
-                          disabled={loading} // Redux wala loading toggle ke waqt disable karega
+                          disabled={loading || isViewer} // Viewer is read-only.
                           checked={coupon.isActive}
                           onChange={(e) => handleToggle(e, coupon._id)}
                           className="toggle toggle-sm bg-danger border-danger checked:bg-success"
                         />
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <button className="text-sm text-brand-main hover:underline">Edit</button>
+                        {!isViewer && (
+                          <button className="text-sm text-brand-main hover:underline">Edit</button>
+                        )}
                       </td>
                     </tr>
                   ))

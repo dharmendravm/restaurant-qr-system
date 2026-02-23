@@ -11,7 +11,7 @@ import cartRoute from "./cart.route.js";
 import couponRoute from "./coupon.route.js";
 
 import { verifyToken } from "../middlewares/verifyToken.js";
-import { checkRole } from "../middlewares/checkRole.js";
+import AppError from "../utils/appError.js";
 import adminMenuRoutes from "./admin/menu.route.js";
 import adminCouponRoutes from "./admin/coupon.route.js";
 import adminUserRoutes from "./admin/user.route.js";
@@ -19,6 +19,27 @@ import adminTableRoutes from "./admin/table.route.js";
 import adminOrderRoute from "./admin/order.route.js";
 
 const router = express.Router();
+
+const checkAdminOrViewerReadOnly = (req, _res, next) => {
+  const role = req.user?.role;
+
+  if (role === "admin") {
+    return next();
+  }
+
+  if (role === "viewer" && req.method === "GET") {
+    return next();
+  }
+
+  return next(
+    new AppError(
+      role === "viewer"
+        ? "Viewer has read-only access."
+        : "Access denied.",
+      403,
+    ),
+  );
+};
 
 // MAIN ROUTES
 router.use("/auth", authRoutes);
@@ -33,7 +54,7 @@ router.use("/cart", cartRoute);
 router.use("/coupons", couponRoute);
 
 // ADMIN
-router.use("/admin", verifyToken, checkRole(["admin"]));
+router.use("/admin", verifyToken, checkAdminOrViewerReadOnly);
 
 router.use("/admin/users", adminUserRoutes);
 router.use("/admin/coupons", adminCouponRoutes);

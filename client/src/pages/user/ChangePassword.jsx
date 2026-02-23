@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Save, Lock } from "lucide-react";
 import { changePasswordApi } from "@/lib/user.api";
 import { useToast } from "@/components/ui/toast";
+import { useSelector } from "react-redux";
 
 /* ---------- INPUT FIELD ---------- */
 
@@ -24,6 +25,8 @@ const PasswordField = ({ label, value, onChange }) => (
 /* ---------- PAGE ---------- */
 
 export default function ChangePassword() {
+  const role = useSelector((state) => state.auth?.user?.role);
+  const isViewer = role === "viewer";
   const [form, setForm] = useState({
     currentPassword: "",
     newPassword: "",
@@ -33,6 +36,19 @@ export default function ChangePassword() {
   const [loading, setLoading] = useState(false);
 
   const { success, error: toastError } = useToast();
+
+  if (isViewer) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-app-bg px-4">
+        <div className="w-full max-w-md rounded-xl border border-border bg-card-bg p-6 shadow-sm">
+          <h1 className="text-lg font-semibold text-text-main">Password Change Restricted</h1>
+          <p className="mt-2 text-sm text-text-muted">
+            Viewer accounts are read-only and cannot change password.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = async () => {
     const { currentPassword, newPassword, confirmPassword } = form;
