@@ -32,8 +32,8 @@ const Login = () => {
 
   useEffect(() => {
     if (!user) return;
-
-    if (user.role === "admin" || user.role === "viewer") {
+//  || user.role === "viewer"
+    if (user.role === "admin") {
       navigate("/admin", { replace: true });
     } else {
       navigate("/", { replace: true });

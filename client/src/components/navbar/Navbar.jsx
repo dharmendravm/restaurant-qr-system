@@ -103,6 +103,18 @@ const Navbar = () => {
 
           {/*Cart + theme + Profile + mobile toggle */}
           <div className="flex items-center gap-3">
+            {canAccessAdmin && (
+              <Link
+                to="/admin"
+                className="hidden md:inline-flex relative items-center gap-2 rounded-full border border-brand-main/40 bg-brand-main/10 px-3 py-1 text-[11px] font-semibold text-brand-main shadow-sm transition hover:bg-brand-main hover:text-white"
+                title="Open admin panel"
+              >
+                <span className="absolute -left-1 -top-1 h-2 w-2 rounded-full bg-brand-main animate-ping" />
+                <span className="relative h-2 w-2 rounded-full bg-brand-main" />
+                <span>Notice: Admin Panel</span>
+              </Link>
+            )}
+
             {/* Theme Toggle  */}
             <div className="mr-2 flex justify-end">
               <ThemeToggle />
@@ -271,10 +283,11 @@ const Navbar = () => {
               <Link
                 to="/admin"
                 onClick={() => setIsMobileOpen(false)}
-                className="flex items-center gap-2 rounded-full px-3 py-1.5 bg-app-bg text-text-main"
+                className="relative flex items-center gap-2 rounded-full border border-brand-main/40 bg-brand-main/10 px-3 py-1.5 text-brand-main"
               >
+                <span className="absolute -left-1 -top-1 h-2 w-2 rounded-full bg-brand-main animate-ping" />
                 <Shield className="w-5 h-5 " />
-                Admin
+                Notice: Admin Panel
               </Link>
             )}
 

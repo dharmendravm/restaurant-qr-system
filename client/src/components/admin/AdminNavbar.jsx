@@ -38,8 +38,14 @@ const AdminNavbar = ({ onMenuClick }) => {
         </div>
       </div>
       <div>
-        <Link to='/' className="text-xs">
-        Home
+        <Link
+          to="/"
+          className="group relative inline-flex items-center gap-2 rounded-full border border-brand-main/40 bg-brand-main/10 px-3 py-1 text-[11px] font-semibold text-brand-main shadow-sm transition hover:bg-brand-main hover:text-white"
+          title="Go to public home view"
+        >
+          <span className="absolute -left-1 -top-1 h-2 w-2 rounded-full bg-brand-main animate-ping" />
+          <span className="relative h-2 w-2 rounded-full bg-brand-main" />
+          <span>Notice: Public View (/)</span>
         </Link>
       </div>
 
