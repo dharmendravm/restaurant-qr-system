@@ -27,7 +27,7 @@ const Login = () => {
 
   const { user } = useSelector((state) => state.auth);
   const viewerCredentials = [
-    { email: "viewer1@tableorbit.com", password: "Viewer@123" },
+    { email: "itsdharmendrav@gmail.com", password: "Viewer@123" },
   ];
 
   useEffect(() => {
