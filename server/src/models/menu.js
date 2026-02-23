@@ -34,6 +34,13 @@ const menuSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
+    unsplashId: {
+      type: String,
+      trim: true,
+      unique: true,
+      sparse: true,
+    },
   },
   { timestamps: true }
 );

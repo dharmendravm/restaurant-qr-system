@@ -1,5 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
-import { fetchMenuItems, setSelectedCategory } from "@/store/menuSlice";
+import {
+  fetchMenuItems,
+  setCurrentPage,
+  setSelectedCategory,
+} from "@/store/menuSlice";
 import { memo, useEffect, useState } from "react";
 import { addToCartThunk } from "@/store/cartSlice";
 import { UtensilsCrossed } from "lucide-react";
@@ -67,13 +71,18 @@ const MenuCard = memo(({ item }) => {
 // MenuSection
 const MenuSection = ({ isAdmin = false }) => {
   const dispatch = useDispatch();
-  const { menuItems, categories, selectedCategory } = useSelector(
-    (state) => state.menu
-  );
+  const { menuItems, categories, selectedCategory, currentPage, limit, pagination, loading } =
+    useSelector((state) => state.menu);
 
   useEffect(() => {
-    dispatch(fetchMenuItems(selectedCategory));
-  }, [dispatch, selectedCategory]);
+    dispatch(
+      fetchMenuItems({
+        category: selectedCategory,
+        page: currentPage,
+        limit,
+      })
+    );
+  }, [dispatch, selectedCategory, currentPage, limit]);
 
   return (
     <section id="menu-section" className="space-y-8 pt-12">
@@ -119,6 +128,33 @@ const MenuSection = ({ isAdmin = false }) => {
           <MenuCard key={item._id} item={item} />
         ))}
       </div>
+
+      {/* Pagination */}
+      {pagination?.enabled && (
+        <div className="flex items-center justify-between gap-3 pt-2">
+          <button
+            type="button"
+            disabled={!pagination.hasPrevPage || loading}
+            onClick={() => dispatch(setCurrentPage(currentPage - 1))}
+            className="px-4 py-2 rounded-lg border border-border text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-hover transition-colors"
+          >
+            Previous
+          </button>
+
+          <p className="text-sm text-text-muted">
+            Page {pagination.currentPage} of {pagination.totalPages}
+          </p>
+
+          <button
+            type="button"
+            disabled={!pagination.hasNextPage || loading}
+            onClick={() => dispatch(setCurrentPage(currentPage + 1))}
+            className="px-4 py-2 rounded-lg border border-border text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-hover transition-colors"
+          >
+            Next
+          </button>
+        </div>
+      )}
 
       {/* Empty State */}
       {menuItems.length === 0 && (

@@ -19,11 +19,23 @@ export const createMenu = async (req, res, next) => {
       return next(new AppError("Menu item already exists", 409));
     }
 
-    const filePath = req.file.path;
-
-    // Upload to Cloudinary
-    const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-      folder: "menu",
+    // Upload file buffer directly to Cloudinary (works in local and serverless).
+    const uploadResult = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          folder: "menu",
+          resource_type: "image",
+          transformation: [
+            { width: 1200, height: 1200, crop: "limit" },
+            { quality: "auto:good", fetch_format: "auto" },
+          ],
+        },
+        (error, result) => {
+          if (error) return reject(error);
+          resolve(result);
+        },
+      );
+      stream.end(req.file.buffer);
     });
 
     if (!uploadResult?.secure_url) {
@@ -42,6 +54,7 @@ export const createMenu = async (req, res, next) => {
       success: true,
       message: "New menu item added successfully",
       data: menuItem,
+      menuItem,
     });
   } catch (error) {
     next(error);
