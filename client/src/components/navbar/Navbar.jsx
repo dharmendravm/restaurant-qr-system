@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/store/authSlice";
+import { getCartThunk } from "@/store/cartSlice";
 import { useToast } from "@/components/ui/toast";
 import {
   Menu as MenuIcon,
@@ -21,12 +22,19 @@ import ThemeToggle from "@/components/shared/ThemeToggle";
 import { BrandLogo } from "@/components/shared/BrandLogo";
 
 const Navbar = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { user, accessToken } = useSelector((state) => state.auth);
+  const { cart } = useSelector((state) => state.cart);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { success, error } = useToast();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (localStorage.getItem("sessionToken") || accessToken) {
+      dispatch(getCartThunk());
+    }
+  }, [accessToken, dispatch]);
 
   const handleLogout = () => {
     try {
@@ -54,6 +62,10 @@ const Navbar = () => {
     user?.role === "admin" || user?.role === "viewer" || user?.role === "customer";
   const isGuest = !isLoggedInUser;
   const canAccessAdmin = displayRole === "admin" || displayRole === "viewer";
+  const cartItemCount = cart?.items?.reduce(
+    (total, item) => total + (item.quantity || 0),
+    0
+  ) || 0;
 
   return (
     <header className="sticky top-0 z-40 flex justify-center w-full">
@@ -121,8 +133,17 @@ const Navbar = () => {
             </div>
 
             {/* Cart  */}
-            <Link to="/user/cart" className="flex gap-6">
+            <Link
+              to="/user/cart"
+              className="relative flex items-center"
+              aria-label={`Cart${cartItemCount ? `, ${cartItemCount} items` : ""}`}
+            >
               <ShoppingCart className="text-text-main hover:text-brand-main transition" />
+              {cartItemCount > 0 && (
+                <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-main px-1 text-[10px] font-bold leading-none text-white">
+                  {cartItemCount > 99 ? "99+" : cartItemCount}
+                </span>
+              )}
             </Link>
 
             {/* Mobile menu button */}

@@ -29,6 +29,7 @@ export const getCartThunk = createAsyncThunk(
 
       const res = await api.get("cart", { headers });
       return res.data.cart;
+
     } catch (error) {
       return thunkApi.rejectWithValue(
         error.response?.data?.message || "Failed to fetch cart"
